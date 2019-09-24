@@ -1,5 +1,12 @@
 package Memory;
 
-public class Memory {//This class is for Memory
+import java.util.Map;
 
+public class Memory<Integer,String> {//This class is for Memory which is to be implemented in Stack
+	private int size;
+	private MemoryEntry<Integer,String>[] memoryEntry=new MemoryEntry[size];
+	public Memory(){
+		
+	}
+	
 }

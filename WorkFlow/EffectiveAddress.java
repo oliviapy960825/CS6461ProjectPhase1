@@ -3,30 +3,29 @@ package WorkFlow;
 import CPU.CU;
 import CPU.Register;
 
-public class EffectiveAddress {
-	int r;
+public class EffectiveAddress {//still working on this class. Need to be changed 
+	//to only include ix,i, and address from the instruction
 	int ix;
 	int i;
 	int address;
-	Register register;
+	Register MAR;
+	Register MBR;
 	CU cu;
 	
-	public EffectiveAddress(int r, int ix, int i, int address, Register register, CU cu){
-		this.r=r;
+	public EffectiveAddress(int ix, int i, int address, CU cu){
 		this.ix=ix;
 		this.i=i;
 		this.address=address;
-		this.register=register;
 		this.cu=cu;
 	}
-	public int calculateEffectiveAddress(int r, int ix, int i, int address, Register register, CU cu){
+	public int calculateEffectiveAddress(int ix, int i, int address, CU cu){
 		if(i==0){//no indirect addressing
 			if(ix==0){
 				return address;
 			}
 			else{
-				if(checkAddress((address+register.getValue(ix)),cu)==1){
-					return (address+register.getValue(ix));
+				if(checkAddress((address+cu.getValue(ix)),cu)==1){
+					return (address+cu.getValue(ix));
 				}
 				
 			}
