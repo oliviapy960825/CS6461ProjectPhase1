@@ -1,7 +1,11 @@
 package WorkFlow;
 
+import java.util.Collection;
+
 public class Constants {//This class is to store constants for other classes' use
-public enum MemoryErrorCode{
+	public static final Integer MEMORY_WORDS = 2048;
+	public static final Integer MEMORY_WORDS_MAX = 4096;
+	public enum MemoryErrorCode{
 	ILL_MEM_RSV(0, "Illegal Memory Address to Reserved Locations"),
 	ILL_OPRC(2,"Illegal Operation Code"), 
 	ILL_MEM_BYD(3, "Illegal Memory Address beyond 2048 (memory installed)");
@@ -20,4 +24,6 @@ public enum MemoryErrorCode{
 		return this.errorMessage;
 	}
 }
+
+
 }
