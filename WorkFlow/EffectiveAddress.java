@@ -1,5 +1,8 @@
 package WorkFlow;
 
+import CPU.CU;
+import CPU.Register;
+
 public class EffectiveAddress {
 	int r;
 	int ix;
