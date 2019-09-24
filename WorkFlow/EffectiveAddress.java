@@ -22,7 +22,7 @@ public class EffectiveAddress {
 				return address;
 			}
 			else{
-				if(checkAddress(address+register.getValue(ix))==1){
+				if(checkAddress((address+register.getValue(ix)),cu)==1){
 					return (address+register.getValue(ix));
 				}
 				
@@ -30,14 +30,14 @@ public class EffectiveAddress {
 		}
 		else{
 			if(ix==0){
-				if(checkAddress(address)==1){
+				if(checkAddress(address,cu)==1){
 					register.setMAR(address);
 					register.setMBR(register.getValue(register.getMAR()));
 					return (register.getMBR());
 				}
 			}
 			else{
-				if(checkAddress(address+register.getValue(ix))==1){
+				if(checkAddress((address+register.getValue(ix)),cu)==1){
 					int inner=register.getValue(ix)+address;
 					register.setMAR(inner);
 					register.setMBR(register.getValue(register.getMAR()));
@@ -46,7 +46,7 @@ public class EffectiveAddress {
 			}
 		}
 	}
-	public static int checkAddress(int address) throws MachineException{//this is to check if the 
+	public static int checkAddress(int address, CU cu) throws MachineException{//this is to check if the 
 		if(register.getValue(address)==null){//in this case there's no value in the address so we throw exceptions
 			throw new MachineException(Constants.MemoryErrorCode.ILL_MEM_RSV.getErrorID(),
 					Constants.MemoryErrorCode.ILL_MEM_RSV.getErrorMessage());
