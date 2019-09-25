@@ -27,7 +27,7 @@ public class Registers{//This Class is for the whole Registers category containi
 		this.mar=mar;
 		this.mbr=mbr;
 	}
-	//Register class should have functions getValue(), getMAR(), getMBR(), setMAR(), setMBR() 
+	//Register class should have functions getValue(), getMAR(), getMBR(), setMAR(), setMBR()
 	public int getR0(){//get the content stored in register r0
 		return this.r0;
 	}
@@ -120,5 +120,30 @@ public class Registers{//This Class is for the whole Registers category containi
 			return this.r3;
 		}
 		return 0;
+	}
+	public void setGenralRegister(int address,int value){
+		if(address==0){
+			this.r1=value;
+		}
+		else if(address==1){
+			this.r1=value;
+		}
+		else if(address==2){
+			this.r2=value;
+		}
+		else if(address==3){
+			this.r3=value;
+		}
+	}
+	public void setIndexRegister(int address, int value){
+		if(address==1){
+			this.x1=value;
+		}
+		else if(address==2){
+			this.x2=value;
+		}
+		else if(address==3){
+			this.x3=value;
+		}
 	}
 }
