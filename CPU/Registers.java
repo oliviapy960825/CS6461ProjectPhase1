@@ -123,7 +123,7 @@ public class Registers{//This Class is for the whole Registers category containi
 	}
 	public void setGenralRegister(int address,int value){
 		if(address==0){
-			this.r1=value;
+			this.r0=value;
 		}
 		else if(address==1){
 			this.r1=value;
