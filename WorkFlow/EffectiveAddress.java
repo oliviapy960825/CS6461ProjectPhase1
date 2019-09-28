@@ -10,6 +10,9 @@ public class EffectiveAddress {//still working on this class. Need to be changed
 	int address;
 	Registers registers;
 	CU cu;
+	public EffectiveAddress(){
+		
+	}
 	
 	public EffectiveAddress(int ix, int i, int address, CU cu, Registers registers){
 		this.ix=ix;

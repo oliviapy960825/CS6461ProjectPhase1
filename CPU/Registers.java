@@ -27,6 +27,19 @@ public class Registers{//This Class is for the whole Registers category containi
 		this.mar=mar;
 		this.mbr=mbr;
 	}
+	public Registers(){
+		this.r0=0;
+		this.r1=0;
+		this.r2=0;
+		this.r3=0;
+		this.x1=0;
+		this.x2=0;
+		this.x3=0;
+		this.pc=0;
+		this.ir=0;
+		this.mar=0;
+		this.mbr=0;
+	}
 	//Register class should have functions getValue(), getMAR(), getMBR(), setMAR(), setMBR()
 	public int getR0(){//get the content stored in register r0
 		return this.r0;

@@ -12,5 +12,8 @@ public class Memory<Integer,String> {//This class is for Memory which is to be i
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	public void setValue(MemoryEntry newMemoryEntry){
+		
+	}
 	
 }

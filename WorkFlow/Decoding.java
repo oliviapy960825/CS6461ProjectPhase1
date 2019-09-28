@@ -1,4 +1,4 @@
-package InstructionProcessing;
+package WorkFlow;
 
 public class Decoding {
 
@@ -40,7 +40,7 @@ public class Decoding {
 			instruction[3]=(int)Integer.parseInt(binaryInstruction.substring(10, 11), 2);
 			instruction[4]=(int)Integer.parseInt(binaryInstruction.substring(11), 2);
 		}
-		else {
+		else if(insFunctionString == "000000"){
 			//Halt Case
 			instruction[0]=0;
 		}
