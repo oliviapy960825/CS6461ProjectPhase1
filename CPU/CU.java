@@ -32,4 +32,7 @@ public class CU{//This class is for CU which is coordinating the communication b
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	public void storeInMemory(int address, int value){
+		
+	}
 }
