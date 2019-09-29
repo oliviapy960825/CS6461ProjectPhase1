@@ -37,15 +37,15 @@ public class Decoding {
 			break;
 		case "101001":
 			instruction[0] = 41;
-			instruction[1]=(int)Integer.parseInt(binaryInstruction.substring(6,8), 2);
-			instruction[2]=(int)Integer.parseInt(binaryInstruction.substring(8,9), 2);
-			instruction[3]=(int)Integer.parseInt(binaryInstruction.substring(9), 2);
+			instruction[1]=Integer.parseInt(binaryInstruction.substring(6,8), 2);
+			instruction[2]=Integer.parseInt(binaryInstruction.substring(8,9), 2);
+			instruction[3]=Integer.parseInt(binaryInstruction.substring(9), 2);
 			break;
 		case "101010":
 			instruction[0] = 42;
-			instruction[1]=(int)Integer.parseInt(binaryInstruction.substring(6,8), 2);
-			instruction[2]=(int)Integer.parseInt(binaryInstruction.substring(8,9), 2);
-			instruction[3]=(int)Integer.parseInt(binaryInstruction.substring(9), 2);
+			instruction[1]=Integer.parseInt(binaryInstruction.substring(6,8), 2);
+			instruction[2]=Integer.parseInt(binaryInstruction.substring(8,9), 2);
+			instruction[3]=Integer.parseInt(binaryInstruction.substring(9), 2);
 			break;
 		case "00":
 			instruction[0]=00;

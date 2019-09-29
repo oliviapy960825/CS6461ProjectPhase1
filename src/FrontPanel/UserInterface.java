@@ -436,7 +436,8 @@ public class UserInterface extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String insAddress = txtFieldPC.getText();
-				iExec(insAddress);
+				int iAdd = Integer.parseInt(insAddress,2);
+				iExec(iAdd);
 			}
 		});
 		
@@ -476,7 +477,7 @@ public class UserInterface extends JFrame {
 		    	int iAddress = Integer.parseInt(insAddress);
 		    	Boolean status = true;
 		    	while (status) {
-					status = iExec(insAddress);
+					status = iExec(iAddress);
 					iAddress++;
 				}
 			}
@@ -531,10 +532,20 @@ public class UserInterface extends JFrame {
 			}
 		}
 		else {
-			int ADD = I + address;
+			int IX=0;
+			if(X==1) {
+				IX = X1.getValue();
+			}
+			else if(X==2) {
+				IX=X2.getValue();
+			}
+			else {
+				IX=X3.getValue();
+			}
+			int ADD = IX + address;
 			txtFieldMAR.setText(Integer.toString(ADD));
-			MAR.setValue(address);
-			logTextArea.append("\n MAR : " +ADD);
+			MAR.setValue(ADD);
+			logTextArea.append("\n MAR : " + ADD);
 			int data = Memory[ADD];
 			txtFieldMBR.setText(Integer.toString(data));
 			MBR.setValue(data);
@@ -638,7 +649,6 @@ public class UserInterface extends JFrame {
 		txtFieldMBR.setText(Integer.toString(Data));
 		MBR.setValue(Data);
 		logTextArea.append("\nMBR:"+ Data);
-        //Put data to the specified [Index Register]
 		switch (X) {
 		case 1:
 			X1.setValue(Data);
@@ -684,9 +694,9 @@ public class UserInterface extends JFrame {
 		Memory[address] = DataIX;
 	}
 	
-	public Boolean iExec(String Address) {
+	public Boolean iExec(int Address) {
 		Boolean status = true;
-		String addString = Address;
+		String addString = Integer.toBinaryString(Address);
 		int add = Integer.parseInt(addString);
 		int value = Memory[add];
 		int[] instructionDec = decode.decToBinary(value);
