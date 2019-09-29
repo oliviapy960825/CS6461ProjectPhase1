@@ -506,22 +506,22 @@ public class UserInterface extends JFrame {
 			MBR.setValue(data);
 			logTextArea.append("\n MBR : " +data);
 			switch (R) {
-			case 00:
+			case 0:
 				txtFieldR0.setText(Integer.toString(data));
 				R0.setValue(data);
 				logTextArea.append("\n R0: "+data);
 				break;
-			case 01:
+			case 1:
 				txtFieldR1.setText(Integer.toString(data));
 				R1.setValue(data);
 				logTextArea.append("\n R1: "+data);
 				break;
-			case 02:
+			case 2:
 				txtFieldR2.setText(Integer.toString(data));
 				R2.setValue(data);
 				logTextArea.append("\n R2: "+data);
 				break;
-			case 03:
+			case 3:
 				txtFieldR3.setText(Integer.toString(data));
 				R3.setValue(data);
 				logTextArea.append("\n R3: "+data);
