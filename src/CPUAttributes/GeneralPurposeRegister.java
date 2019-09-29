@@ -23,6 +23,7 @@ public class GeneralPurposeRegister {
 		//Constructor 
 		public GeneralPurposeRegister() {
 			super();
+			this.value = 0;
 			// TODO Auto-generated constructor stub
 		}
 }

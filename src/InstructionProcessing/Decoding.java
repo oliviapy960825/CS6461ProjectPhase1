@@ -2,12 +2,16 @@ package InstructionProcessing;
 
 public class Decoding {
 
-	public int[] decToBinary(int decInstruction) {
+	public static int[] decToBinary(int decInstruction) {
 		String binaryInstruction = Integer.toBinaryString(decInstruction);
 		int[] instruction = new int[5];
+		for(int i =0;i<5 ;i++) {
+			instruction[i]=0;
+		}
 		while(binaryInstruction.length() < 16) {
 			binaryInstruction = "0" + binaryInstruction;
 		}
+		System.out.println(binaryInstruction);
 		String insFunctionString = binaryInstruction.substring(0, 6); 
 		if(insFunctionString == "000001" || insFunctionString == "000010" || insFunctionString == "000011") {
 			// LDR & STR & LDA
@@ -17,13 +21,13 @@ public class Decoding {
 			else if(insFunctionString == "000010") {
 				instruction[0]=2;
 			}
-			else {
+			else if(insFunctionString == "000011"){
 				instruction[0]=3;
 			}
-			instruction[1]=(int)Integer.parseInt(binaryInstruction.substring(6,8), 2);
-			instruction[2]=(int)Integer.parseInt(binaryInstruction.substring(8,10), 2);
-			instruction[3]=(int)Integer.parseInt(binaryInstruction.substring(10, 11), 2);
-			instruction[4]=(int)Integer.parseInt(binaryInstruction.substring(11), 2);
+			instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+			instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
+			instruction[3]=Integer.parseInt((binaryInstruction.substring(10, 11)), 2);
+			instruction[4]=Integer.parseInt((binaryInstruction.substring(11)), 2);
 			
 		}
 		else if(insFunctionString == "101001" || insFunctionString == "101010"){
@@ -34,16 +38,15 @@ public class Decoding {
 			else if(insFunctionString == "101010") {
 				instruction[0]=42;
 			}
-			// doubt for register and index register selection
 			instruction[1]=(int)Integer.parseInt(binaryInstruction.substring(6,8), 2);
-			instruction[2]=(int)Integer.parseInt(binaryInstruction.substring(8,10), 2);
-			instruction[3]=(int)Integer.parseInt(binaryInstruction.substring(10, 11), 2);
-			instruction[4]=(int)Integer.parseInt(binaryInstruction.substring(11), 2);
+			instruction[2]=(int)Integer.parseInt(binaryInstruction.substring(8,9), 2);
+			instruction[3]=(int)Integer.parseInt(binaryInstruction.substring(9), 2);
 		}
 		else {
 			//Halt Case
-			instruction[0]=0;
+			instruction[0]=00;
 		}
+		System.out.println(instruction);
 		return instruction;
 		
 	}
