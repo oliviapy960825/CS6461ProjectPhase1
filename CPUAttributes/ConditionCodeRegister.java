@@ -4,13 +4,11 @@ package CPUAttributes;
  *
  */
 public class ConditionCodeRegister {
-
 	/*This class is for ConditionCodeRegister Only
 	 * ConditionCodeRegister has two properties, ccSize and ccValue;
 	 * ConditionCodeRegister class has 2 constructors and 4 functions
 	 * including setccSize, getccSize, getccValue and setccValue
 	 * */
-	
 	private int ccSize = 4;
 	private int ccValue;
 	public ConditionCodeRegister() {
@@ -39,5 +37,6 @@ public class ConditionCodeRegister {
 		//This function is to set ccValue;
 		this.ccValue = ccValue;
 	}
+	
 	
 }

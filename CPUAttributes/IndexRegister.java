@@ -4,7 +4,7 @@ package CPUAttributes;
  *
  */
 public class IndexRegister extends GeneralPurposeRegister {
-//This class is for IndexRegister
+	//This class is for IndexRegister
 	public IndexRegister() {
 		super();
 		// TODO Auto-generated constructor stub

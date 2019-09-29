@@ -4,12 +4,13 @@ package InstructionProcessing;
  *
  */
 public class Decoding {
-//This is the class for Decoding procedure. Decoding class has one function decToBinary
-//which takes the decimal instruction and decode it into Binary form and store each part in its own place
-//in instruction array for later access
+	
+	//This is the class for Decoding procedure. Decoding class has one function decToBinary
+	//which takes the decimal instruction and decode it into Binary form and store each part in its own place
+	//in instruction array for later access
 	public int[] decToBinary(int decInstruction) {
 		//This function is to take the integer form of Instruction and convert it into binary
-		//form, then divide it into parts and store each part in its own index in instruction array
+				//form, then divide it into parts and store each part in its own index in instruction array
 		String binaryInstruction = Integer.toBinaryString(decInstruction);
 		int[] instruction = new int[5];
 		for(int i =0;i<5 ;i++) {
@@ -22,7 +23,6 @@ public class Decoding {
 		String insFunctionString = binaryInstruction.substring(0, 6); 
 		switch (insFunctionString) {
 		case "000001":
-			//case when the instruction is LDR
 			instruction[0] = 1;
 			instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
 			instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
@@ -30,7 +30,6 @@ public class Decoding {
 			instruction[4]=Integer.parseInt((binaryInstruction.substring(11)), 2);
 			break;
 		case "000010":
-			//case when the instruction is STR
 			instruction[0] = 2;
 			instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
 			instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
@@ -38,7 +37,6 @@ public class Decoding {
 			instruction[4]=Integer.parseInt((binaryInstruction.substring(11)), 2);
 			break;
 		case "000011":
-			//case when the instruction is LDA
 			instruction[0] = 3;
 			instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
 			instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
@@ -46,22 +44,19 @@ public class Decoding {
 			instruction[4]=Integer.parseInt((binaryInstruction.substring(11)), 2);
 			break;
 		case "101001":
-			//case when the instruction is LDX
 			instruction[0] = 41;
-			instruction[1]=(int)Integer.parseInt(binaryInstruction.substring(6,8), 2);
-			instruction[2]=(int)Integer.parseInt(binaryInstruction.substring(8,9), 2);
-			instruction[3]=(int)Integer.parseInt(binaryInstruction.substring(9), 2);
+			instruction[1]=Integer.parseInt(binaryInstruction.substring(6,8), 2);
+			instruction[2]=Integer.parseInt(binaryInstruction.substring(8,9), 2);
+			instruction[3]=Integer.parseInt(binaryInstruction.substring(9), 2);
 			break;
 		case "101010":
-			//case when the instruction is STX
 			instruction[0] = 42;
-			instruction[1]=(int)Integer.parseInt(binaryInstruction.substring(6,8), 2);
-			instruction[2]=(int)Integer.parseInt(binaryInstruction.substring(8,9), 2);
-			instruction[3]=(int)Integer.parseInt(binaryInstruction.substring(9), 2);
+			instruction[1]=Integer.parseInt(binaryInstruction.substring(6,8), 2);
+			instruction[2]=Integer.parseInt(binaryInstruction.substring(8,9), 2);
+			instruction[3]=Integer.parseInt(binaryInstruction.substring(9), 2);
 			break;
 		case "00":
-			//case when the instruction is HLT
-			instruction[0]=0;
+			instruction[0]=00;
 		default:
 			break;
 		}

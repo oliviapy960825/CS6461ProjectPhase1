@@ -4,7 +4,7 @@ package CPUAttributes;
  *
  */
 public class MemoryAccessRegister extends GeneralPurposeRegister {
-//This class is for MemoryAccessRegister
+	//This class is for MemoryAccessRegister
 	public MemoryAccessRegister() {
 		super();
 		// TODO Auto-generated constructor stub

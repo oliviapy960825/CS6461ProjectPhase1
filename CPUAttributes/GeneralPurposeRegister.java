@@ -4,10 +4,10 @@ package CPUAttributes;
  *
  */
 public class GeneralPurposeRegister {
-/*This class is for GeneralPurposeRegister
- * GeneralPurposeRegister class has two properties, size and value
- * GeneralPurposeRegister class has 1 constructor and 3 functions including getSize(),
- * getValue() and setValue()*/
+	/*This class is for GeneralPurposeRegister
+	 * GeneralPurposeRegister class has two properties, size and value
+	 * GeneralPurposeRegister class has 1 constructor and 3 functions including getSize(),
+	 * getValuE and setValue*/
 	//size of register is 16 bits
 		private int size = 16;
 		private int value;
@@ -22,12 +22,11 @@ public class GeneralPurposeRegister {
 			//get the size of the general purpose register
 			return size;
 		}
-		
 		public int getValue() {
 			//get the value of the general purpose register
 			return value;
 		}
-		
+	
 		public void setValue(int value) {
 			//set the value of the general purpose register
 			this.value = value;

@@ -4,8 +4,8 @@ package CPUAttributes;
  *
  */
 public class ProgramCounter {
-//This class is for Program Counter, it has two properties, pcSize and pcValue.
-//It has 1 constructor and 4 functions including getSize, setSize, getValue and setValue
+	//This class is for Program Counter, it has two properties, pcSize and pcValue.
+	//It has 1 constructor and 4 functions including getSize, setSize, getValue and setValue
 	private int pcSize = 12;
 	private int pcValue;
 	public ProgramCounter() {

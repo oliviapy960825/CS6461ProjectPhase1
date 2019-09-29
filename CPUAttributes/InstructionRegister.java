@@ -4,7 +4,7 @@ package CPUAttributes;
  *
  */
 public class InstructionRegister extends GeneralPurposeRegister {
-//This class is for Instruction Register
+	//This class is for Instruction Register
 	public InstructionRegister() {
 		super();
 		// TODO Auto-generated constructor stub
