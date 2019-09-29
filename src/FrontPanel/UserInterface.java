@@ -697,10 +697,10 @@ public class UserInterface extends JFrame {
 	public Boolean iExec(int Address) {
 		Boolean status = true;
 		String addString = Integer.toBinaryString(Address);
-		int add = Integer.parseInt(addString);
+		int add = Integer.parseInt(addString,2);
 		int value = Memory[add];
 		int[] instructionDec = decode.decToBinary(value);
-		txtFieldMAR.setText(addString);
+		txtFieldMAR.setText(String.valueOf(add));
 		MAR.setValue(add);
 		logTextArea.append("\n PC --> MAR");
 		txtFieldMBR.setText(String.valueOf(value));
