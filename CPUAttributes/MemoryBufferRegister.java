@@ -3,7 +3,7 @@ package CPUAttributes;
  * @author Dishit, Peiyu, Zhaoning, Charitha
  *
  */
-public class MemoryBufferRegister extends GeneralPurposeRegister {
+public class MemoryBufferRegister extends Register {
 	//This class is for MemoryBufferRegister
 	public MemoryBufferRegister() {
 		super();

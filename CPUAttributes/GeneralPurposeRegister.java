@@ -3,7 +3,7 @@ package CPUAttributes;
  * @author Dishit, Peiyu, Zhaoning, Charitha
  *
  */
-public class GeneralPurposeRegister {
+public class GeneralPurposeRegister extends Register {
 	/*This class is for GeneralPurposeRegister
 	 * GeneralPurposeRegister class has two properties, size and value
 	 * GeneralPurposeRegister class has 1 constructor and 3 functions including getSize(),
@@ -13,7 +13,7 @@ public class GeneralPurposeRegister {
 		private int value;
 		public GeneralPurposeRegister() {
 			//constructor for GeneralPurposeRegister class
-			super();
+			this.size=16;
 			this.value = 0;
 			// TODO Auto-generated constructor stub
 		}
