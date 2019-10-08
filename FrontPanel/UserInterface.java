@@ -5,6 +5,8 @@ package FrontPanel;
  *
  */
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -18,6 +20,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import CPUAttributes.ALU;
+import CPUAttributes.CU;
 import CPUAttributes.ConditionCodeRegister;
 import CPUAttributes.GeneralPurposeRegister;
 import CPUAttributes.IndexRegister;
@@ -27,15 +31,15 @@ import CPUAttributes.MemoryBufferRegister;
 import CPUAttributes.ProgramCounter;
 import InstructionProcessing.Decoding;
 import InstructionProcessing.Encoding;
-
-
+import Main.Main;
+import Memory.Memory;
 @SuppressWarnings("serial")
 public class UserInterface extends JFrame {
 	//This class is for the User Interface designs and interactions
 	//It has one contentPanel and many fields and buttons for each user input area and button
 	//It also has text areas for user input and also the log/console for displaying what's happening behind
 	
-	private JPanel contentPane;
+	protected JPanel contentPane;
 	private JTextField txtFieldR0;
 	private JTextField txtFieldR1;
 	private JTextField txtFieldR2;
@@ -53,58 +57,67 @@ public class UserInterface extends JFrame {
 	private JTextArea instructionsTextArea;
 	private JTextArea logTextArea;
 	
-	
-	private static ProgramCounter PC = new ProgramCounter();
-	private static MemoryAccessRegister MAR = new MemoryAccessRegister();
-	private static MemoryBufferRegister MBR = new MemoryBufferRegister();
-	private static InstructionRegister IR = new InstructionRegister();
-	private static IndexRegister X1 = new IndexRegister();
-	private static IndexRegister X2 = new IndexRegister();
-	private static IndexRegister X3 = new IndexRegister();
-	private static GeneralPurposeRegister R0 = new GeneralPurposeRegister();
-	private static GeneralPurposeRegister R1 = new GeneralPurposeRegister();
-	private static GeneralPurposeRegister R2 = new GeneralPurposeRegister();
-	private static GeneralPurposeRegister R3 = new GeneralPurposeRegister();
-	private static ConditionCodeRegister CC = new ConditionCodeRegister();
-	
-	private static Encoding encode = new Encoding();
-	private static Decoding decode =  new Decoding();
-	
-	private static int Memory[] = new int[4096];
-	
-	
-	/**
-	 * 
-	 */
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		PC.setValue(10);
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					UserInterface frame = new UserInterface();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		
-	}
+	private static CU cu=new CU();
+	private static ALU alu=new ALU();
+	private static Memory memory=new Memory();
+
 	
 	public UserInterface() {
+		cu=new CU();
+		cu.setUserInterface(this);
+		alu=new ALU();
+		alu.setUserInterface(this);
+		//memory=new Memory();
+		
 		//Constructor, call initialize function to initialize the user interface
 		intialize();
+	}
+	public void setR0Text(int data){
+		txtFieldR0.setText(Integer.toString(data));
+	}
+	public void setR1Text(int data){
+		txtFieldR1.setText(Integer.toString(data));
+	}
+	public void setR2Text(int data){
+		txtFieldR2.setText(Integer.toString(data));
+	}
+	public void setR3Text(int data){
+		txtFieldR3.setText(Integer.toString(data));
+	}
+	public void setX1Text(int data){
+		txtFieldX1.setText(Integer.toString(data));
+	}
+	public void setX2Text(int data){
+		txtFieldX2.setText(Integer.toString(data));
+	}
+	public void setX3Text(int data){
+		txtFieldX3.setText(Integer.toString(data));
+	}
+	public void setMARText(int address){
+		txtFieldMAR.setText(Integer.toString(address));
+	}
+	
+	public void setMBRText(int data){
+		txtFieldMBR.setText(Integer.toString(data));
+	}
+	public void setIRText(int address){
+		txtFieldIR.setText(Integer.toString(address));
+	}
+	public void setPCText(int address){
+		txtFieldPC.setText(Integer.toString(address));
+	}
+	public void updateLogText(String string, int address){
+		logTextArea.append(string+" "+address);
+	}
+	public void updateLogText(String string){
+		logTextArea.append(string);
 	}
 	public void intialize() {
 		// Initialize function is for the user interface design and layout
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 798, 899);
 		contentPane = new JPanel();
+		
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -117,6 +130,9 @@ public class UserInterface extends JFrame {
 		txtFieldR0.setBounds(83, 59, 96, 27);
 		contentPane.add(txtFieldR0);
 		txtFieldR0.setColumns(10);
+		
+
+
 		
 		JButton btnStoreR0 = new JButton("Store");
 		btnStoreR0.setBackground(Color.LIGHT_GRAY);
@@ -309,7 +325,7 @@ public class UserInterface extends JFrame {
 		
 		JLabel lblTeamCharitha = new JLabel("TEAM 4: Charitha, Dishit, Peiyu, Zhaoning");
 		lblTeamCharitha.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblTeamCharitha.setBounds(154, 780, 457, 21);
+		lblTeamCharitha.setBounds(154, 780, 457, 30);
 		contentPane.add(lblTeamCharitha);
 		
 		instructionsTextArea = new JTextArea();
@@ -323,6 +339,8 @@ public class UserInterface extends JFrame {
 		logTextArea.setBounds(449, 486, 208, 147);
 		contentPane.add(logTextArea);
 		
+		
+		
 		btnStoreR0.addActionListener(new ActionListener() {
 			
 			@Override
@@ -331,8 +349,9 @@ public class UserInterface extends JFrame {
 				if(r0String != null) {
 					int value = Integer.parseInt(r0String);
 					System.out.println(value);
-					R0.setValue(value);
-					txtFieldR0.setText(Integer.toString(R0.getValue()));
+					cu.setR0Value(value);
+					txtFieldR0.setText(r0String);
+					//here write some code to store the text typed in R0 into memory 
 				}
 			}
 		});
@@ -345,8 +364,10 @@ public class UserInterface extends JFrame {
 				if(r1String != null) {
 					int value = Integer.parseInt(r1String);
 					System.out.println(value);
-					R1.setValue(value);
-					txtFieldR1.setText(Integer.toString(R1.getValue()));
+					cu.setR1Value(value);
+					//R1.setValue(value);
+					txtFieldR1.setText(r1String);
+					//here write some code to store the text typed in R1 into memory 
 				}
 			}
 		});
@@ -359,8 +380,10 @@ public class UserInterface extends JFrame {
 				if(r2String != null) {
 					int value = Integer.parseInt(r2String);
 					System.out.println(value);
-					R2.setValue(value);
-					txtFieldR2.setText(Integer.toString(R2.getValue()));
+					cu.setR2Value(value);
+					//R2.setValue(value);
+					txtFieldR2.setText(r2String);
+					//here write some code to store the text typed in R2 into memory 
 				}
 			}
 		});
@@ -373,8 +396,10 @@ public class UserInterface extends JFrame {
 				if(r3String != null) {
 					int value = Integer.parseInt(r3String);
 					System.out.println(value);
-					R3.setValue(value);
-					txtFieldR3.setText(Integer.toString(R3.getValue()));
+					cu.setR3Value(value);
+					//R3.setValue(value);
+					txtFieldR3.setText(r3String);
+					//here write some code to store the text typed in R3 into memory 
 				}
 			}
 		});
@@ -387,8 +412,10 @@ public class UserInterface extends JFrame {
 				if(x1String != null) {
 					int value = Integer.parseInt(x1String);
 					System.out.println(value);
-					X1.setValue(value);
-					txtFieldX1.setText(Integer.toString(X1.getValue()));
+					cu.setX1Value(value);
+					//X1.setValue(value);
+					txtFieldX1.setText(x1String);
+					//here write some code to store the text typed in X1 into memory 
 				}
 			}
 		});
@@ -401,8 +428,10 @@ public class UserInterface extends JFrame {
 				if(x2String != null) {
 					int value = Integer.parseInt(x2String);
 					System.out.println(value);
-					X2.setValue(value);
-					txtFieldX2.setText(Integer.toString(X2.getValue()));
+					cu.setX2Value(value);
+					//X2.setValue(value);
+					txtFieldX2.setText(x2String);
+					//here write some code to store the text typed in X2 into memory 
 				}
 			}
 		});
@@ -415,8 +444,10 @@ public class UserInterface extends JFrame {
 				if(x3String != null) {
 					int value = Integer.parseInt(x3String);
 					System.out.println(value);
-					X3.setValue(value);
-					txtFieldX3.setText(Integer.toString(X3.getValue()));
+					cu.setX3Value(value);
+					//X3.setValue(value);
+					txtFieldX3.setText(x3String);
+					//here write some code to store the text typed in X3 into memory 
 				}
 			}
 		});
@@ -425,10 +456,10 @@ public class UserInterface extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PC.setValue(10);
-				txtFieldPC.setText(String.valueOf(PC.getValue()));
+				cu.setPCValue(0);
+				txtFieldPC.setText(String.valueOf(cu.getPCValue()));
 		    	String instructions = instructionsTextArea.getText();
-		    	strInsToMemory(instructions);
+		    	cu.strInsToMemory(instructions);//instructions stored into memory
 		    	logTextArea.setText("IPL Complete");
 			}
 		});
@@ -438,8 +469,9 @@ public class UserInterface extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String insAddress = txtFieldPC.getText();
+				//System.out.println(insAddress);
 				int iAdd = Integer.parseInt(insAddress,2);
-				iExec(iAdd);
+				alu.iExec(iAdd);
 			}
 		});
 		
@@ -452,7 +484,8 @@ public class UserInterface extends JFrame {
 				if(addr != null && dataValue != null) {
 					int add = Integer.parseInt(addr);
 					int value = Integer.parseInt(dataValue);
-					Memory[add] = value;
+					memory.storeIntoMemory(add, value);
+					//Memory[add] = value;
 				}
 			}
 		});
@@ -463,8 +496,9 @@ public class UserInterface extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String addr = txtFieldMemory.getText();
 				if(addr != null) {
-					int addrInt = Integer.parseInt(addr);
-					int fetchedData = Memory[addrInt];
+					int addrInt = Integer.parseInt(addr,2);
+					int fetchedData=memory.fetchFromMemory(addrInt);
+					//int fetchedData = Memory[addrInt];
 					String fetchString = Integer.toString(fetchedData);
 					txtFieldMemoryValue.setText(fetchString);
 				}
@@ -476,293 +510,14 @@ public class UserInterface extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) { 
 		    	String insAddress = txtFieldPC.getText();
-		    	int iAddress = Integer.parseInt(insAddress);
+		    	int iAddress = Integer.parseInt(insAddress,2);
 		    	Boolean status = true;
 		    	while (status) {
-					status = iExec(iAddress);
+					status = alu.iExec(iAddress);
 					iAddress++;
 				}
 			}
 		});
 	}
 	
-	public void strInsToMemory(String a) {
-		//This is to get String stored in memory
-		int pc = PC.getValue();
-		String[] lines = a.split("\n");
-		for (String line : lines) {
-			int decIns = encode.insToDec(line);
-			Memory[pc]=decIns;
-			System.out.println(Memory[pc]);
-			pc= pc+1;
-		}
-
-	}
-	
-	public void LDR(int R,int X,int I,int address) {
-		//This function is for load instruction workflow
-		if(I==0) {
-			System.out.println(R);
-			txtFieldMAR.setText(Integer.toString(address));
-			MAR.setValue(address);
-			logTextArea.append("\n MAR : " +address);
-			int data = Memory[address];
-			txtFieldMBR.setText(Integer.toString(data));
-			MBR.setValue(data);
-			logTextArea.append("\n MBR : " +data);
-			switch (R) {
-			case 0:
-				txtFieldR0.setText(Integer.toString(data));
-				R0.setValue(data);
-				logTextArea.append("\n R0: "+data);
-				break;
-			case 1:
-				txtFieldR1.setText(Integer.toString(data));
-				R1.setValue(data);
-				logTextArea.append("\n R1: "+data);
-				break;
-			case 2:
-				txtFieldR2.setText(Integer.toString(data));
-				R2.setValue(data);
-				logTextArea.append("\n R2: "+data);
-				break;
-			case 3:
-				txtFieldR3.setText(Integer.toString(data));
-				R3.setValue(data);
-				logTextArea.append("\n R3: "+data);
-				break;
-			default:
-				break;
-			}
-		}
-		else {
-			int IX=0;
-			if(X==1) {
-				IX = X1.getValue();
-			}
-			else if(X==2) {
-				IX=X2.getValue();
-			}
-			else {
-				IX=X3.getValue();
-			}
-			int ADD = IX + address;
-			txtFieldMAR.setText(Integer.toString(ADD));
-			MAR.setValue(ADD);
-			logTextArea.append("\n MAR : " + ADD);
-			int data = Memory[ADD];
-			txtFieldMBR.setText(Integer.toString(data));
-			MBR.setValue(data);
-			logTextArea.append("\n MBR : " +data);
-			switch (R) {
-			case 0:
-				txtFieldR0.setText(Integer.toString(data));
-				R0.setValue(data);
-				logTextArea.append("\n R0: "+data);
-				break;
-			case 1:
-				txtFieldR1.setText(Integer.toString(data));
-				R1.setValue(data);
-				logTextArea.append("\n R1: "+data);
-				break;
-			case 2:
-				txtFieldR2.setText(Integer.toString(data));
-				R2.setValue(data);
-				logTextArea.append("\n R2: "+data);
-				break;
-			case 3:
-				txtFieldR3.setText(Integer.toString(data));
-				R3.setValue(data);
-				logTextArea.append("\n R3: "+data);
-				break;
-			default:
-				break;
-			}
-			
-		}
-		
-	}
-	
-	public void STR(int R,int X,int I,int address) {
-		//This function is for STR instruction workflow
-		txtFieldMAR.setText(Integer.toString(address));
-		MAR.setValue(address);
-		int Reg = 0;
-		switch (R) {
-		case 0:
-			Reg = R0.getValue();
-			txtFieldMBR.setText(Integer.toString(Reg));
-			MBR.setValue(Reg);
-			logTextArea.append("MBR: "+ Reg);
-			break;
-		case 1:
-			Reg = R1.getValue();
-			txtFieldMBR.setText(Integer.toString(Reg));
-			MBR.setValue(Reg);
-			logTextArea.append("MBR: "+ Reg);
-			break;
-		case 2:
-			Reg = R2.getValue();
-			txtFieldMBR.setText(Integer.toString(Reg));
-			MBR.setValue(Reg);
-			logTextArea.append("MBR: "+ Reg);
-			break;
-		case 3:
-			Reg = R3.getValue();
-			txtFieldMBR.setText(Integer.toString(Reg));
-			MBR.setValue(Reg);
-			logTextArea.append("MBR: "+ Reg);
-			break;
-			
-		default:
-			break;
-		}
-		Memory[address] = Reg;
-	}
-	
-	public void LDA(int R,int X,int I,int address) {
-		//This function is for LDA instruction workflow
-		txtFieldMBR.setText(Integer.toString(address));
-		MBR.setValue(address);
-		switch (R) {
-		case 0:
-			R0.setValue(address);
-			txtFieldR0.setText(Integer.toString(address));
-			break;
-		case 1:
-			R1.setValue(address);
-			txtFieldR1.setText(Integer.toString(address));
-			break;
-		case 2:
-			R2.setValue(address);
-			txtFieldR2.setText(Integer.toString(address));
-			break;
-		case 3:
-			R3.setValue(address);
-			txtFieldR3.setText(Integer.toString(address));
-			break;
-			
-		default:
-			break;
-		}
-	}
-	
-	public void LDX(int X,int I,int address) {
-		//This instruction is for LDX instruction workflow
-		txtFieldMAR.setText(Integer.toString(address));
-		MAR.setValue(address);
-		logTextArea.append("\nMAR:"+ address);
-		int Data = Memory[address];
-		txtFieldMBR.setText(Integer.toString(Data));
-		MBR.setValue(Data);
-		logTextArea.append("\nMBR:"+ Data);
-		switch (X) {
-		case 1:
-			X1.setValue(Data);
-			txtFieldX1.setText(Integer.toString(Data));
-			break;
-		case 2:
-			X2.setValue(Data);
-			txtFieldX2.setText(Integer.toString(Data));
-			break;
-		case 3:
-			X3.setValue(Data);
-			txtFieldX3.setText(Integer.toString(Data));
-			break;
-		default:
-			break;
-		}
-	}
-	
-	public void STX(int X,int I,int address) {
-		//This function is for STX instruction workflow
-		txtFieldMAR.setText(Integer.toString(address));
-		MAR.setValue(address);
-		logTextArea.append("\nMAR:"+ address);		
-		int DataIX = 0;
-		switch (X) {
-		case 1:
-			DataIX = X1.getValue();
-			txtFieldMBR.setText(Integer.toString(DataIX));
-			MBR.setValue(DataIX);
-			break;
-		case 2:
-			DataIX = X2.getValue();
-			txtFieldMBR.setText(Integer.toString(DataIX));
-			MBR.setValue(DataIX);
-			break;
-		case 3:
-			DataIX = X3.getValue();
-			txtFieldMBR.setText(Integer.toString(DataIX));
-			MBR.setValue(DataIX);
-			break;
-		default:
-			break;
-		}
-		Memory[address] = DataIX;
-	}
-	
-	public Boolean iExec(int Address) {
-		//This function is for executing the instructions of user input
-		Boolean status = true;
-		String addString = Integer.toBinaryString(Address);
-		int add = Integer.parseInt(addString,2);
-		int value = Memory[add];
-		int[] instructionDec = decode.decToBinary(value);
-		txtFieldMAR.setText(String.valueOf(add));
-		MAR.setValue(add);
-		logTextArea.append("\n PC --> MAR");
-		txtFieldMBR.setText(String.valueOf(value));
-		MBR.setValue(value);
-		logTextArea.append("\n MBR gets loaded with the value");
-		txtFieldIR.setText(String.valueOf(value));
-		IR.setValue(value);
-		logTextArea.append("\n MBR --> IR");
-		PC.setValue(PC.getValue() + 1);
-		txtFieldPC.setText(String.valueOf(PC.getValue()));
-		logTextArea.append("\n PC incremented by 1");
-		int R,X,I,address;
-		System.out.println(instructionDec);
-		switch (instructionDec[0]) {
-		case 1:
-			R = instructionDec[1];
-			X = instructionDec[2];
-			I = instructionDec[3];
-			address = instructionDec[4];
-			LDR(R,X,I,address);
-			break;
-		case 2:
-			R = instructionDec[1];
-			X = instructionDec[2];
-			I = instructionDec[3];
-			address = instructionDec[4];
-			STR(R,X,I,address);
-			break;
-		case 3:
-			R = instructionDec[1];
-			X = instructionDec[2];
-			I = instructionDec[3];
-			address = instructionDec[4];
-			LDA(R,X,I,address);
-			break;
-		case 41:
-			X = instructionDec[1];
-			I = instructionDec[2];
-			address = instructionDec[3];
-			LDX(X,I,address);
-			break;
-		case 42:
-			X = instructionDec[1];
-			I = instructionDec[2];
-			address = instructionDec[3];
-			STX(X,I,address);
-			break;
-		case 00:
-			status = false;
-			return status;
-		default:
-			break;
-		}
-		return status;
-	}
 }

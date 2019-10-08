@@ -3,7 +3,7 @@ package CPUAttributes;
  * @author Dishit, Peiyu, Zhaoning, Charitha
  *
  */
-public class ConditionCodeRegister {
+public class ConditionCodeRegister extends Register{
 	/*This class is for ConditionCodeRegister Only
 	 * ConditionCodeRegister has two properties, ccSize and ccValue;
 	 * ConditionCodeRegister class has 2 constructors and 4 functions
@@ -13,7 +13,8 @@ public class ConditionCodeRegister {
 	private int ccValue;
 	public ConditionCodeRegister() {
 		/*Constructor, inherit parent properties and functions*/
-		super();
+		this.ccSize=4;
+		this.ccSize=0;
 	}
 	public ConditionCodeRegister(int size, int value) {
 		/*Constructor, inherit parent properties and functions and then set ccSize and ccValue*/
