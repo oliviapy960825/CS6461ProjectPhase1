@@ -11,7 +11,7 @@ public class Memory {
 		if (this.memory.length > 0) {
 			this.memory=new int[4096];
 		}
-		
+		//ADD NEW CODE HERE MOVING CONTENT FROM THE ORIGINAL ARRAY AFTER EXPANDING TO 4096 
 		System.out.println("memory size has been expanded to " + memory.length);
 	}
 	public int getCurrentMemorySize() {
