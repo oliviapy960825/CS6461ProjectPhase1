@@ -1,0 +1,10 @@
+/ALU.class
+/CU.class
+/ConditionCodeRegister.class
+/GeneralPurposeRegister.class
+/IndexRegister.class
+/InstructionRegister.class
+/MemoryAccessRegister.class
+/MemoryBufferRegister.class
+/ProgramCounter.class
+/Register.class

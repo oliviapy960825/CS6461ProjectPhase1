@@ -55,6 +55,42 @@ public class Decoding {
 				instruction[2]=Integer.parseInt(binaryInstruction.substring(8,9), 2);
 				instruction[3]=Integer.parseInt(binaryInstruction.substring(9), 2);
 				break;
+			case "001010":
+				instruction[0] = 10;
+				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+				instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
+				instruction[3]=Integer.parseInt((binaryInstruction.substring(10, 11)), 2);
+				instruction[4]=Integer.parseInt((binaryInstruction.substring(11)), 2);
+				break;
+			case "001011":
+				instruction[0] = 11;
+				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+				instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
+				instruction[3]=Integer.parseInt((binaryInstruction.substring(10, 11)), 2);
+				instruction[4]=Integer.parseInt((binaryInstruction.substring(11)), 2);
+				break;
+			case "001100":
+				instruction[0] = 12;
+				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+				instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
+				instruction[3]=Integer.parseInt((binaryInstruction.substring(10, 11)), 2);
+				instruction[4]=Integer.parseInt((binaryInstruction.substring(11)), 2);
+				break;
+			case "001101":
+				instruction[0] = 13;
+				instruction[1]=Integer.parseInt(binaryInstruction.substring(6,8), 2);
+				instruction[2]=Integer.parseInt(binaryInstruction.substring(8,9), 2);
+				instruction[3]=Integer.parseInt(binaryInstruction.substring(9), 2);
+				break;
+			case "001110":
+				instruction[0] = 14;
+				instruction[1]=Integer.parseInt(binaryInstruction.substring(6,8), 2);
+				instruction[2]=Integer.parseInt(binaryInstruction.substring(8,9), 2);
+				instruction[3]=Integer.parseInt(binaryInstruction.substring(9), 2);
+				break;
+			case "001111":
+				instruction[0] = 15;
+				break;
 			case "00":
 				instruction[0]=00;
 			case "000000":

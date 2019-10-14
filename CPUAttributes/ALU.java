@@ -71,6 +71,41 @@ public class ALU {
 			address = instructionDec[3];
 			STX(X,I,address);
 			break;
+		case 10:
+			R = instructionDec[1];
+			X = instructionDec[2];
+			I = instructionDec[3];
+			address = instructionDec[4];
+			JZ(R,X,I,address);
+			break;
+		case 11:
+			R = instructionDec[1];
+			X = instructionDec[2];
+			I = instructionDec[3];
+			address = instructionDec[4];
+			JNE(R,X,I,address);
+			break;
+		case 12:
+			R = instructionDec[1];
+			X = instructionDec[2];
+			I = instructionDec[3];
+			address = instructionDec[4];
+			JCC(R,X,I,address);
+			break;
+		case 13:
+			X = instructionDec[1];
+			I = instructionDec[2];
+			address = instructionDec[3];
+			JMA(X,I,address);
+			break;
+		case 14:
+			X = instructionDec[1];
+			I = instructionDec[2];
+			address = instructionDec[3];
+			JSR(X,I,address);
+			break;
+		case 15:
+			break;
 		case 00:
 			status = false;
 			return status;
@@ -392,6 +427,7 @@ public class ALU {
 		}
 		cu.storeIntoMemory(address, DataIX);
 	}
+
 	private void AMR(int R,int X,int I,int address){
 		int currentRegisterValue;
 		int EAValue;
@@ -419,6 +455,317 @@ public class ALU {
 		default:
 			break;
 		}
+
+	public void JZ(int R,int X,int I,int address) {
+		if(I==0) {
+			switch (R) {
+			case 0:
+				if(cu.getR0Value()==0) {
+					userInterface.setPCText(address);
+					cu.setPCValue(address);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			case 1:
+				if(cu.getR1Value()==0) {
+					userInterface.setPCText(address);
+					cu.setPCValue(address);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			case 2:
+				if(cu.getR2Value()==0) {
+					userInterface.setPCText(address);
+					cu.setPCValue(address);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			case 3:
+				if(cu.getR3Value()==0) {
+					userInterface.setPCText(address);
+					cu.setPCValue(address);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		else {
+			int IX=0;
+			if(X==1) {
+				IX = cu.getX1Value();
+			}
+			else if(X==2) {
+				IX = cu.getX2Value();
+			}
+			else {
+				IX = cu.getX3Value();
+			}
+			int ADD = IX + address;
+			switch (R) {
+			case 0:
+				if(cu.getR0Value()==0) {
+					userInterface.setPCText(ADD);
+					cu.setPCValue(ADD);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			case 1:
+				if(cu.getR1Value()==0) {
+					userInterface.setPCText(ADD);
+					cu.setPCValue(ADD);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			case 2:
+				if(cu.getR2Value()==0) {
+					userInterface.setPCText(ADD);
+					cu.setPCValue(ADD);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			case 3:
+				if(cu.getR3Value()==0) {
+					userInterface.setPCText(ADD);
+					cu.setPCValue(ADD);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			default:
+				break;
+			}
+			
+		}
+		
+	}
+	
+	public void JNE(int R,int X,int I,int address) {
+		if(I==0) {
+			switch (R) {
+			case 0:
+				if(cu.getR0Value()!=0) {
+					userInterface.setPCText(address);
+					cu.setPCValue(address);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			case 1:
+				if(cu.getR1Value()!=0) {
+					userInterface.setPCText(address);
+					cu.setPCValue(address);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			case 2:
+				if(cu.getR2Value()!=0) {
+					userInterface.setPCText(address);
+					cu.setPCValue(address);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			case 3:
+				if(cu.getR3Value()!=0) {
+					userInterface.setPCText(address);
+					cu.setPCValue(address);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		else {
+			int IX=0;
+			if(X==1) {
+				IX = cu.getX1Value();
+			}
+			else if(X==2) {
+				IX = cu.getX2Value();
+			}
+			else {
+				IX = cu.getX3Value();
+			}
+			int ADD = IX + address;
+			switch (R) {
+			case 0:
+				if(cu.getR0Value()!=0) {
+					userInterface.setPCText(ADD);
+					cu.setPCValue(ADD);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			case 1:
+				if(cu.getR1Value()!=0) {
+					userInterface.setPCText(ADD);
+					cu.setPCValue(ADD);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			case 2:
+				if(cu.getR2Value()!=0) {
+					userInterface.setPCText(ADD);
+					cu.setPCValue(ADD);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			case 3:
+				if(cu.getR3Value()!=0) {
+					userInterface.setPCText(ADD);
+					cu.setPCValue(ADD);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			default:
+				break;
+			}
+			
+		}
+		
+	}
+	
+	public void JMA(int X,int I,int address) {
+		if(I==0) {
+			userInterface.setPCText(address);
+			cu.setPCValue(address);
+		}
+		else {
+			int IX=0;
+			if(X==1) {
+				IX = cu.getX1Value();
+			}
+			else if(X==2) {
+				IX = cu.getX2Value();
+			}
+			else {
+				IX = cu.getX3Value();
+			}
+			int ADD = IX + address;
+			userInterface.setPCText(ADD);
+			cu.setPCValue(ADD);	
+		}	
+	}
+	
+	public void JSR(int X,int I,int address) {
+		userInterface.setR3Text(cu.getPCValue());
+		cu.setR3Value(cu.getPCValue()+1);
+		if(I==0) {
+			userInterface.setPCText(address);
+			cu.setPCValue(address);
+		}
+		else {
+			int IX=0;
+			if(X==1) {
+				IX = cu.getX1Value();
+			}
+			else if(X==2) {
+				IX = cu.getX2Value();
+			}
+			else {
+				IX = cu.getX3Value();
+			}
+			int ADD = IX + address;
+			userInterface.setPCText(ADD);
+			cu.setPCValue(ADD);	
+		}
+	}
+	public void JCC(int CC,int X,int I,int address) {
+		int ccBit = 0;
+		int ADD = address;
+		if(CC == 0) {
+			ccBit = cu.getCCValue()/1000;
+		}
+		else if(CC == 1) {
+			ccBit = (cu.getCCValue()%1000)/100;
+		}
+		else if(CC == 2) {
+			ccBit = ((cu.getCCValue()%1000)%100)/10;
+		}
+		else if(CC == 3) {
+			ccBit = ((cu.getCCValue()%1000)%100)%10;
+		}
+		switch (I) {
+		case 0:
+			break;
+		case 1:
+			switch (X) {
+			case 1:
+				ADD += cu.getX1Value();
+				break;
+			case 2:
+				ADD += cu.getX2Value();
+				break;
+			case 3:
+				ADD += cu.getX3Value();
+				break;
+			default:
+				break;
+			}
+			break;
+
+		default:
+			break;
+		}
+		switch (ccBit) {
+		case 1:
+			userInterface.setPCText(ADD);
+			cu.setPCValue(ADD);
+			break;
+		case 0:
+			userInterface.setPCText(cu.getPCValue());
+			cu.setPCValue(cu.getPCValue()+1);
+		default:
+			break;
+		}
+	}
 }
 	private void SMR(int R, int X, int I, int address) {
 		// TODO Auto-generated method stub
