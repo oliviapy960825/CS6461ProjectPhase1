@@ -124,10 +124,12 @@ public class CU {
 	public int getPCValue(){
 		return this.PC.getValue();
 	}
+
 	public void setCCValue(int address) {
 		this.CC.setccValue(address);
 	}
 	public int getCCValue(){
 		return this.CC.getccValue();
 	}
+
 }

@@ -397,7 +397,6 @@ public class ALU {
 		}
 		cu.storeIntoMemory(address, DataIX);
 	}
-	
 	public void JZ(int R,int X,int I,int address) {
 		if(I==0) {
 			switch (R) {
