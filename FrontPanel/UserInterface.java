@@ -31,6 +31,7 @@ import CPUAttributes.MemoryBufferRegister;
 import CPUAttributes.ProgramCounter;
 import InstructionProcessing.Decoding;
 import InstructionProcessing.Encoding;
+import InstructionProcessing.MachineFaultException;
 import Main.Main;
 import Memory.Memory;
 @SuppressWarnings("serial")
@@ -471,7 +472,12 @@ public class UserInterface extends JFrame {
 				String insAddress = txtFieldPC.getText();
 				//System.out.println(insAddress);
 				int iAdd = Integer.parseInt(insAddress,2);
-				alu.iExec(iAdd);
+				try {
+					alu.iExec(iAdd);
+				} catch (MachineFaultException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -513,7 +519,12 @@ public class UserInterface extends JFrame {
 		    	int iAddress = Integer.parseInt(insAddress,2);
 		    	Boolean status = true;
 		    	while (status) {
-					status = alu.iExec(iAddress);
+					try {
+						status = alu.iExec(iAddress);
+					} catch (MachineFaultException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					iAddress++;
 				}
 			}

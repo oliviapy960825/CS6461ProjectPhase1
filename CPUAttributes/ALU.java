@@ -1,17 +1,19 @@
 package CPUAttributes;
 
 import FrontPanel.UserInterface;
+import InstructionProcessing.EffectiveAddress;
 import InstructionProcessing.Decoding;
 import InstructionProcessing.Encoding;
+import InstructionProcessing.MachineFaultException;
 
 public class ALU {
 	private static CU cu=new CU();
 	private static UserInterface userInterface=new UserInterface();
-	
+	private static EffectiveAddress EA=new EffectiveAddress();
 	public void setUserInterface(UserInterface userInterface){
 		this.userInterface=userInterface;
 	}
-	public Boolean iExec(int Address) {
+	public Boolean iExec(int Address) throws MachineFaultException {
 		//This function is for executing the instructions of user input
 		//System.out.print(Address);
 		Boolean status = true;
@@ -34,7 +36,7 @@ public class ALU {
 		//txtFieldPC.setText(String.valueOf(PC.getValue()));
 		cu.setPCValue(cu.getPCValue());
 		userInterface.updateLogText("\n PC incremented by 1");
-		int R,X,I,address;
+		int R,X,I,address,RX,RY;
 		switch (instructionDec[0]) {
 		case 1:
 			R = instructionDec[1];
@@ -107,6 +109,35 @@ public class ALU {
 		case 00:
 			status = false;
 			return status;
+		case 04:
+			R = instructionDec[1];
+			X = instructionDec[2];
+			I = instructionDec[3];
+			address = instructionDec[4];
+			AMR(R,X,I,address);
+			break;
+		case 05:
+			R = instructionDec[1];
+			X = instructionDec[2];
+			I = instructionDec[3];
+			address = instructionDec[4];
+			SMR(R,X,I,address);
+			break;
+		case 06:
+			R = instructionDec[1];
+			address = instructionDec[2];
+			AIR(R,address);
+			break;
+		case 07:
+			R = instructionDec[1];
+			address = instructionDec[2];
+			SIR(R,address);
+			break;
+		case 20:
+			RX = instructionDec[1];
+			RY = instructionDec[2];
+			MLT(RX,RY);
+			break;
 		default:
 			break;
 		}
@@ -390,13 +421,41 @@ public class ALU {
 			userInterface.setMBRText(DataIX);
 			//txtFieldMBR.setText(Integer.toString(DataIX));
 			cu.setMBRValue(DataIX);
-			
 			break;
 		default:
 			break;
 		}
 		cu.storeIntoMemory(address, DataIX);
 	}
+
+	private void AMR(int R,int X,int I,int address){
+		int currentRegisterValue;
+		int EAValue;
+		switch(R){
+		case 0:
+			currentRegisterValue=cu.getR0Value();
+			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			cu.setR0Value(currentRegisterValue+EAValue);
+			break;
+		case 1:
+			currentRegisterValue=cu.getR1Value();
+			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			cu.setR1Value(currentRegisterValue+EAValue);
+			break;
+		case 2:
+			currentRegisterValue=cu.getR2Value();
+			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			cu.setR2Value(currentRegisterValue+EAValue);
+			break;
+		case 3:
+			currentRegisterValue=cu.getR3Value();
+			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			cu.setR3Value(currentRegisterValue+EAValue);
+			break;
+		default:
+			break;
+		}
+
 	public void JZ(int R,int X,int I,int address) {
 		if(I==0) {
 			switch (R) {
@@ -703,6 +762,208 @@ public class ALU {
 		case 0:
 			userInterface.setPCText(cu.getPCValue());
 			cu.setPCValue(cu.getPCValue()+1);
+		default:
+			break;
+		}
+	}
+}
+	private void SMR(int R, int X, int I, int address) {
+		// TODO Auto-generated method stub
+		int currentRegisterValue;
+		int EAValue;
+		switch(R){
+		case 0:
+			currentRegisterValue=cu.getR0Value();
+			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			cu.setR0Value(currentRegisterValue-EAValue);
+			break;
+		case 1:
+			currentRegisterValue=cu.getR1Value();
+			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			cu.setR1Value(currentRegisterValue-EAValue);
+			break;
+		case 2:
+			currentRegisterValue=cu.getR2Value();
+			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			cu.setR2Value(currentRegisterValue-EAValue);
+			break;
+		case 3:
+			currentRegisterValue=cu.getR3Value();
+			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			cu.setR3Value(currentRegisterValue-EAValue);
+			break;
+		default:
+			break;
+		}
+		
+	}
+	private void AIR(int R, int immed){
+		if(immed!=0){
+			int currentRegisterValue;
+			switch(R){
+				case 0:
+					currentRegisterValue=cu.getR0Value();
+					if(currentRegisterValue==0){
+						cu.setR0Value(immed);
+					}
+					else{
+					cu.setR0Value(currentRegisterValue+immed);
+					}
+					break;
+				case 1:
+					currentRegisterValue=cu.getR1Value();
+					if(currentRegisterValue==0){
+						cu.setR1Value(immed);
+					}
+					else{
+					cu.setR1Value(currentRegisterValue+immed);
+					}
+					break;
+				case 2:
+					currentRegisterValue=cu.getR2Value();
+					if(currentRegisterValue==0){
+						cu.setR2Value(immed);
+					}
+					else{
+					cu.setR2Value(currentRegisterValue+immed);
+					}
+					break;
+				case 3:
+					currentRegisterValue=cu.getR3Value();
+					if(currentRegisterValue==0){
+						cu.setR3Value(immed);
+					}
+					else{
+					cu.setR3Value(currentRegisterValue+immed);
+					}
+					break;
+				default:
+					break;
+			}
+		}
+	}
+	private void SIR(int R, int immed){
+		if(immed!=0){
+			int currentRegisterValue;
+			switch(R){
+				case 0:
+					currentRegisterValue=cu.getR0Value();
+					if(currentRegisterValue==0){
+						cu.setR0Value(-immed);
+					}
+					else{
+					cu.setR0Value(currentRegisterValue-immed);
+					}
+					break;
+				case 1:
+					currentRegisterValue=cu.getR1Value();
+					if(currentRegisterValue==0){
+						cu.setR1Value(-immed);
+					}
+					else{
+					cu.setR1Value(currentRegisterValue-immed);
+					}
+					break;
+				case 2:
+					currentRegisterValue=cu.getR2Value();
+					if(currentRegisterValue==0){
+						cu.setR2Value(-immed);
+					}
+					else{
+					cu.setR2Value(currentRegisterValue-immed);
+					}
+					break;
+				case 3:
+					currentRegisterValue=cu.getR3Value();
+					if(currentRegisterValue==0){
+						cu.setR3Value(-immed);
+					}
+					else{
+					cu.setR3Value(currentRegisterValue-immed);
+					}
+					break;
+				default:
+					break;
+			}
+		}
+	}
+	private void MLT(int RX, int RY) throws MachineFaultException{
+		boolean overflow=false;
+		int RXValue;
+		int RYValue;
+		int RX1Value;
+		String temp;
+		switch(RX){
+		case 0:
+			RXValue=cu.getR0Value();
+			switch(RY){
+			case 0:
+				RYValue=cu.getR0Value();//can RX & RY both be R0 or R2?
+				//RX contains the high order bits of the result while RX+1 contains the low order bits of the results
+				
+				temp=Integer.toBinaryString(RXValue*RYValue);
+				//Integer.toBinaryString(decInstruction)
+				if(temp.length()>32){
+					overflow=true;
+					throw new MachineFaultException("Overflow!");
+				}
+				else{
+					RXValue=Integer.parseInt(temp.substring(0, 16),2);
+					RX1Value=Integer.parseInt(temp.substring(16), 2);
+				}
+				//how many bits should be stored in RX and RX+1 respectively when there's overflow?
+				break;
+			case 2:
+				RYValue=cu.getR2Value();
+				temp=Integer.toBinaryString(RXValue*RYValue);
+				if(temp.length()>32){
+					overflow=true;
+					throw new MachineFaultException("Overflow!");
+				}
+				else{
+					RXValue=Integer.parseInt(temp.substring(0, 16),2);
+					RX1Value=Integer.parseInt(temp.substring(16), 2);
+				}
+				break;
+			default:
+				break;
+			}
+			break;
+		case 2:
+			RXValue=cu.getR2Value();
+			switch(RY){
+			case 0:
+				RYValue=cu.getR0Value();//can RX & RY both be R0 or R2?
+				//RX contains the high order bits of the result while RX+1 contains the low order bits of the results
+				
+				temp=Integer.toBinaryString(RXValue*RYValue);
+				//Integer.toBinaryString(decInstruction)
+				if(temp.length()!=32){
+					overflow=true;
+					throw new MachineFaultException("Overflow!");
+				}
+				else{
+					RXValue=Integer.parseInt(temp.substring(0, 16),2);
+					RX1Value=Integer.parseInt(temp.substring(16), 2);
+				}
+				//how many bits should be stored in RX and RX+1 respectively when there's overflow?
+				break;
+			case 2:
+				RYValue=cu.getR2Value();
+				temp=Integer.toBinaryString(RXValue*RYValue);
+				if(temp.length()!=32){
+					overflow=true;
+					throw new MachineFaultException("Overflow!");
+				}
+				else{
+					RXValue=Integer.parseInt(temp.substring(0, 16),2);
+					RX1Value=Integer.parseInt(temp.substring(16), 2);
+				}
+				break;
+			default:
+				break;
+			}
+			break;
 		default:
 			break;
 		}
