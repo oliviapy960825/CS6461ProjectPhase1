@@ -1,7 +1,6 @@
 package CPUAttributes;
 
 import FrontPanel.UserInterface;
-import InstructionProcessing.EffectiveAddress;
 import InstructionProcessing.Decoding;
 import InstructionProcessing.Encoding;
 import InstructionProcessing.MachineFaultException;
@@ -9,9 +8,52 @@ import InstructionProcessing.MachineFaultException;
 public class ALU {
 	private static CU cu=new CU();
 	private static UserInterface userInterface=new UserInterface();
-	private static EffectiveAddress EA=new EffectiveAddress();
 	public void setUserInterface(UserInterface userInterface){
 		this.userInterface=userInterface;
+	}
+	public int calculateEA(int X,int I,int address){
+		int EA=0;
+		switch(I){
+		case 0:
+			switch(X){
+			case 0:
+				EA=address;
+				break;
+			case 1:
+				EA=cu.getX1Value()+address;
+				break;
+			case 2:
+				EA=cu.getX2Value()+address;
+				break;
+			case 3:
+				EA=cu.getX3Value()+address;
+				break;
+			default:
+				break;
+			}
+			break;
+		case 1:
+			switch(X){
+			case 0:
+				EA=cu.fetchFromMemory(address);
+				break;
+			case 1:
+				EA=cu.fetchFromMemory(cu.getX1Value()+address);
+				break;
+			case 2:
+				EA=cu.fetchFromMemory(cu.getX2Value()+address);
+				break;
+			case 3:
+				EA=cu.fetchFromMemory(cu.getX3Value()+address);
+				break;
+			default:
+				break;
+			}
+			break;
+		default:
+			break;
+		}
+		return EA;
 	}
 	public Boolean iExec(int Address) throws MachineFaultException {
 		//This function is for executing the instructions of user input
@@ -434,29 +476,30 @@ public class ALU {
 		switch(R){
 		case 0:
 			currentRegisterValue=cu.getR0Value();
-			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			cu.setR0Value(currentRegisterValue+EAValue);
 			break;
 		case 1:
 			currentRegisterValue=cu.getR1Value();
-			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			cu.setR1Value(currentRegisterValue+EAValue);
 			break;
 		case 2:
 			currentRegisterValue=cu.getR2Value();
-			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			cu.setR2Value(currentRegisterValue+EAValue);
 			break;
 		case 3:
 			currentRegisterValue=cu.getR3Value();
-			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			cu.setR3Value(currentRegisterValue+EAValue);
 			break;
 		default:
 			break;
 		}
+	}
 
-	public void JZ(int R,int X,int I,int address) {
+	private void JZ (int R, int X, int I, int address){
 		if(I==0) {
 			switch (R) {
 			case 0:
@@ -717,7 +760,7 @@ public class ALU {
 			cu.setPCValue(ADD);	
 		}
 	}
-	public void JCC(int CC,int X,int I,int address) {
+	private void JCC(int CC,int X,int I,int address) {
 		int ccBit = 0;
 		int ADD = address;
 		if(CC == 0) {
@@ -766,7 +809,6 @@ public class ALU {
 			break;
 		}
 	}
-}
 	private void SMR(int R, int X, int I, int address) {
 		// TODO Auto-generated method stub
 		int currentRegisterValue;
@@ -774,22 +816,22 @@ public class ALU {
 		switch(R){
 		case 0:
 			currentRegisterValue=cu.getR0Value();
-			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			cu.setR0Value(currentRegisterValue-EAValue);
 			break;
 		case 1:
 			currentRegisterValue=cu.getR1Value();
-			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			cu.setR1Value(currentRegisterValue-EAValue);
 			break;
 		case 2:
 			currentRegisterValue=cu.getR2Value();
-			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			cu.setR2Value(currentRegisterValue-EAValue);
 			break;
 		case 3:
 			currentRegisterValue=cu.getR3Value();
-			EAValue=cu.fetchFromMemory(EA.calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			cu.setR3Value(currentRegisterValue-EAValue);
 			break;
 		default:
