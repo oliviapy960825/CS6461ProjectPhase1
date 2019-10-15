@@ -471,28 +471,42 @@ public class ALU {
 	}
 
 	private void AMR(int R,int X,int I,int address){
+	
 		int currentRegisterValue;
+		
 		int EAValue;
 		switch(R){
 		case 0:
 			currentRegisterValue=cu.getR0Value();
+			userInterface.setMARText(calculateEA(X,I,address));
 			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
+			userInterface.setMBRText(EAValue);
 			cu.setR0Value(currentRegisterValue+EAValue);
+			userInterface.setR0Text(currentRegisterValue+EAValue);
 			break;
 		case 1:
 			currentRegisterValue=cu.getR1Value();
+			userInterface.setMARText(calculateEA(X,I,address));
 			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
+			userInterface.setMBRText(EAValue);
 			cu.setR1Value(currentRegisterValue+EAValue);
+			userInterface.setR1Text(currentRegisterValue+EAValue);
 			break;
 		case 2:
 			currentRegisterValue=cu.getR2Value();
+			userInterface.setMARText(calculateEA(X,I,address));
 			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
+			userInterface.setMBRText(EAValue);
 			cu.setR2Value(currentRegisterValue+EAValue);
+			userInterface.setR2Text(currentRegisterValue+EAValue);
 			break;
 		case 3:
 			currentRegisterValue=cu.getR3Value();
+			userInterface.setMARText(calculateEA(X,I,address));
 			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
+			userInterface.setMBRText(EAValue);
 			cu.setR3Value(currentRegisterValue+EAValue);
+			userInterface.setR3Text(currentRegisterValue+EAValue);
 			break;
 		default:
 			break;
@@ -816,23 +830,35 @@ public class ALU {
 		switch(R){
 		case 0:
 			currentRegisterValue=cu.getR0Value();
+			userInterface.setMARText(calculateEA(X,I,address));
 			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
+			userInterface.setMBRText(EAValue);
 			cu.setR0Value(currentRegisterValue-EAValue);
+			userInterface.setR0Text(currentRegisterValue+EAValue);
 			break;
 		case 1:
 			currentRegisterValue=cu.getR1Value();
+			userInterface.setMARText(calculateEA(X,I,address));
 			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
+			userInterface.setMBRText(EAValue);
 			cu.setR1Value(currentRegisterValue-EAValue);
+			userInterface.setR1Text(currentRegisterValue+EAValue);
 			break;
 		case 2:
 			currentRegisterValue=cu.getR2Value();
+			userInterface.setMARText(calculateEA(X,I,address));
 			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
+			userInterface.setMBRText(EAValue);
 			cu.setR2Value(currentRegisterValue-EAValue);
+			userInterface.setR2Text(currentRegisterValue+EAValue);
 			break;
 		case 3:
 			currentRegisterValue=cu.getR3Value();
+			userInterface.setMARText(calculateEA(X,I,address));
 			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
+			userInterface.setMBRText(EAValue);
 			cu.setR3Value(currentRegisterValue-EAValue);
+			userInterface.setR3Text(currentRegisterValue+EAValue);
 			break;
 		default:
 			break;
@@ -847,36 +873,44 @@ public class ALU {
 					currentRegisterValue=cu.getR0Value();
 					if(currentRegisterValue==0){
 						cu.setR0Value(immed);
+						userInterface.setR0Text(immed);
 					}
 					else{
 					cu.setR0Value(currentRegisterValue+immed);
+					userInterface.setR0Text(currentRegisterValue+immed);
 					}
 					break;
 				case 1:
 					currentRegisterValue=cu.getR1Value();
 					if(currentRegisterValue==0){
 						cu.setR1Value(immed);
+						userInterface.setR1Text(immed);
 					}
 					else{
 					cu.setR1Value(currentRegisterValue+immed);
+					userInterface.setR1Text(currentRegisterValue+immed);
 					}
 					break;
 				case 2:
 					currentRegisterValue=cu.getR2Value();
 					if(currentRegisterValue==0){
 						cu.setR2Value(immed);
+						userInterface.setR2Text(immed);
 					}
 					else{
 					cu.setR2Value(currentRegisterValue+immed);
+					userInterface.setR2Text(currentRegisterValue+immed);
 					}
 					break;
 				case 3:
 					currentRegisterValue=cu.getR3Value();
 					if(currentRegisterValue==0){
 						cu.setR3Value(immed);
+						userInterface.setR3Text(immed);
 					}
 					else{
 					cu.setR3Value(currentRegisterValue+immed);
+					userInterface.setR3Text(currentRegisterValue+immed);
 					}
 					break;
 				default:
@@ -892,36 +926,44 @@ public class ALU {
 					currentRegisterValue=cu.getR0Value();
 					if(currentRegisterValue==0){
 						cu.setR0Value(-immed);
+						userInterface.setR0Text(-immed);
 					}
 					else{
 					cu.setR0Value(currentRegisterValue-immed);
+					userInterface.setR0Text(currentRegisterValue-immed);
 					}
 					break;
 				case 1:
 					currentRegisterValue=cu.getR1Value();
 					if(currentRegisterValue==0){
 						cu.setR1Value(-immed);
+						userInterface.setR1Text(-immed);
 					}
 					else{
 					cu.setR1Value(currentRegisterValue-immed);
+					userInterface.setR1Text(currentRegisterValue-immed);
 					}
 					break;
 				case 2:
 					currentRegisterValue=cu.getR2Value();
 					if(currentRegisterValue==0){
 						cu.setR2Value(-immed);
+						userInterface.setR2Text(-immed);
 					}
 					else{
 					cu.setR2Value(currentRegisterValue-immed);
+					userInterface.setR2Text(currentRegisterValue-immed);
 					}
 					break;
 				case 3:
 					currentRegisterValue=cu.getR3Value();
 					if(currentRegisterValue==0){
 						cu.setR3Value(-immed);
+						userInterface.setR3Text(-immed);
 					}
 					else{
 					cu.setR3Value(currentRegisterValue-immed);
+					userInterface.setR3Text(currentRegisterValue-immed);
 					}
 					break;
 				default:
@@ -951,7 +993,11 @@ public class ALU {
 				}
 				else{
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
+					cu.setR0Value(RXValue);
+					userInterface.setR0Text(RXValue);
 					RX1Value=Integer.parseInt(temp.substring(16), 2);
+					cu.setR1Value(RX1Value);
+					userInterface.setR1Text(RX1Value);
 				}
 				//how many bits should be stored in RX and RX+1 respectively when there's overflow?
 				break;
@@ -964,7 +1010,11 @@ public class ALU {
 				}
 				else{
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
+					cu.setR0Value(RXValue);
+					userInterface.setR0Text(RXValue);
 					RX1Value=Integer.parseInt(temp.substring(16), 2);
+					cu.setR1Value(RX1Value);
+					userInterface.setR1Text(RX1Value);
 				}
 				break;
 			default:
@@ -986,7 +1036,11 @@ public class ALU {
 				}
 				else{
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
+					cu.setR2Value(RXValue);
+					userInterface.setR2Text(RXValue);
 					RX1Value=Integer.parseInt(temp.substring(16), 2);
+					cu.setR3Value(RX1Value);
+					userInterface.setR3Text(RX1Value);
 				}
 				//how many bits should be stored in RX and RX+1 respectively when there's overflow?
 				break;
@@ -999,7 +1053,11 @@ public class ALU {
 				}
 				else{
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
+					cu.setR2Value(RXValue);
+					userInterface.setR2Text(RXValue);
 					RX1Value=Integer.parseInt(temp.substring(16), 2);
+					cu.setR3Value(RX1Value);
+					userInterface.setR3Text(RX1Value);
 				}
 				break;
 			default:
