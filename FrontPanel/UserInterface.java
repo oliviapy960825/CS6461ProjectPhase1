@@ -22,6 +22,7 @@ import javax.swing.border.EmptyBorder;
 
 import CPUAttributes.ALU;
 import CPUAttributes.CU;
+import CPUAttributes.Cache;
 import CPUAttributes.ConditionCodeRegister;
 import CPUAttributes.GeneralPurposeRegister;
 import CPUAttributes.IndexRegister;
@@ -61,6 +62,7 @@ public class UserInterface extends JFrame {
 	private static CU cu=new CU();
 	private static ALU alu=new ALU();
 	private static Memory memory=new Memory();
+	private static Cache cache=new Cache();
 
 	
 	public UserInterface() {
@@ -68,6 +70,8 @@ public class UserInterface extends JFrame {
 		cu.setUserInterface(this);
 		alu=new ALU();
 		alu.setUserInterface(this);
+		cache=new Cache();
+		cache.setUserInterface(this);
 		//memory=new Memory();
 		
 		//Constructor, call initialize function to initialize the user interface
