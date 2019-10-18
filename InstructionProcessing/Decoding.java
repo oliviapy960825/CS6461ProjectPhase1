@@ -126,6 +126,30 @@ public class Decoding {
 				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
 				instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
 				break;
+			case "10101":
+				instruction[0]=21;
+				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+				instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
+				break;
+			case "10110":
+				instruction[0]=22;
+				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+				instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
+				break;
+			case "10111":
+				instruction[0]=23;
+				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+				instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
+				break;
+			case "11000":
+				instruction[0]=24;
+				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+				instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
+				break;
+			case "11001":
+				instruction[0]=25;
+				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+				break;
 			default:
 				break;
 			}

@@ -633,6 +633,165 @@ public class Encoding {
 			break;
 		}
 		break;
+	case "DVD"://DVD rx, ry
+		insFunction = "10101";
+		switch (instruction.substring(6, 8)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		switch (instruction.substring(8, 10)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		break;
+	case "TRR"://TRR rx, ry
+		insFunction = "10110";
+		switch (instruction.substring(6, 8)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		switch (instruction.substring(8, 10)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		break;
+	case "ORR"://ORR rx, ry
+		insFunction = "10111";
+		switch (instruction.substring(6, 8)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		switch (instruction.substring(8, 10)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		break;
+	case "AND"://AND rx, ry
+		insFunction = "11000";
+		switch (instruction.substring(6, 8)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		switch (instruction.substring(8, 10)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		break;	
+	case "NOT"://NOT rx
+		insFunction = "11001";
+		switch (instruction.substring(6, 8)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		break;
 	default:
 		break;
 	}
