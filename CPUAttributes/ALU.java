@@ -180,6 +180,30 @@ public class ALU {
 			RY = instructionDec[2];
 			MLT(RX,RY);
 			break;
+		case 21:
+			RX = instructionDec[1];
+			RY = instructionDec[2];
+			DVD(RX,RY);
+			break;
+		case 22:
+			RX = instructionDec[1];
+			RY = instructionDec[2];
+			TRR(RX,RY);
+			break;
+		case 23:
+			RX = instructionDec[1];
+			RY = instructionDec[2];
+			AND(RX,RY);
+			break;
+		case 24:
+			RX = instructionDec[1];
+			RY = instructionDec[2];
+			ORR(RX,RY);
+			break;
+		case 25:
+			RX = instructionDec[1];
+			NOT(RX);
+			break;	
 		default:
 			break;
 		}
@@ -1009,45 +1033,43 @@ public class ALU {
 		}
 	}
 		
-
-	
-			public void DVD(int rx,int ry) {
-				userInterface.setMARText(rx);
-				cu.setMARValue(rx);
-				userInterface.updateLogText("\nMAR ", rx);
-				int data;
+	public void DVD(int rx,int ry) {
+				int data=0;
 				switch(rx) {
-				case 1:
+				case 0:
 					data=cu.getR0Value();
 					break;
-				case 2:
+				case 1:
 					data=cu.getR1Value();
 					break;
-				case 3:
+				case 2:
 					data=cu.getR2Value();
 					break;
+				case 3:
+					data=cu.getR3Value();
+					break;
 				default:
-					data=0;
 					break;
 				}
-				userInterface.setMBRText(data);
-				cu.setMBRValue(data);
-				userInterface.updateLogText("\nMBR: ",data);
-				int temp;
+				userInterface.updateLogText("\nRx ", data);
+				int temp=0;
 				switch(ry){
-				case 1:
+				case 0:
 					temp=cu.getR0Value();
 					break;
-				case 2:
+				case 1:
 					temp=cu.getR1Value();
 					break;
-				case 3:
+				case 2:
 					temp= cu.getR2Value();
 					break;
+				case 3:
+					temp=cu.getR3Value();
+					break;
 				default:
-					temp=0;
 					break;
 				}
+				userInterface.updateLogText("\nRy ", temp);
 				int quotient = data/temp;
 				int reminder = data%temp;
 				userInterface.setR0Text(quotient);
@@ -1055,43 +1077,43 @@ public class ALU {
 				userInterface.updateLogText("\n R0 : ",quotient);
 				userInterface.updateLogText("\n R1 : ",reminder);
 			}
-			public void TRR(int rx, int ry) {
-				userInterface.setMARText(rx);
-				cu.setMARValue(rx);
-				userInterface.updateLogText("\nMAR ", rx);
-				int data;
+	public void TRR(int rx, int ry) {
+				int data=0;
 				switch(rx) {
-				case 1:
+				case 0:
 					data=cu.getR0Value();
 					break;
-				case 2:
+				case 1:
 					data=cu.getR1Value();
 					break;
-				case 3:
+				case 2:
 					data=cu.getR2Value();
 					break;
+				case 3:
+					data=cu.getR3Value();
+					break;
 				default:
-					data=0;
 					break;
 				}
-				userInterface.setMBRText(data);
-				cu.setMBRValue(data);
-				userInterface.updateLogText("\nMBR: ",data);
-				int temp;
+				userInterface.updateLogText("\nRx ", data);
+				int temp=0;
 				switch (ry) {
-				case 1:
+				case 0:
 					temp=cu.getR0Value();
 					break;
-				case 2:
+				case 1:
 					temp=cu.getR1Value();
 					break;
-				case 3:
+				case 2:
 					temp=cu.getR2Value();
 					break;
+				case 3:
+					temp=cu.getR3Value();
+					break;
 				default:
-					temp=0;
 					break;
 				}
+				userInterface.updateLogText("\nRy ", temp);
 				if(data==temp) {
 					ConditionCodeRegister.setccValue(1);
 					userInterface.updateLogText("\nCC: True ");
@@ -1101,112 +1123,176 @@ public class ALU {
 					userInterface.updateLogText("\nCC:False");
 				}
 			}
-			public void ORR(int rx, int ry) {
-				userInterface.setMARText(rx);
-				cu.setMARValue(rx);
-				userInterface.updateLogText("\nMAR ", rx);
-				int data;
+	public void ORR(int rx, int ry) {
+				int data=0;
 				switch(rx) {
-				case 1:
+				case 0:
 					data=cu.getR0Value();
 					break;
-				case 2:
+				case 1:
 					data=cu.getR1Value();
 					break;
-				case 3:
+				case 2:
 					data=cu.getR2Value();
 					break;
+				case 3:
+					data=cu.getR3Value();
+					break;
 				default:
-					data=0;
 					break;
 				}
-				userInterface.setMBRText(data);
-				cu.setMBRValue(data);
-				userInterface.updateLogText("\nMBR: ",data);
-				int temp;
+				userInterface.updateLogText("\nRx ", rx);
+				String s1=Integer.toBinaryString(data);
+				int temp=0;
 				switch (ry) {
-				case 1:
+				case 0:
 					temp=cu.getR0Value();
 					break;
-				case 2:
+				case 1:
 					temp=cu.getR1Value();
 					break;
-				case 3:
+				case 2:
 					temp=cu.getR2Value();
 					break;
+				case 3:
+					temp=cu.getR3Value();
+					break;
 				default:
-					temp=0;
 					break;
 				}
-				int or = data|temp;
-				userInterface.setR0Text(or);
-				userInterface.updateLogText("\n R0 : ",or);
+				userInterface.updateLogText("\nRy: ",temp);
+				String s2= Integer.toBinaryString(temp);
+				int len= Math.max(s1.length(),s2.length());
+				if(s1.length() < s2.length()) {
+					for(int i=0;i<(s2.length()-s1.length());i++) {
+						s1= "0"+s1;
+					}
+				}
+				else if(s2.length() < s1.length()) {
+					for(int i=0;i<(s1.length()-s2.length());i++) {
+						s2= "0"+s2;
+					}
+				}
+				char[] or= { };
+				for(int i=0;i<len;i++) {
+					char[] s3 =s1.toCharArray();
+					char[] s4= s2.toCharArray();
+					if(s3[i]=='1' || s4[i]=='1') {
+						or[i]=1; 
+					}
+					else
+						or[i]=0;
+				}
+				int ans= Integer.parseInt(new String(or));
+				userInterface.setR0Text(ans);
+				userInterface.updateLogText("\n R0 : ",ans);
 			}
-			public void AND(int rx, int ry) {
-				userInterface.setMARText(rx);
-				cu.setMARValue(rx);
+	public void AND(int rx, int ry) {
+				int data=0;
+				switch(rx) {
+				case 0:
+					data=cu.getR0Value();
+					break;
+				case 1:
+					data=cu.getR1Value();
+					break;
+				case 2:
+					data=cu.getR2Value();
+					break;
+				case 3:
+					data=cu.getR3Value();
+					break;
+				default:
+					break;
+				}
+				userInterface.updateLogText("\nRx ", data);
+				String s1=Integer.toBinaryString(data);
+				int temp=0;
+				switch (ry) {
+				case 0:
+					temp=cu.getR0Value();
+					break;
+				case 1:
+					temp=cu.getR1Value();
+					break;
+				case 2:
+					temp=cu.getR2Value();
+					break;
+				case 3:
+					temp=cu.getR3Value();
+					break;
+				default:
+					break;
+				}
+				userInterface.updateLogText("\nRy: ",temp);
+				String s2= Integer.toBinaryString(temp);
+				int len= Math.max(s1.length(),s2.length());
+				if(s1.length() < s2.length()) {
+					for(int i=0;i<(s2.length()-s1.length());i++) {
+						s1= "0"+s1;
+					}
+				}
+				else if(s2.length() < s1.length()) {
+					for(int i=0;i<(s1.length()-s2.length());i++) {
+						s2= "0"+s2;
+					}
+				}
+				char[] or= { };
+				for(int i=0;i<len;i++) {
+					char[] s3 =s1.toCharArray();
+					char[] s4= s2.toCharArray();
+					if(s3[i]=='0' || s4[i]=='0') {
+						or[i]=0; 
+					}
+					else
+						or[i]=1;
+				}
+				int and= Integer.parseInt(new String(or));
+				userInterface.setR0Text(and);
+				userInterface.updateLogText("\n R0 : ",and);
+				System.out.print(and);
+			}
+
+	public void main(String args) {
+		AND(2,3);
+		
+	}
+	public void NOT(int rx) {
 				userInterface.updateLogText("\nMAR ", rx);
 				int data=0;
 				switch(rx) {
-				case 1:
+				case 0:
 					data=cu.getR0Value();
 					break;
-				case 2:
+				case 1:
 					data=cu.getR1Value();
 					break;
-				case 3:
+				case 2:
 					data=cu.getR2Value();
 					break;
-				default:
-					data=0;
-					break;
-				}
-				userInterface.setMBRText(data);
-				cu.setMBRValue(data);
-				userInterface.updateLogText("\nMBR: ",data);
-				int temp;
-				switch (ry) {
-				case 1:
-					temp=cu.getR0Value();
-					break;
-				case 2:
-					temp=cu.getR1Value();
-					break;
 				case 3:
-					temp=cu.getR2Value();
-					break;
-				default:
-					temp=0;
-					break;
-				}
-				int and = data&temp;
-				userInterface.setR0Text(and);
-				userInterface.updateLogText("\n R0 : ",and);
-			}
-			public void NOT(int rx) {
-				userInterface.setMARText(rx);
-				cu.setMARValue(rx);
-				userInterface.updateLogText("\nMAR ", rx);
-				int data;
-				switch(rx) {
-				case 1:
-					data=cu.getR0Value();
-					break;
-				case 2:
-					data=cu.getR1Value();
-					break;
-				case 3:
-					data=cu.getR2Value();
+					data=cu.getR3Value();
 					break;
 				default:
 					break;
 				}
-				userInterface.setMBRText(data);
-				cu.setMBRValue(data);
-				userInterface.updateLogText("\nMBR: ",data);
-				int not;
-				int not=!(data);
-				userInterface.setR0Text(not);
-				userInterface.updateLogText("\n R0 : ",not);
-			}
+				userInterface.updateLogText("\nRx ", data);
+				String s1=Integer.toBinaryString(data);
+				int len=s1.length();
+				char[] not= { };
+				for(int i=0;i<len;i++) {
+					char[] s2 =s1.toCharArray();
+					if(s2[i]=='0') {
+						not[i]='1';
+						break;
+					}
+					else if(s2[i]=='1') {
+						not[i]='0';
+					}		
+				}
+				int ans= Integer.parseInt(new String(not));
+				userInterface.setR0Text(ans);
+				userInterface.updateLogText("\n R0 : ",ans);
+		
+}
 }
