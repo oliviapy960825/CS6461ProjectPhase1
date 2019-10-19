@@ -1253,10 +1253,6 @@ public class ALU {
 				System.out.print(and);
 			}
 
-	public void main(String args) {
-		AND(2,3);
-		
-	}
 	public void NOT(int rx) {
 				userInterface.updateLogText("\nMAR ", rx);
 				int data=0;
