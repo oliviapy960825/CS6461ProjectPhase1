@@ -850,13 +850,14 @@ public class ALU {
 	}
 	public void MLT(int RX, int RY) throws MachineFaultException{
 		boolean overflow=false;
-		int RXValue;
-		int RYValue;
-		int RX1Value;
+		int RXValue=0;
+		int RYValue=0;
+		int RX1Value=0;
 		String temp;
 		switch(RX){
 		case 0:
 			RXValue=cu.getR0Value();
+			System.out.println(RXValue);
 			switch(RY){
 			case 0:
 				RYValue=cu.getR0Value();//can RX & RY both be R0 or R2?
@@ -871,9 +872,11 @@ public class ALU {
 				else{
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
 					cu.setR0Value(RXValue);
+					System.out.println(RXValue);
 					userInterface.setR0Text(RXValue);
 					RX1Value=Integer.parseInt(temp.substring(16), 2);
 					cu.setR1Value(RX1Value);
+					System.out.println(RX1Value);
 					userInterface.setR1Text(RX1Value);
 				}
 				//how many bits should be stored in RX and RX+1 respectively when there's overflow?

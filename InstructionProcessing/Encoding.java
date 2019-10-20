@@ -612,7 +612,7 @@ public class Encoding {
 		insFunction+=addressString;
 		break;
 	case "MLT"://MLT rx, ry
-		insFunction = "000111";
+		insFunction = "010100";
 		switch (instruction.substring(4, 5)) {
 		case "0":
 			insFunction += "00";
@@ -645,7 +645,9 @@ public class Encoding {
 		default:
 			break;
 		}
-		
+		while(insFunction.length()<16){
+			insFunction+="0";
+		}
 		break;
 	case "DVD"://DVD rx, ry
 		insFunction = "010101";
