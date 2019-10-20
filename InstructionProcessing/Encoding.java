@@ -65,6 +65,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "STR":
 		insFunction = "000010";
@@ -117,6 +118,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "LDA":
 		insFunction = "000011";
@@ -163,6 +165,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "LDX":
 		insFunction = "101001";
@@ -193,6 +196,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "STX":
 		insFunction = "101010";
@@ -223,6 +227,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "JZ ": //JZ 0,1,0,10
 		insFunction = "001010";
@@ -274,6 +279,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "JNE"://JNE 0,1,0,10
 		insFunction = "001011";
@@ -326,6 +332,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "JCC": //JCC 0,1,0,10
 		insFunction = "001100";
@@ -378,6 +385,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "JMA": //JMA 1,0,10
 		insFunction = "001101";
@@ -411,6 +419,7 @@ public class Encoding {
 		while(addressString.length() < 8) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "JSR": //JSR 1,0,10
 		insFunction = "001110";
@@ -444,15 +453,712 @@ public class Encoding {
 		while(addressString.length() < 8) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "RFS":
 		insFunction = "001111";
 		break;
+	case "AMR": //AMR R,X,I,ADDRESS
+		insFunction = "000100";
+		switch (instruction.substring(4, 5)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		
+		switch (instruction.substring(6, 7)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		
+		switch (instruction.substring(8, 9)) {
+		case "0":
+			insFunction += "0";
+			break;
+		case "1":
+			insFunction += "1";
+			break;
+		default:
+			break;
+		}
+		
+		addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(10)));
+		while(addressString.length() < 5) {
+			addressString = "0" + addressString;
+		}
+		insFunction+=addressString;
+		break;
+	case "SMR": //SMR R,X,I,ADDRESS
+		insFunction = "000101";
+		switch (instruction.substring(4, 5)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		
+		switch (instruction.substring(6, 7)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		
+		switch (instruction.substring(8, 9)) {
+		case "0":
+			insFunction += "0";
+			break;
+		case "1":
+			insFunction += "1";
+			break;
+		default:
+			break;
+		}
+		
+		addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(10)));
+		while(addressString.length() < 5) {
+			addressString = "0" + addressString;
+		}
+		insFunction+=addressString;
+		break;
+	case "AIR": //AIR R, address OF Immed Value
+		insFunction = "000110";
+		switch (instruction.substring(4, 5)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		}
+		//Integer.toBinaryString(Integer.parseInt(instruction.substring(10)));
+		addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(6)));
+		while(addressString.length() < 8) {
+			addressString = "0" + addressString;
+		}
+		insFunction+=addressString;
+		break;
+	case "SIR": //SIR R, Immed address
+		insFunction = "000111";
+		switch (instruction.substring(4, 5)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(6)));
+		while(addressString.length() < 8) {
+			addressString = "0" + addressString;
+		}
+		insFunction+=addressString;
+		break;
+	case "MLT"://MLT rx, ry
+		insFunction = "000111";
+		switch (instruction.substring(4, 5)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		switch (instruction.substring(6, 7)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		
+		break;
+	case "DVD"://DVD rx, ry
+		insFunction = "010101";
+		switch (instruction.substring(4, 5)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		switch (instruction.substring(6, 7)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		
+		break;
+	case "TRR"://TRR rx, ry
+		insFunction = "010110";
+		switch (instruction.substring(4, 5)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		switch (instruction.substring(6, 7)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		
+		break;
+	case "ORR"://ORR rx, ry
+		insFunction = "010111";
+		switch (instruction.substring(4, 5)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		switch (instruction.substring(6, 7)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		
+		break;
+	case "AND"://AND rx, ry
+		insFunction = "011000";
+		switch (instruction.substring(4, 5)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		switch (instruction.substring(6, 7)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		
+		break;	
+	case "NOT"://NOT rx
+		insFunction = "011001";
+		switch (instruction.substring(4, 5)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		
+		break;
+	case "SOB":
+		insFunction = "010000";
+		switch (instruction.substring(4,5)) {
+			case "0":
+				insFunction += "00";
+				break;
+			case "1":
+				insFunction += "01";
+				break;
+			case "2":
+				insFunction += "10";
+				break;
+			case "3":
+				insFunction += "11";
+				break;
+			default:
+				break;
+		}
+        switch (instruction.substring(6, 7)) {
+            case "0":
+                insFunction += "00";
+                break;
+            case "1":
+                insFunction += "01";
+                break;
+            case "2":
+                insFunction += "10";
+                break;
+            case "3":
+                insFunction += "11";
+                break;
+            default:
+                break;
+        }
+        switch (instruction.substring(8, 9)) {
+            case "0":
+                insFunction += "0";
+                break;
+            case "1":
+                insFunction += "1";
+                break;
+            default:
+                break;
+        }
+        addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(10)));
+        while(addressString.length() < 5) {
+            addressString = "0" + addressString;
+        }
+        break;
+
+    case "JGE":
+            insFunction = "010001";
+            switch (instruction.substring(4,5)) {
+                case "0":
+                    insFunction += "00";
+                    break;
+                case "1":
+                    insFunction += "01";
+                    break;
+                case "2":
+                    insFunction += "10";
+                    break;
+                case "3":
+                    insFunction += "11";
+                    break;
+                default:
+                    break;
+            }
+            switch (instruction.substring(6, 7)) {
+                case "0":
+                    insFunction += "00";
+                    break;
+                case "1":
+                    insFunction += "01";
+                    break;
+                case "2":
+                    insFunction += "10";
+                    break;
+                case "3":
+                    insFunction += "11";
+                    break;
+                default:
+                    break;
+            }
+            switch (instruction.substring(8, 9)) {
+                case "0":
+                    insFunction += "0";
+                    break;
+                case "1":
+                    insFunction += "1";
+                    break;
+                default:
+                    break;
+            }
+            addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(10)));
+            while(addressString.length() < 5) {
+                addressString = "0" + addressString;
+            }
+            break;
+
+    case "IN ":
+        insFunction = "111101";
+        switch (instruction.substring(4, 5)) {
+            case "0":
+                insFunction += "00";
+                break;
+            case "1":
+                insFunction += "01";
+                break;
+            case "2":
+                insFunction += "10";
+                break;
+            case "3":
+                insFunction += "11";
+                break;
+            default:
+                break;
+        }
+        insFunction += "000";
+        switch (instruction.substring(6, 7)) {
+            case "0":
+                insFunction += "00000";
+                break;
+            default:
+                break;
+        }
+        break;
+
+    case "OUT":
+            insFunction = "111110";
+            switch (instruction.substring(4, 5)) {
+                case "0":
+                    insFunction += "00";
+                    break;
+                case "1":
+                    insFunction += "01";
+                    break;
+                case "2":
+                    insFunction += "10";
+                    break;
+                case "3":
+                    insFunction += "11";
+                    break;
+                default:
+                    break;
+            }
+            insFunction += "000";
+            switch (instruction.substring(6, 7)) {
+                case "1":
+                    insFunction += "00001";
+                    break;
+                default:
+                    break;
+            }
+            break;
+
+    case "SRC":
+            insFunction = "011111";
+            switch (instruction.substring(4,5)) {
+                case "0":
+                    insFunction += "00";
+                    break;
+                case "1":
+                    insFunction += "01";
+                    break;
+                case "2":
+                    insFunction += "10";
+                    break;
+                case "3":
+                    insFunction += "11";
+                    break;
+                default:
+                    break;
+            }
+            switch (instruction.substring(11,12)) {
+                case "0":
+                    insFunction += "0";
+                    break;
+                case "1":
+                    insFunction += "1";
+                    break;
+                default:
+                    break;
+            }
+            switch (instruction.substring(9,10)) {
+                case "0":
+                    insFunction += "0";
+                    break;
+                case "1":
+                    insFunction += "1";
+                    break;
+                default:
+                    break;
+            }
+            insFunction += "00";
+            switch (instruction.substring(6,8)) {
+                case "00":
+                    insFunction += "0000";
+                    break;
+                case "01":
+                    insFunction += "0001";
+                    break;
+                case "02":
+                    insFunction += "0010";
+                    break;
+                case "03":
+                    insFunction += "0011";
+                    break;
+                case "04":
+                    insFunction += "0100";
+                    break;
+                case "05":
+                    insFunction += "0101";
+                    break;
+                case "06":
+                    insFunction += "0110";
+                    break;
+                case "07":
+                    insFunction += "0111";
+                    break;
+                case "08":
+                    insFunction += "1000";
+                    break;
+                case "09":
+                    insFunction += "1001";
+                    break;
+                case "10":
+                    insFunction += "1010";
+                    break;
+                case "11":
+                    insFunction += "1011";
+                    break;
+                case "12":
+                    insFunction += "1100";
+                    break;
+                case "13":
+                    insFunction += "1101";
+                    break;
+                case "14":
+                    insFunction += "1110";
+                    break;
+                case "15":
+                    insFunction += "1111";
+                    break;
+                default:
+                    break;
+    }
+            //String count = Integer.toBinaryString(Integer.parseInt(instruction.substring(6,8)));
+            //System.out.println(count);
+            //insFunction += count;
+            break;
+            
+    case "RRC":
+        insFunction = "011111";
+        switch (instruction.substring(4,5)) {
+            case "0":
+                insFunction += "00";
+                break;
+            case "1":
+                insFunction += "01";
+                break;
+            case "2":
+                insFunction += "10";
+                break;
+            case "3":
+                insFunction += "11";
+                break;
+            default:
+                break;
+        }
+        switch (instruction.substring(11,12)) {
+            case "0":
+                insFunction += "0";
+                break;
+            case "1":
+                insFunction += "1";
+                break;
+            default:
+                break;
+        }
+        switch (instruction.substring(9,10)) {
+            case "0":
+                insFunction += "0";
+                break;
+            case "1":
+                insFunction += "1";
+                break;
+            default:
+                break;
+        }
+        insFunction += "00";
+        switch (instruction.substring(6,8)) {
+            case "00":
+                insFunction += "0000";
+                break;
+            case "01":
+                insFunction += "0001";
+                break;
+            case "02":
+                insFunction += "0010";
+                break;
+            case "03":
+                insFunction += "0011";
+                break;
+            case "04":
+                insFunction += "0100";
+                break;
+            case "05":
+                insFunction += "0101";
+                break;
+            case "06":
+                insFunction += "0110";
+                break;
+            case "07":
+                insFunction += "0111";
+                break;
+            case "08":
+                insFunction += "1000";
+                break;
+            case "09":
+                insFunction += "1001";
+                break;
+            case "10":
+                insFunction += "1010";
+                break;
+            case "11":
+                insFunction += "1011";
+                break;
+            case "12":
+                insFunction += "1100";
+                break;
+            case "13":
+                insFunction += "1101";
+                break;
+            case "14":
+                insFunction += "1110";
+                break;
+            case "15":
+                insFunction += "1111";
+                break;
+            default:
+                break;
+        }
+        break;
 	default:
 		break;
 	}
-
-	insFunction += addressString;
+	
 	int decimalInstruction = Integer.parseInt(insFunction, 2);
 	return decimalInstruction;
 	

@@ -7,21 +7,30 @@ package FrontPanel;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import CPUAttributes.ALU;
 import CPUAttributes.CU;
+import CPUAttributes.Cache;
 import CPUAttributes.ConditionCodeRegister;
 import CPUAttributes.GeneralPurposeRegister;
 import CPUAttributes.IndexRegister;
@@ -40,78 +49,144 @@ public class UserInterface extends JFrame {
 	//It has one contentPanel and many fields and buttons for each user input area and button
 	//It also has text areas for user input and also the log/console for displaying what's happening behind
 	
-	protected JPanel contentPane;
-	private JTextField txtFieldR0;
-	private JTextField txtFieldR1;
-	private JTextField txtFieldR2;
-	private JTextField txtFieldR3;
-	private JTextField txtFieldX1;
-	private JTextField txtFieldX2;
-	private JTextField txtFieldX3;
-	private JTextField txtFieldPC;
-	private JTextField txtFieldMAR;
-	private JTextField txtFieldMBR;
-	private JTextField txtFieldIR;
-	private JTextField txtFieldCC;
-	private JTextField txtFieldMemory;
-	private JTextField txtFieldMemoryValue;
-	private JTextArea instructionsTextArea;
-	private JTextArea logTextArea;
-	
-	private static CU cu=new CU();
-	private static ALU alu=new ALU();
-	private static Memory memory=new Memory();
-
-	
-	public UserInterface() {
-		cu=new CU();
-		cu.setUserInterface(this);
-		alu=new ALU();
-		alu.setUserInterface(this);
-		//memory=new Memory();
+	protected static JPanel contentPane;
+	private static JTextField txtFieldR0;
+	private static JTextField txtFieldR1;
+	private static JTextField txtFieldR2;
+	private static JTextField txtFieldR3;
+	private static JTextField txtFieldX1;
+	private static JTextField txtFieldX2;
+	private static JTextField txtFieldX3;
+	private static JTextField txtFieldPC;
+	private static JTextField txtFieldMAR;
+	private static JTextField txtFieldMBR;
+	private static JTextField txtFieldIR;
+	private static JTextField txtFieldCC;
+	private JTextField txtKeyboard;
+	private static JTextField txtFieldMemory;
+	private static JTextField txtFieldMemoryValue;
+	private static JTextArea instructionsTextArea;
+	private static JTextArea logTextArea;
+	private CU cu;
+	public UserInterface(CU cu, ALU alu) {
+		/*alu=new ALU();
+		cache=new Cache();
+		memory=new int[4096];
+		PC=new ProgramCounter();
+		MAR=new MemoryAccessRegister();
+		MBR=new MemoryBufferRegister();
+		IR= new InstructionRegister();
+		X1=new IndexRegister();
+		X2=new IndexRegister();
+		X3=new IndexRegister();
+		R0=new GeneralPurposeRegister();
+		R1= new GeneralPurposeRegister();
+		R2=new GeneralPurposeRegister();
+		R3=new GeneralPurposeRegister();
+		CC=new ConditionCodeRegister();*/
+		//cu=new CU(this,alu,cache,memory,PC,MAR,MBR,IR,X1,X2,X3,R0,R1,R2,R3,CC, encode,decode);
 		
+		//alu=new ALU();
+		//alu.setUserInterface(this);;
 		//Constructor, call initialize function to initialize the user interface
+		this.cu=cu;
+		cu.setUserInterface(this);
+		alu.setUserInterface(this);
 		intialize();
+	}
+	public void getR0Text(){
+		System.out.print( txtFieldR0.getText());
 	}
 	public void setR0Text(int data){
 		txtFieldR0.setText(Integer.toString(data));
 	}
 	public void setR1Text(int data){
+		
 		txtFieldR1.setText(Integer.toString(data));
 	}
 	public void setR2Text(int data){
+		
 		txtFieldR2.setText(Integer.toString(data));
 	}
 	public void setR3Text(int data){
+		
 		txtFieldR3.setText(Integer.toString(data));
 	}
 	public void setX1Text(int data){
+		
 		txtFieldX1.setText(Integer.toString(data));
 	}
 	public void setX2Text(int data){
+	
 		txtFieldX2.setText(Integer.toString(data));
 	}
 	public void setX3Text(int data){
+		
 		txtFieldX3.setText(Integer.toString(data));
 	}
 	public void setMARText(int address){
+	
 		txtFieldMAR.setText(Integer.toString(address));
 	}
 	
+	public void setCCText(int address){
+		
+		txtFieldCC.setText(Integer.toString(address));
+	}
 	public void setMBRText(int data){
+		
 		txtFieldMBR.setText(Integer.toString(data));
 	}
 	public void setIRText(int address){
+	
 		txtFieldIR.setText(Integer.toString(address));
 	}
 	public void setPCText(int address){
+		
 		txtFieldPC.setText(Integer.toString(address));
+	}
+	public String getInput() {
+		return txtKeyboard.getText();
 	}
 	public void updateLogText(String string, int address){
 		logTextArea.append(string+" "+address);
 	}
 	public void updateLogText(String string){
 		logTextArea.append(string);
+	}
+	public void updateLogText(String[] string) {
+	    for (String num:string) {
+	        logTextArea.append(num+"\n");
+        }
+    }
+	public void updateLogText(String string, String input){
+		logTextArea.append(string+" "+input);
+	}
+    public void updateLogText(List input) {
+	    for (Iterator it1 = input.iterator(); it1.hasNext();) {
+	        logTextArea.append(it1.next().toString());
+        }
+	}
+    public void setRnByNum(int num, int value) {
+		if (num == 0)
+			txtFieldR0.setText(Integer.toString(value));
+		if (num == 1)
+			txtFieldR1.setText(Integer.toString(value));
+		if (num == 2)
+			txtFieldR2.setText(Integer.toString(value));
+		if (num == 3)
+			txtFieldR3.setText(Integer.toString(value));
+	}
+	public int getRnByNum(int num) {
+		if (num == 0)
+			return Integer.parseInt(txtFieldR0.getText());
+		if (num == 1)
+			return Integer.parseInt(txtFieldR1.getText());
+		if (num == 2)
+			return Integer.parseInt(txtFieldR2.getText());
+		if (num == 3)
+			return Integer.parseInt(txtFieldR3.getText());
+		return 0;
 	}
 	public void intialize() {
 		// Initialize function is for the user interface design and layout
@@ -132,7 +207,19 @@ public class UserInterface extends JFrame {
 		contentPane.add(txtFieldR0);
 		txtFieldR0.setColumns(10);
 		
+		txtFieldR0.addActionListener(new ActionListener(){
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				//System.out.print(cu.getR0Value());
+				//SwingUtilities.invokeLater();
+				txtFieldR0.setText(String.valueOf(cu.getR0Value()));
+				contentPane.revalidate();
+				contentPane.repaint();
+			}
+			
+		});
 
 		
 		JButton btnStoreR0 = new JButton("Store");
@@ -148,6 +235,17 @@ public class UserInterface extends JFrame {
 		txtFieldR1.setBounds(83, 115, 96, 27);
 		contentPane.add(txtFieldR1);
 		txtFieldR1.setColumns(10);
+		txtFieldR1.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				txtFieldR1.setText(String.valueOf(cu.getR1Value()));
+				contentPane.revalidate();
+				validate();
+			}
+			
+		});
 		
 		JButton btnStoreR1 = new JButton("Store");
 		btnStoreR1.setBackground(Color.LIGHT_GRAY);
@@ -162,6 +260,17 @@ public class UserInterface extends JFrame {
 		txtFieldR2.setBounds(83, 171, 96, 27);
 		contentPane.add(txtFieldR2);
 		txtFieldR2.setColumns(10);
+		txtFieldR2.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				txtFieldR2.setText(String.valueOf(cu.getR2Value()));
+				contentPane.revalidate();
+				validate();
+			}
+			
+		});
 		
 		JButton btnStoreR2 = new JButton("Store");
 		btnStoreR2.setBackground(Color.LIGHT_GRAY);
@@ -176,6 +285,17 @@ public class UserInterface extends JFrame {
 		txtFieldR3.setBounds(83, 232, 96, 27);
 		contentPane.add(txtFieldR3);
 		txtFieldR3.setColumns(10);
+		txtFieldR3.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				txtFieldR3.setText(String.valueOf(cu.getR3Value()));
+				contentPane.revalidate();
+				validate();
+			}
+			
+		});
 		
 		JButton btnStoreR3 = new JButton("Store");
 		btnStoreR3.setBackground(Color.LIGHT_GRAY);
@@ -190,6 +310,17 @@ public class UserInterface extends JFrame {
 		txtFieldX1.setBounds(482, 59, 96, 27);
 		contentPane.add(txtFieldX1);
 		txtFieldX1.setColumns(10);
+		txtFieldX1.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				txtFieldX1.setText(String.valueOf(cu.getX1Value()));
+				contentPane.revalidate();
+				validate();
+			}
+			
+		});
 		
 		JButton btnStoreX1 = new JButton("Store");
 		btnStoreX1.setBackground(Color.LIGHT_GRAY);
@@ -204,6 +335,17 @@ public class UserInterface extends JFrame {
 		txtFieldX2.setBounds(482, 115, 96, 27);
 		contentPane.add(txtFieldX2);
 		txtFieldX2.setColumns(10);
+		txtFieldX2.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				txtFieldX2.setText(String.valueOf(cu.getX2Value()));
+				contentPane.revalidate();
+				validate();
+			}
+			
+		});
 		
 		JButton btnStoreX2 = new JButton("Store");
 		btnStoreX2.setBackground(Color.LIGHT_GRAY);
@@ -218,6 +360,17 @@ public class UserInterface extends JFrame {
 		txtFieldX3.setBounds(482, 171, 96, 27);
 		contentPane.add(txtFieldX3);
 		txtFieldX3.setColumns(10);
+		txtFieldX3.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				txtFieldX3.setText(String.valueOf(cu.getX3Value()));
+				contentPane.revalidate();
+				validate();
+			}
+			
+		});
 		
 		JButton btnStoreX3 = new JButton("Store");
 		btnStoreX3.setBackground(Color.LIGHT_GRAY);
@@ -232,6 +385,17 @@ public class UserInterface extends JFrame {
 		txtFieldPC.setBounds(83, 328, 96, 27);
 		contentPane.add(txtFieldPC);
 		txtFieldPC.setColumns(10);
+		txtFieldPC.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				txtFieldPC.setText(String.valueOf(cu.getPCValue()));
+				contentPane.revalidate();
+				validate();
+			}
+			
+		});
 		
 		JLabel lblMar = new JLabel("MAR");
 		lblMar.setBounds(257, 331, 28, 21);
@@ -241,6 +405,17 @@ public class UserInterface extends JFrame {
 		txtFieldMAR.setBounds(300, 328, 96, 27);
 		contentPane.add(txtFieldMAR);
 		txtFieldMAR.setColumns(10);
+		txtFieldMAR.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				txtFieldMAR.setText(String.valueOf(cu.getMARValue()));
+				contentPane.revalidate();
+				validate();
+			}
+			
+		});
 		
 		JLabel lblMbr = new JLabel("MBR");
 		lblMbr.setBounds(470, 331, 81, 21);
@@ -250,6 +425,17 @@ public class UserInterface extends JFrame {
 		txtFieldMBR.setBounds(511, 328, 96, 27);
 		contentPane.add(txtFieldMBR);
 		txtFieldMBR.setColumns(10);
+		txtFieldMBR.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				txtFieldMBR.setText(String.valueOf(cu.getMBRValue()));
+				contentPane.revalidate();
+				validate();
+			}
+			
+		});
 		
 		JLabel lblIr = new JLabel("IR");
 		lblIr.setBounds(50, 394, 18, 21);
@@ -259,6 +445,17 @@ public class UserInterface extends JFrame {
 		txtFieldIR.setBounds(83, 391, 96, 27);
 		contentPane.add(txtFieldIR);
 		txtFieldIR.setColumns(10);
+		txtFieldIR.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				txtFieldIR.setText(String.valueOf(cu.getIRValue()));
+				contentPane.revalidate();
+				validate();
+			}
+			
+		});
 		
 		JLabel lblCc = new JLabel("CC");
 		lblCc.setBounds(260, 394, 18, 21);
@@ -268,6 +465,31 @@ public class UserInterface extends JFrame {
 		txtFieldCC.setBounds(300, 391, 96, 27);
 		contentPane.add(txtFieldCC);
 		txtFieldCC.setColumns(10);
+		txtFieldCC.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				txtFieldCC.setText(String.valueOf(cu.getCCValue()));
+				contentPane.revalidate();
+				validate();
+			}
+			
+		});
+		
+		JLabel lblInput = new JLabel("Input File");
+		lblInput.setBounds(449, 394, 70, 21);
+		contentPane.add(lblInput);
+		
+		/*JButton btnInput = new JButton("Input");
+		btnInput.setBackground(Color.LIGHT_GRAY);
+		btnInput.setBounds(521, 390, 77, 29);
+		contentPane.add(btnInput);*/
+		
+		JButton btnInputFile = new JButton("Browse");
+		btnInputFile.setBackground(Color.LIGHT_GRAY);
+		btnInputFile.setBounds(521, 390, 77, 29);
+		contentPane.add(btnInputFile);
 		
 		JButton btnIpl = new JButton("IPL");
 		btnIpl.setBackground(Color.LIGHT_GRAY);
@@ -283,6 +505,11 @@ public class UserInterface extends JFrame {
 		btnRun.setBackground(Color.LIGHT_GRAY);
 		btnRun.setBounds(15, 604, 123, 29);
 		contentPane.add(btnRun);
+		
+		JButton btnProgram1 = new JButton("Program1");
+        btnProgram1.setBackground(Color.LIGHT_GRAY);
+        btnProgram1.setBounds(15, 604, 123, 29);
+        contentPane.add(btnProgram1);
 		
 		JLabel lblNewLabel = new JLabel("INSTRUCTION INPUT");
 		lblNewLabel.setBounds(201, 449, 153, 21);
@@ -333,6 +560,13 @@ public class UserInterface extends JFrame {
 		instructionsTextArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		instructionsTextArea.setBounds(176, 485, 208, 147);
 		contentPane.add(instructionsTextArea);
+		JScrollPane instructionPanel = new JScrollPane(instructionsTextArea);
+		instructionPanel.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		instructionPanel.setBounds(176, 485, 208, 147);
+		contentPane.add(instructionPanel);
+		instructionPanel.setVisible(true);
+		instructionPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		instructionPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
 		logTextArea = new JTextArea();
 		logTextArea.setEditable(false);
@@ -340,8 +574,65 @@ public class UserInterface extends JFrame {
 		logTextArea.setBounds(449, 486, 208, 147);
 		contentPane.add(logTextArea);
 		
+		JScrollPane logScrollPanel = new JScrollPane(logTextArea);
+		logScrollPanel.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		logScrollPanel.setBounds(449, 486, 208, 147);
+		contentPane.add(logScrollPanel);
 		
 		
+		/*btnInput.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String input = txtKeyboard.getText();
+				txtKeyboard.setText(input);
+			}
+		});*/
+		
+		btnProgram1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cu.setPCValue(0);
+                txtFieldPC.setText(String.valueOf(cu.getPCValue()));
+                String input = instructionsTextArea.getText();
+                String[] inputNumbers = input.split(",");
+                List<String> list = new ArrayList<String>(Arrays.asList(inputNumbers));
+                List inputA = list.subList(0, list.size()-1);
+                updateLogText("The program 1:" + "\n");
+                updateLogText(inputNumbers);
+                //updateLogText(inputA);
+                int len = inputNumbers.length;
+                String number1 = inputNumbers[len-1];
+                updateLogText(number1);
+//                int len = inputNumbers.length;
+//                String lens = String.valueOf(len);
+//                updateLogText(lens);
+                //int number = Integer.parseInt(number1);
+                //cu.strInsToMemory(input);//instructions stored into memory
+
+            }
+        });
+
+		btnInputFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//按钮点击事件
+
+
+				JFileChooser chooser = new JFileChooser();             //设置选择器
+				chooser.setMultiSelectionEnabled(true);             //设为多选
+				int returnVal = chooser.showOpenDialog(btnInputFile);        //是否打开文件选择框
+				System.out.println("returnVal="+returnVal);
+
+				if (returnVal == JFileChooser.APPROVE_OPTION) {          //如果符合文件类型
+
+					String filepath = chooser.getSelectedFile().getAbsolutePath();      //获取绝对路径
+					System.out.println(filepath);
+
+
+					System.out.println("You chose to open this file: "+ chooser.getSelectedFile().getName());  //输出相对路径
+
+				}
+			}
+		});
 		btnStoreR0.addActionListener(new ActionListener() {
 			
 			@Override
@@ -349,10 +640,13 @@ public class UserInterface extends JFrame {
 				String r0String = txtFieldR0.getText();
 				if(r0String != null) {
 					int value = Integer.parseInt(r0String);
-					System.out.println(value);
+					
 					cu.setR0Value(value);
+					System.out.println(cu.getR0Value());
 					txtFieldR0.setText(r0String);
 					//here write some code to store the text typed in R0 into memory 
+					contentPane.revalidate();
+					validate();
 				}
 			}
 		});
@@ -369,6 +663,8 @@ public class UserInterface extends JFrame {
 					//R1.setValue(value);
 					txtFieldR1.setText(r1String);
 					//here write some code to store the text typed in R1 into memory 
+					contentPane.revalidate();
+					validate();
 				}
 			}
 		});
@@ -385,6 +681,8 @@ public class UserInterface extends JFrame {
 					//R2.setValue(value);
 					txtFieldR2.setText(r2String);
 					//here write some code to store the text typed in R2 into memory 
+					contentPane.revalidate();
+					validate();
 				}
 			}
 		});
@@ -401,6 +699,8 @@ public class UserInterface extends JFrame {
 					//R3.setValue(value);
 					txtFieldR3.setText(r3String);
 					//here write some code to store the text typed in R3 into memory 
+					contentPane.revalidate();
+					validate();
 				}
 			}
 		});
@@ -417,7 +717,10 @@ public class UserInterface extends JFrame {
 					//X1.setValue(value);
 					txtFieldX1.setText(x1String);
 					//here write some code to store the text typed in X1 into memory 
-				}
+				
+					contentPane.revalidate();
+					validate();
+					}
 			}
 		});
 		
@@ -433,6 +736,8 @@ public class UserInterface extends JFrame {
 					//X2.setValue(value);
 					txtFieldX2.setText(x2String);
 					//here write some code to store the text typed in X2 into memory 
+					contentPane.revalidate();
+					validate();
 				}
 			}
 		});
@@ -449,6 +754,8 @@ public class UserInterface extends JFrame {
 					//X3.setValue(value);
 					txtFieldX3.setText(x3String);
 					//here write some code to store the text typed in X3 into memory 
+					contentPane.revalidate();
+					validate();
 				}
 			}
 		});
@@ -460,8 +767,11 @@ public class UserInterface extends JFrame {
 				cu.setPCValue(0);
 				txtFieldPC.setText(String.valueOf(cu.getPCValue()));
 		    	String instructions = instructionsTextArea.getText();
+		    	//System.out.print(instructions);
 		    	cu.strInsToMemory(instructions);//instructions stored into memory
 		    	logTextArea.setText("IPL Complete");
+		    	contentPane.revalidate();
+		    	validate();
 			}
 		});
 		
@@ -469,15 +779,19 @@ public class UserInterface extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String insAddress = txtFieldPC.getText();
+				int iAdd=cu.getPCValue();
+				//String insAddress = txtFieldPC.getText();
 				//System.out.println(insAddress);
-				int iAdd = Integer.parseInt(insAddress,2);
+				//int iAdd = Integer.parseInt(insAddress,2);
+				//int iAdd=encoding.insToDec(insAddress);
 				try {
-					alu.iExec(iAdd);
+					cu.iExec(iAdd);
 				} catch (MachineFaultException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				contentPane.revalidate();
+				validate();
 			}
 		});
 		
@@ -490,9 +804,11 @@ public class UserInterface extends JFrame {
 				if(addr != null && dataValue != null) {
 					int add = Integer.parseInt(addr);
 					int value = Integer.parseInt(dataValue);
-					memory.storeIntoMemory(add, value);
+					cu.memory.storeIntoMemory(add, value);
 					//Memory[add] = value;
 				}
+				contentPane.revalidate();
+				validate();
 			}
 		});
 		
@@ -503,11 +819,13 @@ public class UserInterface extends JFrame {
 				String addr = txtFieldMemory.getText();
 				if(addr != null) {
 					int addrInt = Integer.parseInt(addr,2);
-					int fetchedData=memory.fetchFromMemory(addrInt);
+					int fetchedData=cu.memory.fetchFromMemory(addrInt);
 					//int fetchedData = Memory[addrInt];
 					String fetchString = Integer.toString(fetchedData);
 					txtFieldMemoryValue.setText(fetchString);
 				}
+				contentPane.revalidate();
+				validate();
 			}
 		});
 		
@@ -520,15 +838,17 @@ public class UserInterface extends JFrame {
 		    	Boolean status = true;
 		    	while (status) {
 					try {
-						status = alu.iExec(iAddress);
+						status = cu.iExec(iAddress);
 					} catch (MachineFaultException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					iAddress++;
 				}
+		    	contentPane.revalidate();
+		    	validate();
 			}
+			
 		});
 	}
-	
 }

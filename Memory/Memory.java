@@ -1,31 +1,38 @@
 package Memory;
 
+import CPUAttributes.CU;
+import FrontPanel.UserInterface;
+
 public class Memory {
+	//private static UserInterface userInterface;
 	private static int memory[] = new int[2048];
 	//private static int extendedMemory[] = new int[4096];
+	private static CU cu;
 	public Memory(){
-		this.memory=new int[2048];
-		
+		Memory.memory=new int[2048];
+	}
+	public void setCU(CU cu){
+		Memory.cu=cu;
 	}
 	public void expandMemorySize() {
-		if (this.memory.length > 0) {
-			this.memory=new int[4096];
+		if (Memory.memory.length > 0) {
+			Memory.memory=new int[4096];
 		}
 		//ADD NEW CODE HERE MOVING CONTENT FROM THE ORIGINAL ARRAY AFTER EXPANDING TO 4096 
 		System.out.println("memory size has been expanded to " + memory.length);
 	}
 	public int getCurrentMemorySize() {
-		if (this.memory.length>0) {
-			return this.memory.length;
+		if (Memory.memory.length>0) {
+			return Memory.memory.length;
 		}
 		return 0;
 	}
 	public int fetchFromMemory(int address) {
-		return this.memory[address];
+		return Memory.memory[address];
 	}
 	public void storeIntoMemory(int address, int value) {
-		if (this.memory.length>0) {
-			this.memory[address]=value;
+		if (Memory.memory.length>0 && Memory.memory.length>address) {
+			Memory.memory[address]=value;
 		}
 	}
 }
