@@ -864,12 +864,16 @@ public class ALU {
 				//RX contains the high order bits of the result while RX+1 contains the low order bits of the results
 				
 				temp=Integer.toBinaryString(RXValue*RYValue);
+				System.out.println("result string is: "+temp);
 				//Integer.toBinaryString(decInstruction)
 				if(temp.length()>32){
 					overflow=true;
 					throw new MachineFaultException("Overflow!");
 				}
 				else{
+					while(temp.length()<32){
+						temp="0"+temp;
+					}
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
 					cu.setR0Value(RXValue);
 					System.out.println(RXValue);
@@ -889,6 +893,9 @@ public class ALU {
 					throw new MachineFaultException("Overflow!");
 				}
 				else{
+					while(temp.length()<32){
+						temp="0"+temp;
+					}
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
 					cu.setR0Value(RXValue);
 					userInterface.setR0Text(RXValue);
@@ -910,11 +917,14 @@ public class ALU {
 				
 				temp=Integer.toBinaryString(RXValue*RYValue);
 				//Integer.toBinaryString(decInstruction)
-				if(temp.length()!=32){
+				if(temp.length()>32){
 					overflow=true;
 					throw new MachineFaultException("Overflow!");
 				}
 				else{
+					while(temp.length()<32){
+						temp="0"+temp;
+					}
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
 					cu.setR2Value(RXValue);
 					userInterface.setR2Text(RXValue);
@@ -927,11 +937,14 @@ public class ALU {
 			case 2:
 				RYValue=cu.getR2Value();
 				temp=Integer.toBinaryString(RXValue*RYValue);
-				if(temp.length()!=32){
+				if(temp.length()>32){
 					overflow=true;
 					throw new MachineFaultException("Overflow!");
 				}
 				else{
+					while(temp.length()<32){
+						temp="0"+temp;
+					}
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
 					cu.setR2Value(RXValue);
 					userInterface.setR2Text(RXValue);
@@ -960,10 +973,8 @@ public class ALU {
 		case 2:
 			data=cu.getR2Value();
 			break;
-	
-		default:
-			break;
 		}
+		System.out.println("Data value is: "+data);
 		userInterface.updateLogText("\nRx ", data);
 		int temp=0;
 		switch(ry){
@@ -976,9 +987,12 @@ public class ALU {
 			break;
 	
 		}
+		System.out.println("temp value is: "+temp);
 		userInterface.updateLogText("\nRy ", temp);
 		int quotient = data/temp;
+		System.out.println("quotient value is: "+quotient);
 		int remainder = data%temp;
+		System.out.println("remainder value is: "+remainder);
 		if(rx==0){
 			cu.setR0Value(quotient);
 			cu.setR1Value(remainder);
@@ -1235,7 +1249,6 @@ public void NOT(int rx) {
 		int len=s1.length();
 		String temp_string="";
 		for(int i=0;i<len;i++) {
-			
 			if(s1.charAt(i)=='0') {
 				temp_string=temp_string+"1";
 			}

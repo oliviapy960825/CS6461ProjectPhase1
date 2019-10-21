@@ -85,7 +85,7 @@ public class CU {
 	
 	public void strInsToMemory(String a) {
 		//This is to get String stored in memory
-		int pc = PC.getValue();
+		int pc = getPCValue();
 		String[] lines = a.split("\n");
 		for (String line : lines) {
 			int decIns = encode.insToDec(line);
@@ -207,18 +207,18 @@ public class CU {
 		int add = Address;//why are we converting it to binaryString then covert it back to decimal?
 		int value=memory.fetchFromMemory(add);
 		int[] instructionDec =decToBinary(value);
-		//userInterface.setMARText(add);
+		userInterface.setMARText(add);
 		setMARValue(add);
 		userInterface.updateLogText("\n PC --> MAR");
-		//userInterface.setMBRText(value);
+		userInterface.setMBRText(value);
 		setMBRValue(value);
 		userInterface.updateLogText("\n MBR gets loaded with the value");
-		//userInterface.setIRText(value);
+		userInterface.setIRText(value);
 		setIRValue(Address);
-		//userInterface.setIRText(Address);
+		userInterface.setIRText(Address);
 		userInterface.updateLogText("\n MBR --> IR");
 		//PC.setValue(PC.getValue() + 1);
-		//userInterface.setPCText(getPCValue()+1);
+		userInterface.setPCText(getPCValue()+1);
 		//txtFieldPC.setText(String.valueOf(PC.getValue()));
 		setPCValue(getPCValue()+1);
 		userInterface.updateLogText("\n PC incremented by 1");
@@ -324,6 +324,30 @@ public class CU {
 			RY = instructionDec[2];
 			alu.MLT(RX,RY);
 			break;
+		case 21:
+			RX = instructionDec[1];
+			RY = instructionDec[2];
+			alu.DVD(RX,RY);
+			break;
+		case 22:
+			RX = instructionDec[1];
+			RY = instructionDec[2];
+			alu.TRR(RX,RY);
+			break;
+		case 23:
+			RX = instructionDec[1];
+			RY = instructionDec[2];
+			alu.AND(RX,RY);
+			break;
+		case 24:
+			RX = instructionDec[1];
+			RY = instructionDec[2];
+			alu.ORR(RX,RY);
+			break;
+		case 25:
+			RX = instructionDec[1];
+			alu.NOT(RX);
+			break;	
 		default:
 			break;
 		}

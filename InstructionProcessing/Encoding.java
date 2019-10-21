@@ -617,14 +617,8 @@ public class Encoding {
 		case "0":
 			insFunction += "00";
 			break;
-		case "1":
-			insFunction += "01";
-			break;
 		case "2":
 			insFunction += "10";
-			break;
-		case "3":
-			insFunction += "11";
 			break;
 		default:
 			break;
@@ -633,21 +627,17 @@ public class Encoding {
 		case "0":
 			insFunction += "00";
 			break;
-		case "1":
-			insFunction += "01";
-			break;
 		case "2":
 			insFunction += "10";
-			break;
-		case "3":
-			insFunction += "11";
 			break;
 		default:
 			break;
 		}
-		while(insFunction.length()<16){
-			insFunction+="0";
+		addressString="";
+		while(addressString.length() < 6) {
+			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "DVD"://DVD rx, ry
 		insFunction = "010101";
@@ -666,6 +656,7 @@ public class Encoding {
 			break;
 		default:
 			break;
+		
 		}
 		switch (instruction.substring(6, 7)) {
 		case "0":
@@ -683,7 +674,11 @@ public class Encoding {
 		default:
 			break;
 		}
-		
+		addressString="";
+		while(addressString.length() < 6) {
+			addressString = "0" + addressString;
+		}
+		insFunction+=addressString;
 		break;
 	case "TRR"://TRR rx, ry
 		insFunction = "010110";
@@ -719,45 +714,13 @@ public class Encoding {
 		default:
 			break;
 		}
-		
+		addressString="";
+		while(addressString.length() < 6) {
+			addressString = "0" + addressString;
+		}
+		insFunction+=addressString;
 		break;
 	case "ORR"://ORR rx, ry
-		insFunction = "010111";
-		switch (instruction.substring(4, 5)) {
-		case "0":
-			insFunction += "00";
-			break;
-		case "1":
-			insFunction += "01";
-			break;
-		case "2":
-			insFunction += "10";
-			break;
-		case "3":
-			insFunction += "11";
-			break;
-		default:
-			break;
-		}
-		switch (instruction.substring(6, 7)) {
-		case "0":
-			insFunction += "00";
-			break;
-		case "1":
-			insFunction += "01";
-			break;
-		case "2":
-			insFunction += "10";
-			break;
-		case "3":
-			insFunction += "11";
-			break;
-		default:
-			break;
-		}
-		
-		break;
-	case "AND"://AND rx, ry
 		insFunction = "011000";
 		switch (instruction.substring(4, 5)) {
 		case "0":
@@ -791,7 +754,51 @@ public class Encoding {
 		default:
 			break;
 		}
-		
+		addressString="";
+		while(addressString.length() < 6) {
+			addressString = "0" + addressString;
+		}
+		insFunction+=addressString;
+		break;
+	case "AND"://AND rx, ry
+		insFunction = "010111";
+		switch (instruction.substring(4, 5)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		switch (instruction.substring(6, 7)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		addressString="";
+		while(addressString.length() < 6) {
+			addressString = "0" + addressString;
+		}
+		insFunction+=addressString;
 		break;	
 	case "NOT"://NOT rx
 		insFunction = "011001";
@@ -811,7 +818,11 @@ public class Encoding {
 		default:
 			break;
 		}
-		
+		addressString="";
+		while(addressString.length() < 8) {
+			addressString = "0" + addressString;
+		}
+		insFunction+=addressString;
 		break;
 	case "SOB":
 		insFunction = "010000";

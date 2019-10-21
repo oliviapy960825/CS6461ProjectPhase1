@@ -780,6 +780,7 @@ public class UserInterface extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int iAdd=cu.getPCValue();
+				System.out.println("The iAdd for the instruction is:" + iAdd);
 				//String insAddress = txtFieldPC.getText();
 				//System.out.println(insAddress);
 				//int iAdd = Integer.parseInt(insAddress,2);
