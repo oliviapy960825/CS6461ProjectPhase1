@@ -65,6 +65,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "STR":
 		insFunction = "000010";
@@ -117,6 +118,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "LDA":
 		insFunction = "000011";
@@ -163,6 +165,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "LDX":
 		insFunction = "101001";
@@ -193,6 +196,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "STX":
 		insFunction = "101010";
@@ -223,6 +227,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "JZ ": //JZ 0,1,0,10
 		insFunction = "001010";
@@ -274,6 +279,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "JNE"://JNE 0,1,0,10
 		insFunction = "001011";
@@ -326,6 +332,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "JCC": //JCC 0,1,0,10
 		insFunction = "001100";
@@ -378,6 +385,7 @@ public class Encoding {
 		while(addressString.length() < 5) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "JMA": //JMA 1,0,10
 		insFunction = "001101";
@@ -411,6 +419,7 @@ public class Encoding {
 		while(addressString.length() < 8) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "JSR": //JSR 1,0,10
 		insFunction = "001110";
@@ -444,12 +453,12 @@ public class Encoding {
 		while(addressString.length() < 8) {
 			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
 		break;
 	case "RFS":
 		insFunction = "001111";
 		break;
-<<<<<<< Updated upstream
-=======
+
 	case "AMR": //AMR R,X,I,ADDRESS
 		insFunction = "000100";
 		switch (instruction.substring(4, 5)) {
@@ -609,15 +618,11 @@ public class Encoding {
 		case "0":
 			insFunction += "00";
 			break;
-		case "1":
-			insFunction += "01";
-			break;
+
 		case "2":
 			insFunction += "10";
 			break;
-		case "3":
-			insFunction += "11";
-			break;
+
 		default:
 			break;
 		}
@@ -625,21 +630,19 @@ public class Encoding {
 		case "0":
 			insFunction += "00";
 			break;
-		case "1":
-			insFunction += "01";
-			break;
+
 		case "2":
 			insFunction += "10";
-			break;
-		case "3":
-			insFunction += "11";
 			break;
 		default:
 			break;
 		}
-		while(insFunction.length()<16){
-			insFunction+="0";
+		addressString="";
+		while(addressString.length() < 6) {
+			addressString = "0" + addressString;
 		}
+		insFunction+=addressString;
+
 		break;
 	case "DVD"://DVD rx, ry
 		insFunction = "010101";
@@ -658,6 +661,7 @@ public class Encoding {
 			break;
 		default:
 			break;
+
 		}
 		switch (instruction.substring(6, 7)) {
 		case "0":
@@ -675,7 +679,13 @@ public class Encoding {
 		default:
 			break;
 		}
-		
+
+		addressString="";
+		while(addressString.length() < 6) {
+			addressString = "0" + addressString;
+		}
+		insFunction+=addressString;
+
 		break;
 	case "TRR"://TRR rx, ry
 		insFunction = "010110";
@@ -711,45 +721,10 @@ public class Encoding {
 		default:
 			break;
 		}
+
 		
 		break;
 	case "ORR"://ORR rx, ry
-		insFunction = "010111";
-		switch (instruction.substring(4, 5)) {
-		case "0":
-			insFunction += "00";
-			break;
-		case "1":
-			insFunction += "01";
-			break;
-		case "2":
-			insFunction += "10";
-			break;
-		case "3":
-			insFunction += "11";
-			break;
-		default:
-			break;
-		}
-		switch (instruction.substring(6, 7)) {
-		case "0":
-			insFunction += "00";
-			break;
-		case "1":
-			insFunction += "01";
-			break;
-		case "2":
-			insFunction += "10";
-			break;
-		case "3":
-			insFunction += "11";
-			break;
-		default:
-			break;
-		}
-		
-		break;
-	case "AND"://AND rx, ry
 		insFunction = "011000";
 		switch (instruction.substring(4, 5)) {
 		case "0":
@@ -783,7 +758,51 @@ public class Encoding {
 		default:
 			break;
 		}
+
 		
+		break;
+
+	case "AND"://AND rx, ry
+		insFunction = "010111";
+
+		switch (instruction.substring(4, 5)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+		switch (instruction.substring(6, 7)) {
+		case "0":
+			insFunction += "00";
+			break;
+		case "1":
+			insFunction += "01";
+			break;
+		case "2":
+			insFunction += "10";
+			break;
+		case "3":
+			insFunction += "11";
+			break;
+		default:
+			break;
+		}
+
+		addressString="";
+		while(addressString.length() < 6) {
+			addressString = "0" + addressString;
+		}
+		insFunction+=addressString;
 		break;	
 	case "NOT"://NOT rx
 		insFunction = "011001";
@@ -803,7 +822,13 @@ public class Encoding {
 		default:
 			break;
 		}
-		
+
+		addressString="";
+		while(addressString.length() < 8) {
+			addressString = "0" + addressString;
+		}
+		insFunction+=addressString;
+
 		break;
 	case "SOB":
 		insFunction = "010000";
@@ -905,9 +930,10 @@ public class Encoding {
             }
             break;
 
-    case "IN ": //IN 0,0
+    case "IN ":
         insFunction = "111101";
-        switch (instruction.substring(3, 4)) {
+        switch (instruction.substring(4, 5)) {
+
             case "0":
                 insFunction += "00";
                 break;
@@ -924,7 +950,9 @@ public class Encoding {
                 break;
         }
         insFunction += "000";
-        switch (instruction.substring(5, 6)) {
+
+        switch (instruction.substring(6, 7)) {
+
             case "0":
                 insFunction += "00000";
                 break;
@@ -933,7 +961,9 @@ public class Encoding {
         }
         break;
 
-    case "OUT": //OUT 0,0
+
+    case "OUT":
+
             insFunction = "111110";
             switch (instruction.substring(4, 5)) {
                 case "0":
@@ -1149,12 +1179,10 @@ public class Encoding {
                 break;
         }
         break;
->>>>>>> Stashed changes
 	default:
 		break;
 	}
-
-	insFunction += addressString;
+	
 	int decimalInstruction = Integer.parseInt(insFunction, 2);
 	return decimalInstruction;
 	
