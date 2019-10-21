@@ -222,7 +222,7 @@ public class CU {
 		//txtFieldPC.setText(String.valueOf(PC.getValue()));
 		setPCValue(getPCValue()+1);
 		userInterface.updateLogText("\n PC incremented by 1");
-		int R,X,I,address,RX,RY,immed;
+		int R,X,I,address,RX,RY,immed,devID,AL,LR,Count;
 		switch (instructionDec[0]) {
 		case 1:
 			R = instructionDec[1];
@@ -245,6 +245,34 @@ public class CU {
 			address = instructionDec[4];
 			alu.LDA(R,X,I,address);
 			break;
+		case 16:
+            R = instructionDec[1];
+            X = instructionDec[2];
+            I = instructionDec[3];
+            address = instructionDec[4];
+            alu.SOB(R,X,I,address);
+            break;
+        case 17:
+            R = instructionDec[1];
+            X = instructionDec[2];
+            I = instructionDec[3];
+            address = instructionDec[4];
+            alu.JGE(R,X,I,address);
+            break;
+		case 31:
+            R = instructionDec[1];
+            AL = instructionDec[2];
+            LR = instructionDec[3];
+            Count = instructionDec[4];
+            alu.SRC(AL, LR, Count, R);
+            break;
+        case 32:
+            R = instructionDec[1];
+            AL = instructionDec[2];
+            LR = instructionDec[3];
+            Count = instructionDec[4];
+            alu.RRC(AL, LR, Count, R);
+            break;
 		case 41:
 			X = instructionDec[1];
 			I = instructionDec[2];
@@ -257,6 +285,15 @@ public class CU {
 			address = instructionDec[3];
 			alu.STX(X,I,address);
 			break;
+		case 61:
+            R = instructionDec[1];
+            devID = instructionDec[2];
+            alu.IN(R,devID);
+            break;
+        case 62:
+            R = instructionDec[1];
+            devID = instructionDec[2];
+            alu.OUT(R,devID);
 		case 10:
 			R = instructionDec[1];
 			X = instructionDec[2];

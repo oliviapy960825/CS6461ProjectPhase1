@@ -589,28 +589,35 @@ public class UserInterface extends JFrame {
 		});*/
 		
 		btnProgram1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cu.setPCValue(0);
-                txtFieldPC.setText(String.valueOf(cu.getPCValue()));
-                String input = instructionsTextArea.getText();
-                String[] inputNumbers = input.split(",");
-                List<String> list = new ArrayList<String>(Arrays.asList(inputNumbers));
-                List inputA = list.subList(0, list.size()-1);
-                updateLogText("The program 1:" + "\n");
-                updateLogText(inputNumbers);
-                //updateLogText(inputA);
-                int len = inputNumbers.length;
-                String number1 = inputNumbers[len-1];
-                updateLogText(number1);
-//                int len = inputNumbers.length;
-//                String lens = String.valueOf(len);
-//                updateLogText(lens);
-                //int number = Integer.parseInt(number1);
-                //cu.strInsToMemory(input);//instructions stored into memory
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				updateLogText("Please enter 20 numbers and 1 search key in Input panel.(Use comma to separate them)");
+			}
+		});
+		
+// 		btnProgram1.addActionListener(new ActionListener() {
+//             @Override
+//             public void actionPerformed(ActionEvent e) {
+//                 cu.setPCValue(0);
+//                 txtFieldPC.setText(String.valueOf(cu.getPCValue()));
+//                 String input = instructionsTextArea.getText();
+//                 String[] inputNumbers = input.split(",");
+//                 List<String> list = new ArrayList<String>(Arrays.asList(inputNumbers));
+//                 List inputA = list.subList(0, list.size()-1);
+//                 updateLogText("The program 1:" + "\n");
+//                 updateLogText(inputNumbers);
+//                 //updateLogText(inputA);
+//                 int len = inputNumbers.length;
+//                 String number1 = inputNumbers[len-1];
+//                 updateLogText(number1);
+// //                int len = inputNumbers.length;
+// //                String lens = String.valueOf(len);
+// //                updateLogText(lens);
+//                 //int number = Integer.parseInt(number1);
+//                 //cu.strInsToMemory(input);//instructions stored into memory
 
-            }
-        });
+//             }
+//         });
 
 		btnInputFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
