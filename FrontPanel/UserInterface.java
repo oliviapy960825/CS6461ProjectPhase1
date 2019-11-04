@@ -610,39 +610,12 @@ public class UserInterface extends JFrame {
                 String[] inputNumbers = input.split(",");
                 List<String> list = new ArrayList<String>(Arrays.asList(inputNumbers));
                 List inputA = list.subList(0, list.size()-1);
-
                 updateLogText("The program 1:" + "\n");
                 updateLogText(inputNumbers);
                 //updateLogText(inputA);
                 int len = inputNumbers.length;
                 String number1 = inputNumbers[len-1];
                 updateLogText(number1);
-                updateLogText("The 20 numbers entered are:" + "\n");
-                updateLogText(inputA+"\n");
-                //updateLogText(inputA);
-                int len = inputNumbers.length;
-                updateLogText("The search key entered is:" + "\n");
-                String number1 = inputNumbers[len-1];
-                updateLogText(number1+"\n");
-                int nearestNumber = Integer.parseInt(inputNumbers[0]);
-                int[] numbersInput = new int[20];
-                int temp1=Integer.parseInt(number1),temp2=0;
-                for(int i=0;i<=inputA.size()-1;i++) {
-                	temp2 = Integer.parseInt(inputNumbers[i]);
-                	numbersInput[i] = temp1-temp2;
-                	System.out.println(numbersInput[i]);
-                }
-                temp1=numbersInput[0];
-                for(int j=0;j<inputA.size()-1;j++) {
-                	
-                	if(temp1 > numbersInput[j]) {
-                		nearestNumber = numbersInput[j];
-                		temp1 = nearestNumber;
-                	}
-                	System.out.println(nearestNumber);
-                }
-                int finalNum = Integer.parseInt(number1) - nearestNumber;
-                updateLogText(String.valueOf(finalNum));
 //                int len = inputNumbers.length;
 //                String lens = String.valueOf(len);
 //                updateLogText(lens);
