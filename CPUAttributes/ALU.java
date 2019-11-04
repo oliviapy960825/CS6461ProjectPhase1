@@ -1,5 +1,7 @@
 package CPUAttributes;
 
+import javax.swing.JOptionPane;
+
 import FrontPanel.UserInterface;
 import InstructionProcessing.Decoding;
 import InstructionProcessing.Encoding;
@@ -15,6 +17,9 @@ public class ALU {
 		this.userInterface=userInterface;
 	}
 	public int calculateEA(int X,int I,int address){
+	// -----------------------------------------------
+    // The function to calculate the effective address
+    // -----------------------------------------------
 		int EA=0;
 		switch(I){
 		case 0:
@@ -59,7 +64,9 @@ public class ALU {
 	
 	
 	public void LDR(int R,int X,int I,int address) {
-		//This function is for load instruction workflow
+	// ------------------------------------
+    // 01: LDR -> Load Register From Memory
+    // ------------------------------------
 		if(I==0) {
 			//System.out.println(R);
 			userInterface.setMARText(address);
@@ -173,7 +180,9 @@ public class ALU {
 	}
 	
 	public void STR(int R,int X,int I,int address) {
-		//This function is for STR instruction workflow
+	// ------------------------------------
+    // 02: STR -> Store Register To Memory
+    // ------------------------------------
 		userInterface.setMARText(address);
 		//txtFieldMAR.setText(Integer.toString(address));
 		cu.setMARValue(address);
@@ -225,7 +234,9 @@ public class ALU {
 	}
 	
 	public void LDA(int R,int X,int I,int address) {
-		//This function is for LDA instruction workflow
+	// -------------------------------------
+    // 03: LDA -> Load Register with Address
+    // -------------------------------------
 		userInterface.setMBRText(address);
 		//txtFieldMBR.setText(Integer.toString(address));
 		cu.setMBRValue(address);
@@ -262,7 +273,9 @@ public class ALU {
 	}
 	
 	public void LDX(int X,int I,int address) {
-		//This instruction is for LDX instruction workflow
+	// ------------------------------------------
+    // 41: LDX -> Load Index Register from Memory
+    // ------------------------------------------
 		userInterface.setMARText(address);
 		//txtFieldMAR.setText(Integer.toString(address));
 		cu.setMARValue(address);
@@ -305,7 +318,9 @@ public class ALU {
 	}
 	
 	public void STX(int X,int I,int address) {
-		//This function is for STX instruction workflow
+	// ------------------------------------------
+    // 42: STX -> Store Index Register to Memory
+    // ------------------------------------------
 		userInterface.setMARText(address);
 		//txtFieldMAR.setText(Integer.toString(address));
 		
@@ -344,7 +359,10 @@ public class ALU {
 	}
 
 	public void AMR(int R,int X,int I,int address){
-	
+
+	// ---------------------------------
+    // 04: AMR -> Add Memory To Register
+    // ---------------------------------
 		int currentRegisterValue;
 		
 		int EAValue;
@@ -390,6 +408,11 @@ public class ALU {
 	}
 
 	public void JZ (int R, int X, int I, int address){
+
+	// ----------------------
+    // 10: JZ -> Jump If Zero
+    // ----------------------
+
 		if(I==0) {
 			switch (R) {
 			case 0:
@@ -498,6 +521,9 @@ public class ALU {
 	}
 	
 	public void JNE(int R,int X,int I,int address) {
+	// ----------------------------
+    // 11: JNE -> Jump If Not Equal
+    // ----------------------------
 		if(I==0) {
 			switch (R) {
 			case 0:
@@ -606,6 +632,9 @@ public class ALU {
 	}
 	
 	public void JMA(int X,int I,int address) {
+	// ----------------------------------------
+    // 13:JMA -> Unconditional Jump To Address
+    // ----------------------------------------
 		if(I==0) {
 			userInterface.setPCText(address);
 			cu.setPCValue(address);
@@ -628,6 +657,10 @@ public class ALU {
 	}
 	
 	public void JSR(int X,int I,int address) {
+	// ----------------------------------------
+    // 14:JSR -> Jump and Save Return Address
+    // ----------------------------------------
+
 		userInterface.setR3Text(cu.getPCValue());
 		cu.setR3Value(cu.getPCValue()+1);
 		if(I==0) {
@@ -651,6 +684,11 @@ public class ALU {
 		}
 	}
 	public void JCC(int CC,int X,int I,int address) {
+
+	// ---------------------------------
+    // 12:JCC -> Jump If Condition Code
+    // ---------------------------------
+
 		int ccBit = 0;
 		int ADD = address;
 		if(CC == 0) {
@@ -699,7 +737,12 @@ public class ALU {
 			break;
 		}
 	}
+
+
 	public void SMR(int R, int X, int I, int address) {
+	// ---------------------------------------
+    // 05:SMR -> Subtract Memory From Register
+    // ---------------------------------------
 		// TODO Auto-generated method stub
 		int currentRegisterValue;
 		int EAValue;
@@ -742,6 +785,12 @@ public class ALU {
 		
 	}
 	public void AIR(int R, int immed){
+
+
+	// ------------------------------------
+    // 06:AIR -> Add Immediate to Register
+    // ------------------------------------
+
 		if(immed!=0){
 			int currentRegisterValue;
 			switch(R){
@@ -796,6 +845,11 @@ public class ALU {
 		}
 	}
 	public void SIR(int R, int immed){
+
+	// ------------------------------------------
+    // 07:SIR -> Subtract Immediate from Register
+    // ------------------------------------------
+
 		if(immed!=0){
 			int currentRegisterValue;
 			switch(R){
@@ -848,7 +902,13 @@ public class ALU {
 			}
 		}
 	}
+
 	public void MLT(int RX, int RY) throws Exception{
+
+	// ---------------------------------------
+    // 20:MLT -> Multiply Register by Register
+    // ---------------------------------------
+
 		boolean overflow=false;
 		int RXValue=0;
 		int RYValue=0;
@@ -864,16 +924,22 @@ public class ALU {
 				//RX contains the high order bits of the result while RX+1 contains the low order bits of the results
 				
 				temp=Integer.toBinaryString(RXValue*RYValue);
+
+
+
 				System.out.println("result string is: "+temp);
+
 				//Integer.toBinaryString(decInstruction)
 				if(temp.length()>32){
 					overflow=true;
 					throw new Exception("Overflow!");
 				}
 				else{
+
 					while(temp.length()<32){
 						temp="0"+temp;
 					}
+
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
 					cu.setR0Value(RXValue);
 					System.out.println(RXValue);
@@ -893,9 +959,12 @@ public class ALU {
 					throw new Exception("Overflow!");
 				}
 				else{
+
+
 					while(temp.length()<32){
 						temp="0"+temp;
 					}
+
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
 					cu.setR0Value(RXValue);
 					userInterface.setR0Text(RXValue);
@@ -917,14 +986,18 @@ public class ALU {
 				
 				temp=Integer.toBinaryString(RXValue*RYValue);
 				//Integer.toBinaryString(decInstruction)
+
 				if(temp.length()>32){
 					overflow=true;
 					throw new Exception("Overflow!");
 				}
 				else{
+
+
 					while(temp.length()<32){
 						temp="0"+temp;
 					}
+
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
 					cu.setR2Value(RXValue);
 					userInterface.setR2Text(RXValue);
@@ -937,7 +1010,9 @@ public class ALU {
 			case 2:
 				RYValue=cu.getR2Value();
 				temp=Integer.toBinaryString(RXValue*RYValue);
+
 				if(temp.length()>32){
+
 					overflow=true;
 					throw new Exception("Overflow!");
 				}
@@ -964,6 +1039,12 @@ public class ALU {
 		}
 	}
 	public void DVD(int rx,int ry) {
+
+
+	// -------------------------------------
+    // 20:DVD -> Divide Register by Register
+    // -------------------------------------
+
 		int data=0;
 		switch(rx) {
 		case 0:
@@ -973,8 +1054,11 @@ public class ALU {
 		case 2:
 			data=cu.getR2Value();
 			break;
+
+
 		}
 		System.out.println("Data value is: "+data);
+
 		userInterface.updateLogText("\nRx ", data);
 		int temp=0;
 		switch(ry){
@@ -993,6 +1077,7 @@ public class ALU {
 		System.out.println("quotient value is: "+quotient);
 		int remainder = data%temp;
 		System.out.println("remainder value is: "+remainder);
+
 		if(rx==0){
 			cu.setR0Value(quotient);
 			cu.setR1Value(remainder);
@@ -1010,6 +1095,7 @@ public class ALU {
 		
 	}
 public void TRR(int rx, int ry) {
+
 		int data=0;
 		switch(rx) {
 		case 0:
@@ -1142,6 +1228,12 @@ public void ORR(int rx, int ry) {
 		}
 	}
 public void AND(int rx, int ry) {
+
+
+// ----------------------------------------------------
+// 22:TRR -> Test the Equality of Register and Register
+// ----------------------------------------------------
+
 		int data=0;
 		switch(rx) {
 		case 0:
@@ -1160,6 +1252,7 @@ public void AND(int rx, int ry) {
 			break;
 		}
 		userInterface.updateLogText("\nRx ", data);
+
 		String s1=Integer.toBinaryString(data);
 		int temp=0;
 		switch (ry) {
@@ -1178,6 +1271,7 @@ public void AND(int rx, int ry) {
 		default:
 			break;
 		}
+
 		userInterface.updateLogText("\nRy: ",temp);
 		String s2= Integer.toBinaryString(temp);
 		int len= Math.max(s1.length(),s2.length());
@@ -1226,6 +1320,7 @@ public void AND(int rx, int ry) {
 	}
 
 public void NOT(int rx) {
+
 		userInterface.updateLogText("\nMAR ", rx);
 		int data=0;
 		switch(rx) {
@@ -1249,6 +1344,7 @@ public void NOT(int rx) {
 		int len=s1.length();
 		String temp_string="";
 		for(int i=0;i<len;i++) {
+
 			if(s1.charAt(i)=='0') {
 				temp_string=temp_string+"1";
 			}
@@ -1279,10 +1375,17 @@ public void NOT(int rx) {
 			}
 
 }
+
+/*
+* The Transfer instructions change control of program execution. 
+* Conditional transfer instructions test the value of a register.
+*/
 public void SOB(int R, int X, int I, int address) {
-    // -----------------------------------
-    // 016: SOB -> Subtract One and Branch
-    // -----------------------------------
+// -----------------------------------
+// 016: SOB -> Subtract One and Branch
+// -----------------------------------
+
+
     int effectiveAddress = calculateEA(X, I, address);
     int valueOfRn = userInterface.getRnByNum(R);
     userInterface.setRnByNum(R, userInterface.getRnByNum(R) - 1);
@@ -1297,9 +1400,12 @@ public void SOB(int R, int X, int I, int address) {
 }
 
 public void JGE(int R, int X, int I, int address) {
-    // -----------------------------------
-    // 017: JGE -> Jump Greater Than or Equal To
-    // -----------------------------------
+
+
+// -----------------------------------
+// 017: JGE -> Jump Greater Than or Equal To
+// -----------------------------------
+
     int effectiveAddress = calculateEA(X, I, address);
     if (userInterface.getRnByNum(R)>=0) {
         cu.setPCValue(effectiveAddress);
@@ -1309,6 +1415,7 @@ public void JGE(int R, int X, int I, int address) {
 		userInterface.updateLogText("PC:", cu.getPCValue());
     }
 }
+
 /*
 * The IO instruction
 * IN: Input Character To Register from Device, r = 0..3
@@ -1316,6 +1423,12 @@ public void JGE(int R, int X, int I, int address) {
 * */
 
 public void IN(int R, int devId) {
+
+    //This function is for IN instruction workflow
+    //String inputValue = input;
+// ------------------------------------------------
+// 61:IN -> Input Character To Register from Device
+// ------------------------------------------------
     //This function is for IN instruction workflow
     //String inputValue = input;
     if (devId == 00000) { //Console Keyboard input
@@ -1357,7 +1470,12 @@ public void IN(int R, int devId) {
 }
 
 public void OUT(int R, int devId) {
-    //This function is for IN instruction workflow
+
+
+// --------------------------------------------------
+// 62:OUT -> Output Character to Device from Register
+// --------------------------------------------------
+
     int outputValue;
 
     if (devId == 00001){
@@ -1382,11 +1500,18 @@ public void OUT(int R, int devId) {
 
     }
 }
+
 /* Shift and rotate instruction
  * The shift instruction include logic shift and arithmetic shift.
  * The rotate instruction is the logic instruction.
  */
 public void SRC(int AL, int LR, int Count, int R) {
+
+
+// ---------------------------------
+// 31:SRC -> Shift Register by Count
+// ---------------------------------
+
 	int datum = userInterface.getRnByNum(R);
 	switch (AL){
 		case 0:
@@ -1417,6 +1542,13 @@ public void SRC(int AL, int LR, int Count, int R) {
 }
 
 public void RRC(int AL, int LR, int Count, int R) {
+
+
+// ----------------------------------
+// 32:RRC -> Rotate Register by Count
+// ----------------------------------
+
+
     String x = null; // first part of the content
     String y = null; // second part of the content
     String z = null; // string form of content of the register
