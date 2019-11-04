@@ -22,17 +22,19 @@ public class Cache {
 //being the address and the second element being the value) to implement the queue,since our memory is expanded to 4096 words, 
 //we decided to have 32 cache lines
 //
-	CU cu;
+	private static CU cu;
 	PrintWriter writer;
-	UserInterface userInterface;
+	private static UserInterface userInterface;
 //how to demonstrate cache works--save the work flow of cache to a file
 	public void setUserInterface(UserInterface userInterface){
-		this.userInterface=userInterface;
+		Cache.userInterface=userInterface;
 	}
 	public Cache(){
 		Queue<int[]> cache = new LinkedList<>();
-		CU cu = new CU();
 		File newTextFile = new File("cache_work_flow.txt");
+	}
+	public void setCU(CU cu){
+		Cache.cu=cu;
 	}
 	public void addToCache(int address, Queue<int[]> cache){
 		
@@ -50,7 +52,7 @@ public class Cache {
 			e.printStackTrace();
 		}
 		
-		int value=cu.fetchFromMemory(address);
+		int value=cu.memory.fetchFromMemory(address);
 		cu.setMBRValue(value);
 		str="SET MBR TO: "+Integer.toString(value);
 		try {

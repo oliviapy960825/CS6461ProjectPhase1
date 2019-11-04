@@ -3,10 +3,15 @@ package CPUAttributes;
 public class Register {
 	private int size = 16;
 	private int value;
+	private static CU cu;
 	public Register() {
 		//constructor for GeneralPurposeRegister class
 		this.value = 0;
+		
 		// TODO Auto-generated constructor stub
+	}
+	public void setCU(CU cu){
+		this.cu=cu;
 	}
 	
 	public int getSize() {
