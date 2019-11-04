@@ -18,6 +18,9 @@ public class CU {
 	private  ProgramCounter PC;
 	private  MemoryAccessRegister MAR;
 	private  MemoryBufferRegister MBR ;
+
+	private MachineFaultRegister MFR;
+
 	private InstructionRegister IR;
 	private IndexRegister X1;
 	private  IndexRegister X2;
@@ -27,6 +30,8 @@ public class CU {
 	private  GeneralPurposeRegister R2;
 	private  GeneralPurposeRegister R3  ;
 	private  ConditionCodeRegister CC;
+
+	private MachineFaultException MFE;
 	
 	public CU(ALU alu, Cache cache, Memory memory, ProgramCounter PC, MemoryAccessRegister MAR, MemoryBufferRegister MBR,InstructionRegister IR,IndexRegister X1, IndexRegister X2, IndexRegister X3,  GeneralPurposeRegister R0,  GeneralPurposeRegister R1,  GeneralPurposeRegister R2,  GeneralPurposeRegister R3, ConditionCodeRegister CC, Encoding encode, Decoding decode){
 		this.alu=alu;
@@ -130,6 +135,14 @@ public class CU {
 		R0.setValue(address);
 		userInterface.setR0Text(address);
 		//userInterface.getR0Text();
+
+	}
+	public int getMFRValue(){
+		return MFR.getValue();
+	}
+	public void setMFRValue(int value){
+		MFR.setValue(value);
+
 	}
 	public int getR0Value(){
 		return R0.getValue();
@@ -198,7 +211,9 @@ public class CU {
 	public int getCCValue(){
 		return CC.getccValue();
 	}
-	public Boolean iExec(int Address) throws MachineFaultException {
+
+	public Boolean iExec(int Address) throws Exception {
+
 		//This function is for executing the instructions of user input
 		//System.out.print(Address);
 		Boolean status = true;
@@ -245,34 +260,7 @@ public class CU {
 			address = instructionDec[4];
 			alu.LDA(R,X,I,address);
 			break;
-		case 16:
-            R = instructionDec[1];
-            X = instructionDec[2];
-            I = instructionDec[3];
-            address = instructionDec[4];
-            alu.SOB(R,X,I,address);
-            break;
-        case 17:
-            R = instructionDec[1];
-            X = instructionDec[2];
-            I = instructionDec[3];
-            address = instructionDec[4];
-            alu.JGE(R,X,I,address);
-            break;
-		case 31:
-            R = instructionDec[1];
-            AL = instructionDec[2];
-            LR = instructionDec[3];
-            Count = instructionDec[4];
-            alu.SRC(AL, LR, Count, R);
-            break;
-        case 32:
-            R = instructionDec[1];
-            AL = instructionDec[2];
-            LR = instructionDec[3];
-            Count = instructionDec[4];
-            alu.RRC(AL, LR, Count, R);
-            break;
+
 		case 41:
 			X = instructionDec[1];
 			I = instructionDec[2];
@@ -285,15 +273,7 @@ public class CU {
 			address = instructionDec[3];
 			alu.STX(X,I,address);
 			break;
-		case 61:
-            R = instructionDec[1];
-            devID = instructionDec[2];
-            alu.IN(R,devID);
-            break;
-        case 62:
-            R = instructionDec[1];
-            devID = instructionDec[2];
-            alu.OUT(R,devID);
+
 		case 10:
 			R = instructionDec[1];
 			X = instructionDec[2];
@@ -384,9 +364,54 @@ public class CU {
 		case 25:
 			RX = instructionDec[1];
 			alu.NOT(RX);
-			break;	
-		default:
 			break;
+        
+		case 16:
+            R = instructionDec[1];
+            X = instructionDec[2];
+            I = instructionDec[3];
+            address = instructionDec[4];
+            alu.SOB(R,X,I,address);
+            break;
+        case 17:
+            R = instructionDec[1];
+            X = instructionDec[2];
+            I = instructionDec[3];
+            address = instructionDec[4];
+            alu.JGE(R,X,I,address);
+            break;
+		case 31:
+            R = instructionDec[1];
+            AL = instructionDec[2];
+            LR = instructionDec[3];
+            Count = instructionDec[4];
+            alu.SRC(AL, LR, Count, R);
+            break;
+        case 32:
+            R = instructionDec[1];
+            AL = instructionDec[2];
+            LR = instructionDec[3];
+            Count = instructionDec[4];
+            alu.RRC(AL, LR, Count, R);
+            break;
+		case 61:
+            R = instructionDec[1];
+            devID = instructionDec[2];
+            alu.IN(R,devID);
+            break;
+        case 62:
+            R = instructionDec[1];
+            devID = instructionDec[2];
+            alu.OUT(R,devID);
+            break;
+		default:
+			
+			System.out.println(MFE.IllegalOperationCode.getMessage());
+			setMFRValue(Integer.parseInt(MFE.IllegalOperationCode.getMFR(),2));
+			storeIntoMemory(4,Integer.parseInt(MFE.IllegalOperationCode.getMFR(),2));
+			fetchFromMemory(1);
+      break;
+
 		}
 		return status;
 	}

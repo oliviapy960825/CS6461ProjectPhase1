@@ -193,7 +193,7 @@ public class Encoding {
 			break;
 		}
 		addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(8)));
-		while(addressString.length() < 5) {
+		while(addressString.length() < 7) {
 			addressString = "0" + addressString;
 		}
 		insFunction+=addressString;
@@ -224,7 +224,7 @@ public class Encoding {
 			break;
 		}
 		addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(8)));
-		while(addressString.length() < 5) {
+		while(addressString.length() < 7) {
 			addressString = "0" + addressString;
 		}
 		insFunction+=addressString;
@@ -416,7 +416,7 @@ public class Encoding {
 			break;
 		}
 		addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(9)));
-		while(addressString.length() < 8) {
+		while(addressString.length() < 7) {
 			addressString = "0" + addressString;
 		}
 		insFunction+=addressString;
@@ -450,7 +450,7 @@ public class Encoding {
 			break;
 		}
 		addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(9)));
-		while(addressString.length() < 8) {
+		while(addressString.length() < 7) {
 			addressString = "0" + addressString;
 		}
 		insFunction+=addressString;
@@ -622,7 +622,6 @@ public class Encoding {
 		case "2":
 			insFunction += "10";
 			break;
-
 		default:
 			break;
 		}
@@ -661,7 +660,7 @@ public class Encoding {
 			break;
 		default:
 			break;
-
+		
 		}
 		switch (instruction.substring(6, 7)) {
 		case "0":
@@ -679,13 +678,11 @@ public class Encoding {
 		default:
 			break;
 		}
-
 		addressString="";
 		while(addressString.length() < 6) {
 			addressString = "0" + addressString;
 		}
 		insFunction+=addressString;
-
 		break;
 	case "TRR"://TRR rx, ry
 		insFunction = "010110";
@@ -721,8 +718,11 @@ public class Encoding {
 		default:
 			break;
 		}
-
-		
+		addressString="";
+		while(addressString.length() < 6) {
+			addressString = "0" + addressString;
+		}
+		insFunction+=addressString;
 		break;
 	case "ORR"://ORR rx, ry
 		insFunction = "011000";
@@ -758,10 +758,12 @@ public class Encoding {
 		default:
 			break;
 		}
-
-		
+		addressString="";
+		while(addressString.length() < 6) {
+			addressString = "0" + addressString;
+		}
+		insFunction+=addressString;
 		break;
-
 	case "AND"://AND rx, ry
 		insFunction = "010111";
 
@@ -780,6 +782,7 @@ public class Encoding {
 			break;
 		default:
 			break;
+
 		}
 		switch (instruction.substring(6, 7)) {
 		case "0":
@@ -803,6 +806,7 @@ public class Encoding {
 			addressString = "0" + addressString;
 		}
 		insFunction+=addressString;
+
 		break;	
 	case "NOT"://NOT rx
 		insFunction = "011001";
@@ -822,13 +826,11 @@ public class Encoding {
 		default:
 			break;
 		}
-
 		addressString="";
 		while(addressString.length() < 8) {
 			addressString = "0" + addressString;
 		}
 		insFunction+=addressString;
-
 		break;
 	case "SOB":
 		insFunction = "010000";
@@ -950,9 +952,7 @@ public class Encoding {
                 break;
         }
         insFunction += "000";
-
         switch (instruction.substring(6, 7)) {
-
             case "0":
                 insFunction += "00000";
                 break;
@@ -960,7 +960,6 @@ public class Encoding {
                 break;
         }
         break;
-
 
     case "OUT":
 

@@ -38,6 +38,10 @@ public class Main {
 							ALU alu=new ALU();
 							Cache cache=new Cache();
 							Memory memory=new Memory();
+
+							memory.storeIntoMemory(1, 6);//The memory address 1contains the address of a routine to handle machine faults. 
+							memory.storeIntoMemory(6, 0);//HALT
+
 							ProgramCounter PC=new ProgramCounter();
 							MemoryAccessRegister MAR=new MemoryAccessRegister();
 							MemoryBufferRegister MBR=new MemoryBufferRegister();
