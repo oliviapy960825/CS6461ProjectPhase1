@@ -2,17 +2,16 @@ package Memory;
 
 import CPUAttributes.CU;
 import FrontPanel.UserInterface;
-
 import InstructionProcessing.MachineFaultException;
-
 public class Memory {
 	//private static UserInterface userInterface;
 	private static int memory[] = new int[2048];
 	//private static int extendedMemory[] = new int[4096];
 	private static CU cu;
-
-	private MachineFaultException MFE;
-
+	private MachineFaultException IllegalMemoryToReservedLocation=MachineFaultException.IllegalMemoryToReservedLocation;
+	private MachineFaultException IllegalOperationCode=MachineFaultException.IllegalOperationCode;
+	private MachineFaultException IllegalTrapCode=MachineFaultException.IllegalTrapCode;
+	private MachineFaultException IllegalMemoryAddressBeyondMemorySize=MachineFaultException.IllegalMemoryAddressBeyondMemorySize;
 	public Memory(){
 		Memory.memory=new int[2048];
 	}
@@ -38,14 +37,15 @@ public class Memory {
 	public void storeIntoMemory(int address, int value) {
 		if (Memory.memory.length>0 && Memory.memory.length>address) {
 			Memory.memory[address]=value;
-
+			System.out.println("Now the value at memory address: "+ address+" is: "+ value);
 		}
 		else if(Memory.memory.length<address){
-			System.out.println(MFE.IllegalMemoryAddressBeyondMemorySize.getMessage());
-			cu.setMFRValue(Integer.parseInt(MFE.IllegalMemoryAddressBeyondMemorySize.getMFR(),2));
-			cu.storeIntoMemory(4, Integer.parseInt(MFE.IllegalMemoryAddressBeyondMemorySize.getMFR(),2));
+			System.out.println(IllegalMemoryAddressBeyondMemorySize.getMessage());
+			System.out.println(Integer.parseInt(IllegalMemoryAddressBeyondMemorySize.getMFR(),2));
+			System.out.println();
+			cu.setMFRValue(Integer.parseInt(IllegalMemoryAddressBeyondMemorySize.getMFR(),2));
+			cu.storeIntoMemory(4, Integer.parseInt(IllegalMemoryAddressBeyondMemorySize.getMFR(),2));
 			cu.fetchFromMemory(1);
-
 		}
 	}
 }

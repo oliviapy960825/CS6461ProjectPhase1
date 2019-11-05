@@ -10,7 +10,7 @@ public enum MachineFaultException{
 	OverFlow(4, "OverFlow", Integer.valueOf("0011"));
 	int faultCode;
 	String message;
-	MachineFaultRegister MFR;
+	MachineFaultRegister MFR=new MachineFaultRegister() ;
 	
 	/**
 	 * @param faultCode

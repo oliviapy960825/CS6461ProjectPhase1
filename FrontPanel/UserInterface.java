@@ -48,9 +48,10 @@ public class UserInterface extends JFrame {
 	//This class is for the User Interface designs and interactions
 	//It has one contentPanel and many fields and buttons for each user input area and button
 	//It also has text areas for user input and also the log/console for displaying what's happening behind
-
-	private MachineFaultException MFE;
-
+	private MachineFaultException IllegalMemoryToReservedLocation=MachineFaultException.IllegalMemoryToReservedLocation;
+	private MachineFaultException IllegalOperationCode=MachineFaultException.IllegalOperationCode;
+	private MachineFaultException IllegalTrapCode=MachineFaultException.IllegalTrapCode;
+	private MachineFaultException IllegalMemoryAddressBeyondMemorySize=MachineFaultException.IllegalMemoryAddressBeyondMemorySize;
 	protected static JPanel contentPane;
 	private static JTextField txtFieldR0;
 	private static JTextField txtFieldR1;
@@ -216,7 +217,7 @@ public class UserInterface extends JFrame {
 				// TODO Auto-generated method stub
 				//System.out.print(cu.getR0Value());
 				//SwingUtilities.invokeLater();
-
+				
 				txtFieldR0.setText(String.valueOf(cu.getR0Value()));
 				contentPane.revalidate();
 				contentPane.repaint();
@@ -513,15 +514,13 @@ public class UserInterface extends JFrame {
         btnProgram1.setBackground(Color.LIGHT_GRAY);
         btnProgram1.setBounds(15, 604, 123, 29);
         contentPane.add(btnProgram1);
-
-
 		
 		JLabel lblNewLabel = new JLabel("INSTRUCTION INPUT");
 		lblNewLabel.setBounds(201, 449, 153, 21);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblLogconsole = new JLabel("LOG/CONSOLE");
-		lblLogconsole.setBounds(497, 449, 200, 35);
+		lblLogconsole.setBounds(497, 449, 110, 21);
 		contentPane.add(lblLogconsole);
 		
 		JLabel lblMemory = new JLabel("MEMORY");
@@ -583,15 +582,7 @@ public class UserInterface extends JFrame {
 		logScrollPanel.setFont(new Font("Monospaced", Font.PLAIN, 12));
 		logScrollPanel.setBounds(449, 486, 208, 147);
 		contentPane.add(logScrollPanel);
-
 		
-		/*btnInput.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String input = txtKeyboard.getText();
-				txtKeyboard.setText(input);
-			}
-		});*/
 		
 		/*btnInput.addActionListener(new ActionListener() {
 			@Override
@@ -610,39 +601,12 @@ public class UserInterface extends JFrame {
                 String[] inputNumbers = input.split(",");
                 List<String> list = new ArrayList<String>(Arrays.asList(inputNumbers));
                 List inputA = list.subList(0, list.size()-1);
-
                 updateLogText("The program 1:" + "\n");
                 updateLogText(inputNumbers);
                 //updateLogText(inputA);
                 int len = inputNumbers.length;
                 String number1 = inputNumbers[len-1];
                 updateLogText(number1);
-                updateLogText("The 20 numbers entered are:" + "\n");
-                updateLogText(inputA+"\n");
-                //updateLogText(inputA);
-                int len = inputNumbers.length;
-                updateLogText("The search key entered is:" + "\n");
-                String number1 = inputNumbers[len-1];
-                updateLogText(number1+"\n");
-                int nearestNumber = Integer.parseInt(inputNumbers[0]);
-                int[] numbersInput = new int[20];
-                int temp1=Integer.parseInt(number1),temp2=0;
-                for(int i=0;i<=inputA.size()-1;i++) {
-                	temp2 = Integer.parseInt(inputNumbers[i]);
-                	numbersInput[i] = temp1-temp2;
-                	System.out.println(numbersInput[i]);
-                }
-                temp1=numbersInput[0];
-                for(int j=0;j<inputA.size()-1;j++) {
-                	
-                	if(temp1 > numbersInput[j]) {
-                		nearestNumber = numbersInput[j];
-                		temp1 = nearestNumber;
-                	}
-                	System.out.println(nearestNumber);
-                }
-                int finalNum = Integer.parseInt(number1) - nearestNumber;
-                updateLogText(String.valueOf(finalNum));
 //                int len = inputNumbers.length;
 //                String lens = String.valueOf(len);
 //                updateLogText(lens);
@@ -651,7 +615,6 @@ public class UserInterface extends JFrame {
 
             }
         });
-
 
 		btnInputFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -674,7 +637,6 @@ public class UserInterface extends JFrame {
 				}
 			}
 		});
-
 		btnStoreR0.addActionListener(new ActionListener() {
 			
 			@Override
@@ -827,14 +789,12 @@ public class UserInterface extends JFrame {
 				//System.out.println(insAddress);
 				//int iAdd = Integer.parseInt(insAddress,2);
 				//int iAdd=encoding.insToDec(insAddress);
-
 					try {
 						cu.iExec(iAdd);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-
 				contentPane.revalidate();
 				validate();
 			}
@@ -849,17 +809,15 @@ public class UserInterface extends JFrame {
 				if(addr != null && dataValue != null) {
 					int add = Integer.parseInt(addr);
 					int value = Integer.parseInt(dataValue);
-
 					if(add !=0 && add!=1 && add!=2 && add!= 3 && add!=4 && add!=5 && add!=6){
 					cu.memory.storeIntoMemory(add, value);
-          }
+					}
 					else{
-						System.out.println(MFE.IllegalMemoryToReservedLocation.getMessage());
-						cu.setMFRValue(Integer.parseInt(MFE.IllegalMemoryToReservedLocation.getMFR(),2));
-						cu.storeIntoMemory(4,Integer.parseInt(MFE.IllegalMemoryToReservedLocation.getMFR(),2));
+						System.out.println(IllegalMemoryToReservedLocation.getMessage());
+						cu.setMFRValue(Integer.parseInt(IllegalMemoryToReservedLocation.getMFR(),2));
+						cu.storeIntoMemory(4,Integer.parseInt(IllegalMemoryToReservedLocation.getMFR(),2));
 						cu.fetchFromMemory(1);
 					}
-
 					//Memory[add] = value;
 				}
 				contentPane.revalidate();
@@ -892,7 +850,6 @@ public class UserInterface extends JFrame {
 		    	int iAddress = Integer.parseInt(insAddress,2);
 		    	Boolean status = true;
 		    	while (status) {
-
 					
 						try {
 							status = cu.iExec(iAddress);
@@ -901,7 +858,6 @@ public class UserInterface extends JFrame {
 							e1.printStackTrace();
 						}
 						iAddress++;
-
 				}
 		    	contentPane.revalidate();
 		    	validate();
