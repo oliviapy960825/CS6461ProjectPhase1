@@ -193,7 +193,7 @@ public class Encoding {
 			break;
 		}
 		addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(8)));
-		while(addressString.length() < 5) {
+		while(addressString.length() < 7) {
 			addressString = "0" + addressString;
 		}
 		insFunction+=addressString;
@@ -224,7 +224,7 @@ public class Encoding {
 			break;
 		}
 		addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(8)));
-		while(addressString.length() < 5) {
+		while(addressString.length() < 7) {
 			addressString = "0" + addressString;
 		}
 		insFunction+=addressString;
@@ -416,7 +416,7 @@ public class Encoding {
 			break;
 		}
 		addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(9)));
-		while(addressString.length() < 8) {
+		while(addressString.length() < 7) {
 			addressString = "0" + addressString;
 		}
 		insFunction+=addressString;
@@ -450,7 +450,7 @@ public class Encoding {
 			break;
 		}
 		addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(9)));
-		while(addressString.length() < 8) {
+		while(addressString.length() < 7) {
 			addressString = "0" + addressString;
 		}
 		insFunction+=addressString;

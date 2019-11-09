@@ -11,10 +11,12 @@ import CPUAttributes.Cache;
 import CPUAttributes.GeneralPurposeRegister;
 import CPUAttributes.IndexRegister;
 import CPUAttributes.InstructionRegister;
+import CPUAttributes.MachineFaultRegister;
 import CPUAttributes.MemoryAccessRegister;
 import CPUAttributes.MemoryBufferRegister;
 import InstructionProcessing.Decoding;
 import InstructionProcessing.Encoding;
+import InstructionProcessing.MachineFaultException;
 import Memory.Memory;
 public class Main {
 	//private static UserInterface userInterface=new UserInterface();
@@ -38,9 +40,13 @@ public class Main {
 							ALU alu=new ALU();
 							Cache cache=new Cache();
 							Memory memory=new Memory();
+							memory.storeIntoMemory(1, 6);//The memory address 1contains the address of a routine to handle machine faults. 
+							memory.storeIntoMemory(6, 0);//HALT
+							//MachineFaultException MFE = null;
 							ProgramCounter PC=new ProgramCounter();
 							MemoryAccessRegister MAR=new MemoryAccessRegister();
 							MemoryBufferRegister MBR=new MemoryBufferRegister();
+							MachineFaultRegister MFR=new MachineFaultRegister();
 							InstructionRegister IR= new InstructionRegister();
 							IndexRegister X1=new IndexRegister();
 							IndexRegister X2=new IndexRegister();
@@ -52,7 +58,7 @@ public class Main {
 							ConditionCodeRegister CC=new ConditionCodeRegister();
 							Encoding encode=new Encoding();
 							Decoding decode=new Decoding();
-							CU cu=new CU(alu,cache,memory,PC,MAR,MBR,IR,X1,X2,X3,R0,R1,R2,R3,CC, encode,decode);
+							CU cu=new CU(alu,cache,memory,PC,MAR,MBR,MFR,IR,X1,X2,X3,R0,R1,R2,R3,CC, encode,decode);
 							UserInterface userInterface=new UserInterface(cu,alu);
 							
 							userInterface.setVisible(true);

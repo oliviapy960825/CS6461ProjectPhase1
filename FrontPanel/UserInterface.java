@@ -48,7 +48,10 @@ public class UserInterface extends JFrame {
 	//This class is for the User Interface designs and interactions
 	//It has one contentPanel and many fields and buttons for each user input area and button
 	//It also has text areas for user input and also the log/console for displaying what's happening behind
-	
+	private MachineFaultException IllegalMemoryToReservedLocation=MachineFaultException.IllegalMemoryToReservedLocation;
+	private MachineFaultException IllegalOperationCode=MachineFaultException.IllegalOperationCode;
+	private MachineFaultException IllegalTrapCode=MachineFaultException.IllegalTrapCode;
+	private MachineFaultException IllegalMemoryAddressBeyondMemorySize=MachineFaultException.IllegalMemoryAddressBeyondMemorySize;
 	protected static JPanel contentPane;
 	private static JTextField txtFieldR0;
 	private static JTextField txtFieldR1;
@@ -214,6 +217,7 @@ public class UserInterface extends JFrame {
 				// TODO Auto-generated method stub
 				//System.out.print(cu.getR0Value());
 				//SwingUtilities.invokeLater();
+				
 				txtFieldR0.setText(String.valueOf(cu.getR0Value()));
 				contentPane.revalidate();
 				contentPane.repaint();
@@ -589,35 +593,28 @@ public class UserInterface extends JFrame {
 		});*/
 		
 		btnProgram1.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				updateLogText("Please enter 20 numbers and 1 search key in Input panel.(Use comma to separate them)");
-			}
-		});
-		
-// 		btnProgram1.addActionListener(new ActionListener() {
-//             @Override
-//             public void actionPerformed(ActionEvent e) {
-//                 cu.setPCValue(0);
-//                 txtFieldPC.setText(String.valueOf(cu.getPCValue()));
-//                 String input = instructionsTextArea.getText();
-//                 String[] inputNumbers = input.split(",");
-//                 List<String> list = new ArrayList<String>(Arrays.asList(inputNumbers));
-//                 List inputA = list.subList(0, list.size()-1);
-//                 updateLogText("The program 1:" + "\n");
-//                 updateLogText(inputNumbers);
-//                 //updateLogText(inputA);
-//                 int len = inputNumbers.length;
-//                 String number1 = inputNumbers[len-1];
-//                 updateLogText(number1);
-// //                int len = inputNumbers.length;
-// //                String lens = String.valueOf(len);
-// //                updateLogText(lens);
-//                 //int number = Integer.parseInt(number1);
-//                 //cu.strInsToMemory(input);//instructions stored into memory
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cu.setPCValue(0);
+                txtFieldPC.setText(String.valueOf(cu.getPCValue()));
+                String input = instructionsTextArea.getText();
+                String[] inputNumbers = input.split(",");
+                List<String> list = new ArrayList<String>(Arrays.asList(inputNumbers));
+                List inputA = list.subList(0, list.size()-1);
+                updateLogText("The program 1:" + "\n");
+                updateLogText(inputNumbers);
+                //updateLogText(inputA);
+                int len = inputNumbers.length;
+                String number1 = inputNumbers[len-1];
+                updateLogText(number1);
+//                int len = inputNumbers.length;
+//                String lens = String.valueOf(len);
+//                updateLogText(lens);
+                //int number = Integer.parseInt(number1);
+                //cu.strInsToMemory(input);//instructions stored into memory
 
-//             }
-//         });
+            }
+        });
 
 		btnInputFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -792,18 +789,18 @@ public class UserInterface extends JFrame {
 				//System.out.println(insAddress);
 				//int iAdd = Integer.parseInt(insAddress,2);
 				//int iAdd=encoding.insToDec(insAddress);
-				try {
-					cu.iExec(iAdd);
-				} catch (MachineFaultException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+					try {
+						cu.iExec(iAdd);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				contentPane.revalidate();
 				validate();
 			}
 		});
 		
-		btnStore.addActionListener(new ActionListener() {
+		btnStore.addActionListener(new ActionListener() {//store into memory
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -812,7 +809,15 @@ public class UserInterface extends JFrame {
 				if(addr != null && dataValue != null) {
 					int add = Integer.parseInt(addr);
 					int value = Integer.parseInt(dataValue);
+					if(add !=0 && add!=1 && add!=2 && add!= 3 && add!=4 && add!=5 && add!=6){
 					cu.memory.storeIntoMemory(add, value);
+					}
+					else{
+						System.out.println(IllegalMemoryToReservedLocation.getMessage());
+						cu.setMFRValue(Integer.parseInt(IllegalMemoryToReservedLocation.getMFR(),2));
+						cu.storeIntoMemory(4,Integer.parseInt(IllegalMemoryToReservedLocation.getMFR(),2));
+						cu.fetchFromMemory(1);
+					}
 					//Memory[add] = value;
 				}
 				contentPane.revalidate();
@@ -845,13 +850,14 @@ public class UserInterface extends JFrame {
 		    	int iAddress = Integer.parseInt(insAddress,2);
 		    	Boolean status = true;
 		    	while (status) {
-					try {
-						status = cu.iExec(iAddress);
-					} catch (MachineFaultException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					iAddress++;
+					
+						try {
+							status = cu.iExec(iAddress);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						iAddress++;
 				}
 		    	contentPane.revalidate();
 		    	validate();
