@@ -398,12 +398,15 @@ public class CU {
             devID = instructionDec[2];
             alu.OUT(R,devID);
             break;
+        
 		default:
 			
 			System.out.println(IllegalOperationCode.getMessage());
 			setMFRValue(Integer.parseInt(IllegalOperationCode.getMFR(),2));
 			storeIntoMemory(4,Integer.parseInt(IllegalOperationCode.getMFR(),2));
 			fetchFromMemory(1);
+			status = false;
+			break;
 		}
 		return status;
 	}
