@@ -449,7 +449,7 @@ public class Encoding {
 		default:
 			break;
 		}
-		addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(9)));
+		addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(6)));
 		while(addressString.length() < 7) {
 			addressString = "0" + addressString;
 		}
@@ -1168,6 +1168,22 @@ public class Encoding {
                 break;
         }
         break;
+    case "TRAP":
+    	 insFunction = "100100";
+    	 
+    	 
+    	 //String string=Integer.toBinaryString(instruction.substring(5));
+    	 int trapCode=Integer.parseInt(instruction.substring(5));
+    	 String binaryTrapCode=Integer.toBinaryString(trapCode);
+    	 while(binaryTrapCode.length()<4){
+    		 binaryTrapCode="0"+binaryTrapCode;
+    	 }
+    	 insFunction+=binaryTrapCode;
+    	 
+    	 while(insFunction.length()<16){
+    		 insFunction+="0";
+    	 }
+    	 //insFunction+=instruction.substring(6);//length=4
 	default:
 		break;
 	}

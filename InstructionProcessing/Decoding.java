@@ -195,6 +195,10 @@ public class Decoding {
 				instruction[1] = Integer.parseInt(binaryInstruction.substring(6,8), 2);
 				instruction[2] = Integer.parseInt(binaryInstruction.substring(11), 2);
 				break;
+			case "100100":  //TRAP instruction
+				instruction[0] = 36;
+				instruction[1] = Integer.parseInt(binaryInstruction.substring(6,10), 2);//location 6-9 in the instructionStruction now stores the trap code
+				break;
 			default:
 				break;
 			}
