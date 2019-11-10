@@ -1,5 +1,7 @@
 package CPUAttributes;
 
+import javax.swing.JOptionPane;
+
 import FrontPanel.UserInterface;
 import InstructionProcessing.Decoding;
 import InstructionProcessing.Encoding;
@@ -7,6 +9,7 @@ import InstructionProcessing.MachineFaultException;
 
 public class ALU {
 	private CU cu;
+	private Cache cache;
 	private UserInterface userInterface;
 	private MachineFaultException IllegalMemoryToReservedLocation=MachineFaultException.IllegalMemoryToReservedLocation;
 	private MachineFaultException IllegalOperationCode=MachineFaultException.IllegalOperationCode;
@@ -19,6 +22,9 @@ public class ALU {
 		this.userInterface=userInterface;
 	}
 	public int calculateEA(int X,int I,int address){
+	// -----------------------------------------------
+    // The function to calculate the effective address
+    // -----------------------------------------------
 		int EA=0;
 		switch(I){
 		case 0:
@@ -43,6 +49,7 @@ public class ALU {
 			switch(X){
 			case 0:
 				EA=cu.memory.fetchFromMemory(address);
+				//userInterface.updateLogText("x=0", EA);
 				break;
 			case 1:
 				EA=cu.memory.fetchFromMemory(cu.getX1Value()+address);
@@ -60,8 +67,43 @@ public class ALU {
 		}
 		return EA;
 	}
-	
-	
+
+//    public void TRAP(int code) throws MachineFaultException {
+//
+//        // System.out.println("This is a TRAP instruction!");
+//        while(code <= 15 || code >= 0){
+//            // store pc+1 into memory 2
+//            cu.setMARValue(2);
+//            cu.setMBRValue(cu.getPCValue() + 1);
+//            // goes to the routine whose address is in memory location 0
+//            cu.setMARValue(0);
+//            int tableAddress = cu.getMBRValue();
+//
+//            cu.setMARValue(code + tableAddress);
+//            cu.setMBRValue(cache.peekFromCache(cu.getMARValue()));
+//
+//            int routine = cu.getMBRValue();
+//            cu.setPCValue(routine);
+//
+//            do {
+//                cu.setMARValue(cu.getPCValue());
+//                cu.setMBRValue(cu.getMARValue());
+//                cu.setIRValue(cu.getMBRValue());
+//                String ins = Integer.toBinaryString(cu.getIRValue());
+//                String opCode = ins.substring(0, 6);
+//                cu.iExec(routine);
+//            } while (cu.getIRValue() != 0);
+//
+//
+//
+//            // return to the instruction
+//            cu.setMARValue(2);
+//            cu.setMBRValue(cu.getMARValue());
+//            cu.setPCValue(cu.getMBRValue());
+//        }
+//
+//    }
+
 	public void LDR(int R,int X,int I,int address) {
 		//This function is for load instruction workflow
 		/*if(I==0) {
@@ -71,7 +113,6 @@ public class ALU {
 			//txtFieldMAR.setText(Integer.toString(address));
 			cu.setMARValue(EA);
 			userInterface.updateLogText("\n MAR : ",EA);
-			
 			int data = cu.memory.fetchFromMemory(EA);
 
 			userInterface.setMBRText(data);
@@ -126,7 +167,7 @@ public class ALU {
 			userInterface.setMARText(ADD);
 			//txtFieldMAR.setText(Integer.toString(ADD));
 			cu.setMARValue(ADD);
-			
+
 			userInterface.updateLogText("\n MAR : ",ADD);
 			//logTextArea.append("\n MAR : " + ADD);
 			int data=cu.memory.fetchFromMemory(ADD);
@@ -134,7 +175,7 @@ public class ALU {
 			userInterface.setMBRText(data);
 			//txtFieldMBR.setText(Integer.toString(data));
 			cu.setMBRValue(data);
-			
+
 			userInterface.updateLogText("\n MBR : ",data);
 			//logTextArea.append("\n MBR : " +data);
 			switch (R) {
@@ -142,7 +183,7 @@ public class ALU {
 				userInterface.setR0Text(data);
 				//txtFieldR0.setText(Integer.toString(data));
 				cu.setR0Value(data);
-				
+
 				userInterface.updateLogText("\n R0 : ",data);
 				//logTextArea.append("\n R0: "+data);
 				break;
@@ -150,7 +191,7 @@ public class ALU {
 				userInterface.setR1Text(data);
 				//txtFieldR1.setText(Integer.toString(data));
 				cu.setR1Value(data);
-				
+
 				userInterface.updateLogText("\n R1 : ",data);
 				//logTextArea.append("\n R1: "+data);
 				break;
@@ -158,7 +199,7 @@ public class ALU {
 				userInterface.setR2Text(data);
 				//txtFieldR2.setText(Integer.toString(data));
 				cu.setR2Value(data);
-				
+
 				userInterface.updateLogText("\n R2 : ",data);
 				//logTextArea.append("\n R2: "+data);
 				break;
@@ -166,67 +207,71 @@ public class ALU {
 				userInterface.setR3Text(data);
 				//txtFieldR3.setText(Integer.toString(data));
 				cu.setR3Value(data);
-				
+
 				userInterface.updateLogText("\n R3 : ",data);
 				//logTextArea.append("\n R3: "+data);
 				break;
 			default:
 				break;
 			}
-			
+
+
 		}*/
 		int EA=calculateEA(X,I,address);
+		userInterface.updateLogText("m(20)", cu.fetchFromMemory(20));
+		userInterface.updateLogText("EA:", EA);
 		userInterface.setMARText(EA);
 		cu.setMARValue(EA);
 		int data=cu.fetchFromMemory(EA);
 		cu.setMBRValue(data);
 		userInterface.setMBRText(data);
 		switch(R){
-		case 0:
-			userInterface.setR0Text(data);
-			//txtFieldR0.setText(Integer.toString(data));
-			cu.setR0Value(data);
-			
-			userInterface.updateLogText("\n R0 : ",data);
-			//logTextArea.append("\n R0: "+data);
-			break;
-		case 1:
-			userInterface.setR1Text(data);
-			//txtFieldR1.setText(Integer.toString(data));
-			cu.setR1Value(data);
-			
-			userInterface.updateLogText("\n R1 : ",data);
-			//logTextArea.append("\n R1: "+data);
-			break;
-		case 2:
-			userInterface.setR2Text(data);
-			//txtFieldR2.setText(Integer.toString(data));
-			cu.setR2Value(data);
-			
-			userInterface.updateLogText("\n R2 : ",data);
-			//logTextArea.append("\n R2: "+data);
-			break;
-		case 3:
-			userInterface.setR3Text(data);
-			//txtFieldR3.setText(Integer.toString(data));
-			cu.setR3Value(data);
-			
-			userInterface.updateLogText("\n R3 : ",data);
-			//logTextArea.append("\n R3: "+data);
-			break;
-		default:
-			break;
-			
+			case 0:
+				userInterface.setR0Text(data);
+				//txtFieldR0.setText(Integer.toString(data));
+				cu.setR0Value(data);
+
+				//userInterface.updateLogText("\n R0 : ",data);
+				//logTextArea.append("\n R0: "+data);
+				break;
+			case 1:
+				userInterface.setR1Text(data);
+				//txtFieldR1.setText(Integer.toString(data));
+				cu.setR1Value(data);
+
+				//userInterface.updateLogText("\n R1 : ",data);
+				//logTextArea.append("\n R1: "+data);
+				break;
+			case 2:
+				userInterface.setR2Text(data);
+				//txtFieldR2.setText(Integer.toString(data));
+				cu.setR2Value(data);
+
+				//userInterface.updateLogText("\n R2 : ",data);
+				//logTextArea.append("\n R2: "+data);
+				break;
+			case 3:
+				userInterface.setR3Text(data);
+				//txtFieldR3.setText(Integer.toString(data));
+				cu.setR3Value(data);
+
+				//userInterface.updateLogText("\n R3 : ",data);
+				//logTextArea.append("\n R3: "+data);
+				break;
+			default:
+				break;
+
+
 		}
-		
+
 	}
-	
+
 	public void STR(int R,int X,int I,int address) {
 		//This function is for STR instruction workflow
 		/*userInterface.setMARText(address);
 		//txtFieldMAR.setText(Integer.toString(address));
 		cu.setMARValue(address);
-		
+
 		int Reg = 0;
 		switch (R) {
 		case 0:
@@ -234,7 +279,7 @@ public class ALU {
 			userInterface.setMBRText(Reg);
 			//txtFieldMBR.setText(Integer.toString(Reg));
 			cu.setMBRValue(Reg);
-			
+
 			userInterface.updateLogText("MBR : ",Reg);
 			//logTextArea.append("MBR: "+ Reg);
 			break;
@@ -243,7 +288,7 @@ public class ALU {
 			userInterface.setMBRText(Reg);
 			//txtFieldMBR.setText(Integer.toString(Reg));
 			cu.setMBRValue(Reg);
-			
+
 			userInterface.updateLogText("MBR : ",Reg);
 			//logTextArea.append("MBR: "+ Reg);
 			break;
@@ -252,7 +297,7 @@ public class ALU {
 			userInterface.setMBRText(Reg);
 			//txtFieldMBR.setText(Integer.toString(Reg));
 			cu.setMBRValue(Reg);
-			
+
 			userInterface.updateLogText("MBR : ",Reg);
 			//logTextArea.append("MBR: "+ Reg);
 			break;
@@ -261,112 +306,116 @@ public class ALU {
 			userInterface.setMBRText(Reg);
 			//txtFieldMBR.setText(Integer.toString(Reg));
 			cu.setMBRValue(Reg);
-			
+
 			userInterface.updateLogText("MBR : ",Reg);
 			//logTextArea.append("MBR: "+ Reg);
 			break;
-			
+
 		default:
 			break;
 		}
 		cu.memory.storeIntoMemory(address, Reg);
 		//Memory[address] = Reg;
-		 
+
 		 */
 		int EA=calculateEA(X,I,address);
 		userInterface.setMARText(EA);
 		cu.setMARValue(EA);
 		int Reg=0;
 		switch (R) {
-		case 0:
-			Reg = cu.getR0Value();
-			userInterface.setMBRText(Reg);
-			//txtFieldMBR.setText(Integer.toString(Reg));
-			cu.setMBRValue(Reg);
-			
-			userInterface.updateLogText("MBR : ",Reg);
-			//logTextArea.append("MBR: "+ Reg);
-			break;
-		case 1:
-			Reg = cu.getR1Value();
-			userInterface.setMBRText(Reg);
-			//txtFieldMBR.setText(Integer.toString(Reg));
-			cu.setMBRValue(Reg);
-			
-			userInterface.updateLogText("MBR : ",Reg);
-			//logTextArea.append("MBR: "+ Reg);
-			break;
-		case 2:
-			Reg = cu.getR2Value();
-			userInterface.setMBRText(Reg);
-			//txtFieldMBR.setText(Integer.toString(Reg));
-			cu.setMBRValue(Reg);
-			
-			userInterface.updateLogText("MBR : ",Reg);
-			//logTextArea.append("MBR: "+ Reg);
-			break;
-		case 3:
-			Reg = cu.getR3Value();
-			userInterface.setMBRText(Reg);
-			//txtFieldMBR.setText(Integer.toString(Reg));
-			cu.setMBRValue(Reg);
-			
-			userInterface.updateLogText("MBR : ",Reg);
-			//logTextArea.append("MBR: "+ Reg);
-			break;
-			
-		default:
-			break;
+
+			case 0:
+				Reg = cu.getR0Value();
+				userInterface.setMBRText(Reg);
+				//txtFieldMBR.setText(Integer.toString(Reg));
+				cu.setMBRValue(Reg);
+
+				//userInterface.updateLogText("MBR : ",Reg);
+				//logTextArea.append("MBR: "+ Reg);
+				break;
+			case 1:
+				Reg = cu.getR1Value();
+				userInterface.setMBRText(Reg);
+				//txtFieldMBR.setText(Integer.toString(Reg));
+				cu.setMBRValue(Reg);
+
+				//userInterface.updateLogText("MBR : ",Reg);
+				//logTextArea.append("MBR: "+ Reg);
+				break;
+			case 2:
+				Reg = cu.getR2Value();
+				userInterface.setMBRText(Reg);
+				//txtFieldMBR.setText(Integer.toString(Reg));
+				cu.setMBRValue(Reg);
+
+				//userInterface.updateLogText("MBR : ",Reg);
+				//logTextArea.append("MBR: "+ Reg);
+				break;
+			case 3:
+				Reg = cu.getR3Value();
+				userInterface.setMBRText(Reg);
+				//txtFieldMBR.setText(Integer.toString(Reg));
+				cu.setMBRValue(Reg);
+
+				//userInterface.updateLogText("MBR : ",Reg);
+				//logTextArea.append("MBR: "+ Reg);
+				break;
+
+			default:
+				break;
+
 		}
 		cu.memory.storeIntoMemory(EA, Reg);
 		//Memory[address] = Reg;
 	}
-	
+
 	public void LDA(int R,int X,int I,int address) {
 		//This function is for LDA instruction workflow
 		userInterface.setMBRText(address);
 		//txtFieldMBR.setText(Integer.toString(address));
 		cu.setMBRValue(address);
-		
+
+
 		int EA=calculateEA(X,I,address);
 		switch (R) {
-		case 0:
-			cu.setR0Value(EA);
-			
-			userInterface.setR0Text(EA);
-			//txtFieldR0.setText(Integer.toString(address));
-			break;
-		case 1:
-			cu.setR1Value(EA);
-			
-			userInterface.setR1Text(EA);
-			//txtFieldR1.setText(Integer.toString(address));
-			break;
-		case 2:
-			cu.setR2Value(EA);
-			
-			userInterface.setR2Text(EA);
-			//txtFieldR2.setText(Integer.toString(address));
-			break;
-		case 3:
-			cu.setR3Value(EA);
-			
-			userInterface.setR3Text(EA);
-			//txtFieldR3.setText(Integer.toString(address));
-			break;
-			
-		default:
-			break;
+			case 0:
+				cu.setR0Value(EA);
+
+				userInterface.setR0Text(EA);
+				//txtFieldR0.setText(Integer.toString(address));
+				break;
+			case 1:
+				cu.setR1Value(EA);
+
+				userInterface.setR1Text(EA);
+				//txtFieldR1.setText(Integer.toString(address));
+				break;
+			case 2:
+				cu.setR2Value(EA);
+
+				userInterface.setR2Text(EA);
+				//txtFieldR2.setText(Integer.toString(address));
+				break;
+			case 3:
+				cu.setR3Value(EA);
+
+				userInterface.setR3Text(EA);
+				//txtFieldR3.setText(Integer.toString(address));
+				break;
+
+			default:
+				break;
+
 		}
 	}
-	
+
 	public void LDX(int X,int I,int address) {
 		//This instruction is for LDX instruction workflow
 		/*
 		userInterface.setMARText(address);
 		//txtFieldMAR.setText(Integer.toString(address));
 		cu.setMARValue(address);
-		
+
 		userInterface.updateLogText("\nMAR: ",address);
 		//logTextArea.append("\nMAR:"+ address);
 		int data=cu.memory.fetchFromMemory(address);
@@ -374,28 +423,28 @@ public class ALU {
 		userInterface.setMBRText(data);
 		//txtFieldMBR.setText(Integer.toString(Data));
 		cu.setMBRValue(data);
-		
+
 		userInterface.updateLogText("\nMBR: ",data);
 		//logTextArea.append("\nMBR:"+ Data);
 		switch (X) {
 		case 1:
 			cu.setX1Value(data);
-			
-		
+
+
 			userInterface.setX1Text(data);
 			//txtFieldX1.setText(Integer.toString(Data));
 			break;
 		case 2:
 			cu.setX2Value(data);
-			
-			
+
+
 			userInterface.setX2Text(data);
 			//txtFieldX2.setText(Integer.toString(Data));
 			break;
 		case 3:
 			cu.setX3Value(data);
-		
-			
+
+
 			userInterface.setX3Text(data);
 			//txtFieldX3.setText(Integer.toString(Data));
 			break;
@@ -406,82 +455,91 @@ public class ALU {
 		int EA=calculateEA(X,I,address);
 		userInterface.setMARText(EA);
 		cu.setMARValue(EA);
-		userInterface.updateLogText("\nMAR: ",EA);
+		//userInterface.updateLogText("\nMAR: ",EA);
 		int data=cu.memory.fetchFromMemory(EA);
 		userInterface.setMBRText(data);
 		cu.setMBRValue(data);
-		
-		userInterface.updateLogText("\nMBR: ",data);
-		
+
+		//userInterface.updateLogText("\nMBR: ",data);
+
 		switch (X) {
-		case 1:
-			cu.setX1Value(data);
-			
-		
-			userInterface.setX1Text(data);
-			//txtFieldX1.setText(Integer.toString(Data));
-			break;
-		case 2:
-			cu.setX2Value(data);
-			
-			
-			userInterface.setX2Text(data);
-			//txtFieldX2.setText(Integer.toString(Data));
-			break;
-		case 3:
-			cu.setX3Value(data);
-		
-			
-			userInterface.setX3Text(data);
-			//txtFieldX3.setText(Integer.toString(Data));
-			break;
-		default:
-			break;
+			case 1:
+				cu.setX1Value(data);
+
+
+				userInterface.setX1Text(data);
+				//txtFieldX1.setText(Integer.toString(Data));
+				break;
+			case 2:
+				cu.setX2Value(data);
+
+
+				userInterface.setX2Text(data);
+				//txtFieldX2.setText(Integer.toString(Data));
+				break;
+			case 3:
+				cu.setX3Value(data);
+
+
+				userInterface.setX3Text(data);
+				//txtFieldX3.setText(Integer.toString(Data));
+				break;
+			default:
+				break;
+
 		}
 	}
 	
 	public void STX(int X,int I,int address) {
+	// ------------------------------------------
+    // 42: STX -> Store Index Register to Memory
+    // ------------------------------------------
 		//This function is for STX instruction workflow
 		int EA=calculateEA(X,I,address);
 		userInterface.setMARText(EA);
 		//txtFieldMAR.setText(Integer.toString(address));
-		
+
+
 		cu.setMARValue(EA);
-		
-		userInterface.updateLogText("\nMAR: ",EA);
-		//logTextArea.append("\nMAR:"+ address);		
+
+		//userInterface.updateLogText("\nMAR: ",EA);
+		//logTextArea.append("\nMAR:"+ address);
+
+
 		int DataIX = 0;
 		switch (X) {
-		case 1:
-			DataIX = cu.getX1Value();
-			userInterface.setMBRText(DataIX);
-			//txtFieldMBR.setText(Integer.toString(DataIX));
-			
-			cu.setMBRValue(DataIX);
-			
-			break;
-		case 2:
-			DataIX = cu.getX2Value();
-			userInterface.setMBRText(DataIX);
-			//txtFieldMBR.setText(Integer.toString(DataIX));
-			cu.setMBRValue(DataIX);
-			
-			break;
-		case 3:
-			DataIX = cu.getX3Value();
-			userInterface.setMBRText(DataIX);
-			//txtFieldMBR.setText(Integer.toString(DataIX));
-			cu.setMBRValue(DataIX);
-			break;
-		default:
-			break;
+			case 1:
+				DataIX = cu.getX1Value();
+				userInterface.setMBRText(DataIX);
+				//txtFieldMBR.setText(Integer.toString(DataIX));
+
+				cu.setMBRValue(DataIX);
+
+				break;
+			case 2:
+				DataIX = cu.getX2Value();
+				userInterface.setMBRText(DataIX);
+				//txtFieldMBR.setText(Integer.toString(DataIX));
+				cu.setMBRValue(DataIX);
+
+				break;
+			case 3:
+				DataIX = cu.getX3Value();
+				userInterface.setMBRText(DataIX);
+				//txtFieldMBR.setText(Integer.toString(DataIX));
+				cu.setMBRValue(DataIX);
+				break;
+			default:
+				break;
 		}
 		cu.memory.storeIntoMemory(EA, DataIX);
 		//cu.memory[address]= DataIX;
 	}
 
 	public void AMR(int R,int X,int I,int address){
-	
+	// ---------------------------------
+    // 04: AMR -> Add Memory To Register
+    // ---------------------------------
 		int currentRegisterValue;
 		
 		int EAValue;
@@ -527,110 +585,123 @@ public class ALU {
 	}
 
 	public void JZ (int R, int X, int I, int address){
-		/*if(I==0) {
-			switch (R) {
-			case 0:
-				if(cu.getR0Value()==0) {
-					userInterface.setPCText(address);
-					cu.setPCValue(address);
-				}
-				else {
-					userInterface.setPCText(cu.getPCValue()+1);
-					cu.setPCValue(cu.getPCValue()+1);
-				}
-				break;
-			case 1:
-				if(cu.getR1Value()==0) {
-					userInterface.setPCText(address);
-					cu.setPCValue(address);
-				}
-				else {
-					userInterface.setPCText(cu.getPCValue()+1);
-					cu.setPCValue(cu.getPCValue()+1);
-				}
-				break;
-			case 2:
-				if(cu.getR2Value()==0) {
-					userInterface.setPCText(address);
-					cu.setPCValue(address);
-				}
-				else {
-					userInterface.setPCText(cu.getPCValue()+1);
-					cu.setPCValue(cu.getPCValue()+1);
-				}
-				break;
-			case 3:
-				if(cu.getR3Value()==0) {
-					userInterface.setPCText(address);
-					cu.setPCValue(address);
-				}
-				else {
-					userInterface.setPCText(cu.getPCValue()+1);
-					cu.setPCValue(cu.getPCValue()+1);
-				}
-				break;
-			default:
-				break;
-			}
-		}
-		else {
-			int IX=0;
-			if(X==1) {
-				IX = cu.getX1Value();
-			}
-			else if(X==2) {
-				IX = cu.getX2Value();
-			}
-			else {
-				IX = cu.getX3Value();
-			}
-			int ADD = IX + address;
-			switch (R) {
-			case 0:
-				if(cu.getR0Value()==0) {
-					userInterface.setPCText(ADD);
-					cu.setPCValue(ADD);
-				}
-				else {
-					userInterface.setPCText(cu.getPCValue()+1);
-					cu.setPCValue(cu.getPCValue()+1);
-				}
-				break;
-			case 1:
-				if(cu.getR1Value()==0) {
-					userInterface.setPCText(ADD);
-					cu.setPCValue(ADD);
-				}
-				else {
-					userInterface.setPCText(cu.getPCValue()+1);
-					cu.setPCValue(cu.getPCValue()+1);
-				}
-				break;
-			case 2:
-				if(cu.getR2Value()==0) {
-					userInterface.setPCText(ADD);
-					cu.setPCValue(ADD);
-				}
-				else {
-					userInterface.setPCText(cu.getPCValue()+1);
-					cu.setPCValue(cu.getPCValue()+1);
-				}
-				break;
-			case 3:
-				if(cu.getR3Value()==0) {
-					userInterface.setPCText(ADD);
-					cu.setPCValue(ADD);
-				}
-				else {
-					userInterface.setPCText(cu.getPCValue()+1);
-					cu.setPCValue(cu.getPCValue()+1);
-				}
-				break;
-			default:
-				break;
-			}
-			
-		}*/
+	// ----------------------
+    // 10: JZ -> Jump If Zero
+    // ----------------------
+//		if(I==0) {
+//			switch (R) {
+//			case 0:
+//				if(cu.getR0Value()==0) {
+//					userInterface.setPCText(address);
+//					cu.setPCValue(address);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			case 1:
+//				if(cu.getR1Value()==0) {
+//					userInterface.setPCText(address);
+//					cu.setPCValue(address);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			case 2:
+//				if(cu.getR2Value()==0) {
+//					userInterface.setPCText(address);
+//					cu.setPCValue(address);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			case 3:
+//				if(cu.getR3Value()==0) {
+//					userInterface.setPCText(address);
+//					cu.setPCValue(address);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			default:
+//				break;
+//			}
+//		}
+//		else {
+//			int IX=0;
+//			if(X==1) {
+//				IX = cu.getX1Value();
+//			}
+//			else if(X==2) {
+//				IX = cu.getX2Value();
+//			}
+//			else {
+//				IX = cu.getX3Value();
+//			}
+//			int ADD = IX + address;
+//			switch (R) {
+//			case 0:
+//				if(cu.getR0Value()==0) {
+//					userInterface.setPCText(ADD);
+//					cu.setPCValue(ADD);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			case 1:
+//				if(cu.getR1Value()==0) {
+//					userInterface.setPCText(ADD);
+//					cu.setPCValue(ADD);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			case 2:
+//				if(cu.getR2Value()==0) {
+//					userInterface.setPCText(ADD);
+//					cu.setPCValue(ADD);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			case 3:
+//				if(cu.getR3Value()==0) {
+//					userInterface.setPCText(ADD);
+//					cu.setPCValue(ADD);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			default:
+//				break;
+//			}
+//
+//		}
+
+//        int effectiveAddress = calculateEA(X, I, address);
+//        userInterface.updateLogText("EA:", effectiveAddress);
+//        if (cu.getRnByNum(R) == 0) {
+//            cu.setPCValue(effectiveAddress);
+//        } else {
+//            cu.increasePCByOne();
+//        }
+
+	
 		int EA=calculateEA(X,I,address);
 		switch (R) {
 		case 0:
@@ -675,11 +746,122 @@ public class ALU {
 			break;
 		default:
 			break;
+
 		}
 		
 	}
 	
 	public void JNE(int R,int X,int I,int address) {
+
+	// ----------------------------
+    // 11: JNE -> Jump If Not Equal
+    // ----------------------------
+//		if(I==0) {
+//			switch (R) {
+//			case 0:
+//				if(cu.getR0Value()!=0) {
+//					userInterface.setPCText(address);
+//					cu.setPCValue(address);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			case 1:
+//				if(cu.getR1Value()!=0) {
+//					userInterface.setPCText(address);
+//					cu.setPCValue(address);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			case 2:
+//				if(cu.getR2Value()!=0) {
+//					userInterface.setPCText(address);
+//					cu.setPCValue(address);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			case 3:
+//				if(cu.getR3Value()!=0) {
+//					userInterface.setPCText(address);
+//					cu.setPCValue(address);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			default:
+//				break;
+//			}
+//		}
+//		else {
+//			int IX=0;
+//			if(X==1) {
+//				IX = cu.getX1Value();
+//			}
+//			else if(X==2) {
+//				IX = cu.getX2Value();
+//			}
+//			else {
+//				IX = cu.getX3Value();
+//			}
+//			int ADD = IX + address;
+//			switch (R) {
+//			case 0:
+//				if(cu.getR0Value()!=0) {
+//					userInterface.setPCText(ADD);
+//					cu.setPCValue(ADD);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			case 1:
+//				if(cu.getR1Value()!=0) {
+//					userInterface.setPCText(ADD);
+//					cu.setPCValue(ADD);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			case 2:
+//				if(cu.getR2Value()!=0) {
+//					userInterface.setPCText(ADD);
+//					cu.setPCValue(ADD);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			case 3:
+//				if(cu.getR3Value()!=0) {
+//					userInterface.setPCText(ADD);
+//					cu.setPCValue(ADD);
+//				}
+//				else {
+//					userInterface.setPCText(cu.getPCValue()+1);
+//					cu.setPCValue(cu.getPCValue()+1);
+//				}
+//				break;
+//			default:
+//				break;
+//			}
+//
+//		}
+//
+	
 		/*if(I==0) {
 			switch (R) {
 			case 0:
@@ -739,10 +921,11 @@ public class ALU {
 			}
 			int ADD = IX + address;
 			switch (R) {
+
 			case 0:
 				if(cu.getR0Value()!=0) {
-					userInterface.setPCText(ADD);
-					cu.setPCValue(ADD);
+					userInterface.setPCText(EA);
+					cu.setPCValue(EA);
 				}
 				else {
 					userInterface.setPCText(cu.getPCValue()+1);
@@ -751,8 +934,8 @@ public class ALU {
 				break;
 			case 1:
 				if(cu.getR1Value()!=0) {
-					userInterface.setPCText(ADD);
-					cu.setPCValue(ADD);
+					userInterface.setPCText(EA);
+					cu.setPCValue(EA);
 				}
 				else {
 					userInterface.setPCText(cu.getPCValue()+1);
@@ -761,8 +944,8 @@ public class ALU {
 				break;
 			case 2:
 				if(cu.getR2Value()!=0) {
-					userInterface.setPCText(ADD);
-					cu.setPCValue(ADD);
+					userInterface.setPCText(EA);
+					cu.setPCValue(EA);
 				}
 				else {
 					userInterface.setPCText(cu.getPCValue()+1);
@@ -771,8 +954,8 @@ public class ALU {
 				break;
 			case 3:
 				if(cu.getR3Value()!=0) {
-					userInterface.setPCText(ADD);
-					cu.setPCValue(ADD);
+					userInterface.setPCText(EA);
+					cu.setPCValue(EA);
 				}
 				else {
 					userInterface.setPCText(cu.getPCValue()+1);
@@ -781,6 +964,7 @@ public class ALU {
 				break;
 			default:
 				break;
+
 			}
 			
 		}*/
@@ -832,6 +1016,68 @@ public class ALU {
 	}
 	
 	public void JMA(int X,int I,int address) {
+
+	// ----------------------------------------
+    // 13:JMA -> Unconditional Jump To Address
+    // ----------------------------------------
+//		if(I==0) {
+//			userInterface.setPCText(address);
+//			cu.setPCValue(address);
+//		}
+//		else {
+//			int IX=0;
+//			if(X==1) {
+//				IX = cu.getX1Value();
+//			}
+//			else if(X==2) {
+//				IX = cu.getX2Value();
+//			}
+//			else {
+//				IX = cu.getX3Value();
+//			}
+//			int ADD = IX + address;
+//			userInterface.setPCText(ADD);
+//			cu.setPCValue(ADD);
+//		}
+        int effectiveAddress = calculateEA(X, I, address);
+        //userInterface.updateLogText("Address:", address);
+        //userInterface.updateLogText("EA:", effectiveAddress);
+		userInterface.setPCText(effectiveAddress);
+        cu.setPCValue(effectiveAddress);
+	}
+	
+	public void JSR(int X,int I,int address) {
+	// ----------------------------------------
+    // 14:JSR -> Jump and Save Return Address
+    // ----------------------------------------
+
+//		userInterface.setR3Text(cu.getPCValue());
+//		cu.setR3Value(cu.getPCValue()+1);
+//		if(I==0) {
+//			userInterface.setPCText(address);
+//			cu.setPCValue(address);
+//		}
+//		else {
+//			int IX=0;
+//			if(X==1) {
+//				IX = cu.getX1Value();
+//			}
+//			else if(X==2) {
+//				IX = cu.getX2Value();
+//			}
+//			else {
+//				IX = cu.getX3Value();
+//			}
+//			int ADD = IX + address;
+//			userInterface.setPCText(ADD);
+//			cu.setPCValue(ADD);
+//		}
+		int EA=calculateEA(X,I,address);
+		userInterface.setR3Text(cu.getPCValue());
+		cu.setR3Value(cu.getPCValue()+1);
+		userInterface.setPCText(EA);
+		cu.setPCValue(EA);
+
 		/*if(I==0) {
 			userInterface.setPCText(address);
 			cu.setPCValue(address);
@@ -851,42 +1097,15 @@ public class ALU {
 			userInterface.setPCText(ADD);
 			cu.setPCValue(ADD);	
 		}	*/
-		int EA=calculateEA(X,I,address);
-		userInterface.setPCText(EA);
-		cu.setPCValue(EA);	
 	}
 	
-	public void JSR(int X,int I,int address) {
-		/*userInterface.setR3Text(cu.getPCValue());
-		cu.setR3Value(cu.getPCValue()+1);
-		if(I==0) {
-			userInterface.setPCText(address);
-			cu.setPCValue(address);
-		}
-		else {
-			int IX=0;
-			if(X==1) {
-				IX = cu.getX1Value();
-			}
-			else if(X==2) {
-				IX = cu.getX2Value();
-			}
-			else {
-				IX = cu.getX3Value();
-			}
-			int ADD = IX + address;
-			userInterface.setPCText(ADD);
-			cu.setPCValue(ADD);	
-		}
-		*/
-		int EA=calculateEA(X,I,address);
-		userInterface.setR3Text(cu.getPCValue());
-		cu.setR3Value(cu.getPCValue()+1);
-		userInterface.setPCText(EA);
-		cu.setPCValue(EA);	
-	}
 	public void JCC(int CC,int X,int I,int address) {
+	// ---------------------------------
+    // 12:JCC -> Jump If Condition Code
+    // ---------------------------------
 		int ccBit = 0;
+		//int ADD = address;
+
 		int EA = calculateEA(X,I,address);
 		if(CC == 0) {
 			ccBit = cu.getCCValue()/1000;
@@ -929,22 +1148,56 @@ public class ALU {
 
 		default:
 			break;
+
 		}
-		switch (ccBit) {
-		case 1:
-			userInterface.setPCText(ADD);
-			cu.setPCValue(ADD);
-			break;
-		case 0:
+		else{
 			userInterface.setPCText(cu.getPCValue());
 			cu.setPCValue(cu.getPCValue()+1);
-		default:
-			break;
 		}
+
+//		switch (I) {
+//		case 0:
+//			break;
+//		case 1:
+//			switch (X) {
+//			case 1:
+//				ADD += cu.getX1Value();
+//				break;
+//			case 2:
+//				ADD += cu.getX2Value();
+//				break;
+//			case 3:
+//				ADD += cu.getX3Value();
+//				break;
+//			default:
+//				break;
+//			}
+//			break;
+//
+//		default:
+//			break;
+//		}
+//		switch (ccBit) {
+//		case 1:
+//			userInterface.setPCText(ADD);
+//			cu.setPCValue(ADD);
+//			break;
+//		case 0:
+//			userInterface.setPCText(cu.getPCValue());
+//			cu.setPCValue(cu.getPCValue()+1);
+//		default:
+//			break;
+//		}
+
 		*/
 		
+
 	}
+
 	public void SMR(int R, int X, int I, int address) {
+	// ---------------------------------------
+    // 05:SMR -> Subtract Memory From Register
+    // ---------------------------------------
 		// TODO Auto-generated method stub
 		int currentRegisterValue;
 		int EAValue;
@@ -987,11 +1240,16 @@ public class ALU {
 		
 	}
 	public void AIR(int R, int immed){
+
+	// ------------------------------------
+    // 06:AIR -> Add Immediate to Register
+    // ------------------------------------
 		if(immed!=0){
 			int currentRegisterValue;
 			switch(R){
 				case 0:
 					currentRegisterValue=cu.getR0Value();
+                    //userInterface.updateLogText("R:", currentRegisterValue);
 					if(currentRegisterValue==0){
 						cu.setR0Value(immed);
 						userInterface.setR0Text(immed);
@@ -999,22 +1257,26 @@ public class ALU {
 					else{
 					cu.setR0Value(currentRegisterValue+immed);
 					userInterface.setR0Text(currentRegisterValue+immed);
+					//userInterface.updateLogText("\nAIR:", currentRegisterValue+immed);
 					}
 					break;
 				case 1:
 					currentRegisterValue=cu.getR1Value();
+                    //userInterface.updateLogText("R:", currentRegisterValue);
 					if(currentRegisterValue==0){
 						cu.setR1Value(immed);
-						System.out.print(cu.getR1Value());
+						//System.out.print(cu.getR1Value());
 						userInterface.setR1Text(immed);
 					}
 					else{
 					cu.setR1Value(currentRegisterValue+immed);
 					userInterface.setR1Text(currentRegisterValue+immed);
+					//userInterface.updateLogText("\nAIR:", currentRegisterValue+immed);
 					}
 					break;
 				case 2:
 					currentRegisterValue=cu.getR2Value();
+                    //userInterface.updateLogText("R:", currentRegisterValue);
 					if(currentRegisterValue==0){
 						cu.setR2Value(immed);
 						userInterface.setR2Text(immed);
@@ -1022,10 +1284,12 @@ public class ALU {
 					else{
 					cu.setR2Value(currentRegisterValue+immed);
 					userInterface.setR2Text(currentRegisterValue+immed);
+					//userInterface.updateLogText("\nAIR:", currentRegisterValue+immed);
 					}
 					break;
 				case 3:
 					currentRegisterValue=cu.getR3Value();
+                    //userInterface.updateLogText("R:", currentRegisterValue);
 					if(currentRegisterValue==0){
 						cu.setR3Value(immed);
 						userInterface.setR3Text(immed);
@@ -1033,6 +1297,7 @@ public class ALU {
 					else{
 					cu.setR3Value(currentRegisterValue+immed);
 					userInterface.setR3Text(currentRegisterValue+immed);
+					//userInterface.updateLogText("\nAIR:", currentRegisterValue+immed);
 					}
 					break;
 				default:
@@ -1041,6 +1306,11 @@ public class ALU {
 		}
 	}
 	public void SIR(int R, int immed){
+
+	// ------------------------------------------
+    // 07:SIR -> Subtract Immediate from Register
+    // ------------------------------------------
+
 		if(immed!=0){
 			int currentRegisterValue;
 			switch(R){
@@ -1093,7 +1363,12 @@ public class ALU {
 			}
 		}
 	}
-	public void MLT(int RX, int RY) throws Exception{
+	public void MLT(int RX, int RY) throws MachineFaultException{
+
+	// ---------------------------------------
+    // 20:MLT -> Multiply Register by Register
+    // ---------------------------------------
+
 		boolean overflow=false;
 		int RXValue=0;
 		int RYValue=0;
@@ -1102,30 +1377,34 @@ public class ALU {
 		switch(RX){
 		case 0:
 			RXValue=cu.getR0Value();
-			System.out.println(RXValue);
+			//System.out.println(RXValue);
 			switch(RY){
 			case 0:
 				RYValue=cu.getR0Value();//can RX & RY both be R0 or R2?
 				//RX contains the high order bits of the result while RX+1 contains the low order bits of the results
 				
 				temp=Integer.toBinaryString(RXValue*RYValue);
-				System.out.println("result string is: "+temp);
+
+				//System.out.println("result string is: "+temp);
+
 				//Integer.toBinaryString(decInstruction)
 				if(temp.length()>32){
 					overflow=true;
-					throw new Exception("Overflow!");
+					throw new MachineFaultException("Overflow!");
 				}
 				else{
+
 					while(temp.length()<32){
 						temp="0"+temp;
 					}
+
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
 					cu.setR0Value(RXValue);
-					System.out.println(RXValue);
+					//System.out.println(RXValue);
 					userInterface.setR0Text(RXValue);
 					RX1Value=Integer.parseInt(temp.substring(16), 2);
 					cu.setR1Value(RX1Value);
-					System.out.println(RX1Value);
+					//System.out.println(RX1Value);
 					userInterface.setR1Text(RX1Value);
 				}
 				//how many bits should be stored in RX and RX+1 respectively when there's overflow?
@@ -1135,12 +1414,14 @@ public class ALU {
 				temp=Integer.toBinaryString(RXValue*RYValue);
 				if(temp.length()>32){
 					overflow=true;
-					throw new Exception("Overflow!");
+					throw new MachineFaultException("Overflow!");
 				}
 				else{
+
 					while(temp.length()<32){
 						temp="0"+temp;
 					}
+
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
 					cu.setR0Value(RXValue);
 					userInterface.setR0Text(RXValue);
@@ -1162,14 +1443,18 @@ public class ALU {
 				
 				temp=Integer.toBinaryString(RXValue*RYValue);
 				//Integer.toBinaryString(decInstruction)
+
 				if(temp.length()>32){
+
 					overflow=true;
-					throw new Exception("Overflow!");
+					throw new MachineFaultException("Overflow!");
 				}
 				else{
+
 					while(temp.length()<32){
 						temp="0"+temp;
 					}
+
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
 					cu.setR2Value(RXValue);
 					userInterface.setR2Text(RXValue);
@@ -1182,14 +1467,18 @@ public class ALU {
 			case 2:
 				RYValue=cu.getR2Value();
 				temp=Integer.toBinaryString(RXValue*RYValue);
+
 				if(temp.length()>32){
+
 					overflow=true;
-					throw new Exception("Overflow!");
+					throw new MachineFaultException("Overflow!");
 				}
 				else{
+
 					while(temp.length()<32){
 						temp="0"+temp;
 					}
+
 					RXValue=Integer.parseInt(temp.substring(0, 16),2);
 					cu.setR2Value(RXValue);
 					userInterface.setR2Text(RXValue);
@@ -1209,6 +1498,11 @@ public class ALU {
 		}
 	}
 	public void DVD(int rx,int ry) {
+
+	// -------------------------------------
+    // 20:DVD -> Divide Register by Register
+    // -------------------------------------
+
 		int data=0;
 		switch(rx) {
 		case 0:
@@ -1218,9 +1512,11 @@ public class ALU {
 		case 2:
 			data=cu.getR2Value();
 			break;
+
 		}
-		System.out.println("Data value is: "+data);
-		userInterface.updateLogText("\nRx ", data);
+		//System.out.println("Data value is: "+data);
+
+		//userInterface.updateLogText("\nRx ", data);
 		int temp=0;
 		switch(ry){
 		case 0:
@@ -1232,12 +1528,14 @@ public class ALU {
 			break;
 	
 		}
-		System.out.println("temp value is: "+temp);
-		userInterface.updateLogText("\nRy ", temp);
+
+		//System.out.println("temp value is: "+temp);
+		//userInterface.updateLogText("\nRy ", temp);
 		int quotient = data/temp;
-		System.out.println("quotient value is: "+quotient);
+		//System.out.println("quotient value is: "+quotient);
 		int remainder = data%temp;
-		System.out.println("remainder value is: "+remainder);
+		//System.out.println("remainder value is: "+remainder);
+
 		if(rx==0){
 			cu.setR0Value(quotient);
 			cu.setR1Value(remainder);
@@ -1255,6 +1553,11 @@ public class ALU {
 		
 	}
 public void TRR(int rx, int ry) {
+
+// ----------------------------------------------------
+// 22:TRR -> Test the Equality of Register and Register
+// ----------------------------------------------------
+
 		int data=0;
 		switch(rx) {
 		case 0:
@@ -1272,7 +1575,7 @@ public void TRR(int rx, int ry) {
 		default:
 			break;
 		}
-		userInterface.updateLogText("\nRx ", data);
+		//userInterface.updateLogText("\nRx ", data);
 		int temp=0;
 		switch (ry) {
 		case 0:
@@ -1290,19 +1593,24 @@ public void TRR(int rx, int ry) {
 		default:
 			break;
 		}
-		userInterface.updateLogText("\nRy ", temp);
+		//userInterface.updateLogText("\nRy ", temp);
 		if(data==temp) {
 			cu.setCCValue(1);
 			userInterface.setCCText(1);
-			userInterface.updateLogText("\nCC: True ");
+			//userInterface.updateLogText("\nCC: True ");
 		}
 		else {
 			cu.setCCValue(0);
 			userInterface.setCCText(0);
-			userInterface.updateLogText("\nCC:False");
+			//userInterface.updateLogText("\nCC:False");
 		}
 	}
 public void ORR(int rx, int ry) {
+
+// ---------------------------------------------
+// 24:ORR -> Logical Or of Register and Register
+// ---------------------------------------------
+
 		int data=0;
 		switch(rx) {
 		case 0:
@@ -1320,7 +1628,7 @@ public void ORR(int rx, int ry) {
 		default:
 			break;
 		}
-		userInterface.updateLogText("\nRx ", rx);
+		//userInterface.updateLogText("\nRx ", rx);
 		String s1=Integer.toBinaryString(data);
 		int temp=0;
 		switch (ry) {
@@ -1339,7 +1647,7 @@ public void ORR(int rx, int ry) {
 		default:
 			break;
 		}
-		userInterface.updateLogText("\nRy: ",temp);
+		//userInterface.updateLogText("\nRy: ",temp);
 		String s2= Integer.toBinaryString(temp);
 		int len= Math.max(s1.length(),s2.length());
 		if(s1.length() < s2.length()) {
@@ -1368,25 +1676,31 @@ public void ORR(int rx, int ry) {
 		if(rx==0){
 		userInterface.setR0Text(ans);
 		cu.setR0Value(ans);
-		userInterface.updateLogText("\n R0 : ",ans);
+		//userInterface.updateLogText("\n R0 : ",ans);
 		}
 		else if(rx==1){
 			userInterface.setR1Text(ans);
 			cu.setR1Value(ans);
-			userInterface.updateLogText("\n R1 : ",ans);
+			//userInterface.updateLogText("\n R1 : ",ans);
 		}
 		else if(rx==2){
 			userInterface.setR2Text(ans);
 			cu.setR2Value(ans);
-			userInterface.updateLogText("\n R2 : ",ans);
+			//userInterface.updateLogText("\n R2 : ",ans);
 		}
 		else {
 			userInterface.setR3Text(ans);
 			cu.setR3Value(ans);
-			userInterface.updateLogText("\n R3 : ",ans);
+			//userInterface.updateLogText("\n R3 : ",ans);
 		}
 	}
+
+
 public void AND(int rx, int ry) {
+// ----------------------------------------------
+// 24:AND -> Logical And of Register and Register
+// ----------------------------------------------
+
 		int data=0;
 		switch(rx) {
 		case 0:
@@ -1404,7 +1718,7 @@ public void AND(int rx, int ry) {
 		default:
 			break;
 		}
-		userInterface.updateLogText("\nRx ", data);
+		//userInterface.updateLogText("\nRx ", data);
 		String s1=Integer.toBinaryString(data);
 		int temp=0;
 		switch (ry) {
@@ -1423,7 +1737,7 @@ public void AND(int rx, int ry) {
 		default:
 			break;
 		}
-		userInterface.updateLogText("\nRy: ",temp);
+		//userInterface.updateLogText("\nRy: ",temp);
 		String s2= Integer.toBinaryString(temp);
 		int len= Math.max(s1.length(),s2.length());
 		if(s1.length() < s2.length()) {
@@ -1451,27 +1765,32 @@ public void AND(int rx, int ry) {
 		if(rx==0){
 			userInterface.setR0Text(and);
 			cu.setR0Value(and);
-			userInterface.updateLogText("\n R0 : ",and);
+			//userInterface.updateLogText("\n R0 : ",and);
 			}
 			else if(rx==1){
 				userInterface.setR1Text(and);
 				cu.setR1Value(and);
-				userInterface.updateLogText("\n R1 : ",and);
+				//userInterface.updateLogText("\n R1 : ",and);
 			}
 			else if(rx==2){
 				userInterface.setR2Text(and);
 				cu.setR2Value(and);
-				userInterface.updateLogText("\n R2 : ",and);
+				//userInterface.updateLogText("\n R2 : ",and);
 			}
 			else {
 				userInterface.setR3Text(and);
 				cu.setR3Value(and);
-				userInterface.updateLogText("\n R3 : ",and);
+				//userInterface.updateLogText("\n R3 : ",and);
 			}
 	}
 
 public void NOT(int rx) {
-		userInterface.updateLogText("\nMAR ", rx);
+
+// ----------------------------------------------
+// 25:NOT -> Logical Not of Register To Register
+// ----------------------------------------------
+
+		//userInterface.updateLogText("\nMAR ", rx);
 		int data=0;
 		switch(rx) {
 		case 0:
@@ -1489,11 +1808,12 @@ public void NOT(int rx) {
 		default:
 			break;
 		}
-		userInterface.updateLogText("\nRx ", data);
+		//userInterface.updateLogText("\nRx ", data);
 		String s1=Integer.toBinaryString(data);
 		int len=s1.length();
 		String temp_string="";
 		for(int i=0;i<len;i++) {
+
 			if(s1.charAt(i)=='0') {
 				temp_string=temp_string+"1";
 			}
@@ -1505,55 +1825,65 @@ public void NOT(int rx) {
 		if(rx==0){
 			userInterface.setR0Text(ans);
 			cu.setR0Value(ans);
-			userInterface.updateLogText("\n R0 : ",ans);
+			//userInterface.updateLogText("\n R0 : ",ans);
 			}
 			else if(rx==1){
 				userInterface.setR1Text(ans);
 				cu.setR1Value(ans);
-				userInterface.updateLogText("\n R1 : ",ans);
+				//userInterface.updateLogText("\n R1 : ",ans);
 			}
 			else if(rx==2){
 				userInterface.setR2Text(ans);
 				cu.setR2Value(ans);
-				userInterface.updateLogText("\n R2 : ",ans);
+				//userInterface.updateLogText("\n R2 : ",ans);
 			}
 			else {
 				userInterface.setR3Text(ans);
 				cu.setR3Value(ans);
-				userInterface.updateLogText("\n R3 : ",ans);
+				//userInterface.updateLogText("\n R3 : ",ans);
 			}
 
 }
+
+
+/*
+* The Transfer instructions change control of program execution. 
+* Conditional transfer instructions test the value of a register.
+*/
 public void SOB(int R, int X, int I, int address) {
-    // -----------------------------------
-    // 016: SOB -> Subtract One and Branch
-    // -----------------------------------
+// -----------------------------------
+// 016: SOB -> Subtract One and Branch
+// -----------------------------------
+
     int effectiveAddress = calculateEA(X, I, address);
     int valueOfRn = userInterface.getRnByNum(R);
     userInterface.setRnByNum(R, userInterface.getRnByNum(R) - 1);
-    userInterface.updateLogText(R+ ":" + valueOfRn);
-    if (userInterface.getRnByNum(R)>0) {
+    //userInterface.updateLogText(R+ ":" + valueOfRn);
+    if (valueOfRn>0) {
         cu.setPCValue(effectiveAddress);
-        userInterface.updateLogText("PC:", effectiveAddress);
+        //userInterface.updateLogText("PC:", effectiveAddress);
     } else {
         cu.setPCValue(cu.getPCValue()+1);
-        userInterface.updateLogText("PC:", cu.getPCValue());
+        //userInterface.updateLogText("PC:", cu.getPCValue());
     }
 }
 
 public void JGE(int R, int X, int I, int address) {
-    // -----------------------------------
-    // 017: JGE -> Jump Greater Than or Equal To
-    // -----------------------------------
+
+// -----------------------------------
+// 017: JGE -> Jump Greater Than or Equal To
+// -----------------------------------
+
     int effectiveAddress = calculateEA(X, I, address);
     if (userInterface.getRnByNum(R)>=0) {
         cu.setPCValue(effectiveAddress);
-		userInterface.updateLogText("PC:", effectiveAddress);
+		//userInterface.updateLogText("PC:", effectiveAddress);
     } else {
         cu.setPCValue(cu.getPCValue()+1);
-		userInterface.updateLogText("PC:", cu.getPCValue());
+		//userInterface.updateLogText("PC:", cu.getPCValue());
     }
 }
+
 /*
 * The IO instruction
 * IN: Input Character To Register from Device, r = 0..3
@@ -1561,77 +1891,105 @@ public void JGE(int R, int X, int I, int address) {
 * */
 
 public void IN(int R, int devId) {
+// ------------------------------------------------
+// 61:IN -> Input Character To Register from Device
+// ------------------------------------------------
     //This function is for IN instruction workflow
     //String inputValue = input;
-    if (devId == 00000) { //Console Keyboard input
-        String inputValue = userInterface.getInput();
+    if (devId == 0) { //Console Keyboard input
+
+        String buffer = cu.getKeyboardBuffer();
+        //String inputValue = userInterface.getInput();
         //userInterface.setMBRText(inputValue);
         //txtFieldMBR.setText(Integer.toString(address));
         //cu.setMBRValue(inputValue);
 
-        switch (R) {
-            case 0:
-                cu.setR0Value(Integer.valueOf(inputValue));
-                userInterface.updateLogText("\n R0 : ",inputValue);
-                userInterface.setR0Text(Integer.valueOf(inputValue));
-                //txtFieldR0.setText(Integer.toString(address));
-                break;
-            case 1:
-                cu.setR1Value(Integer.valueOf(inputValue));
-                userInterface.updateLogText("\n R1 : ",inputValue);
-                userInterface.setR1Text(Integer.valueOf(inputValue));
-                //txtFieldR1.setText(Integer.toString(address));
-                break;
-            case 2:
-                cu.setR2Value(Integer.valueOf(inputValue));
-                userInterface.updateLogText("\n R2 : ",inputValue);
-                userInterface.setR2Text(Integer.valueOf(inputValue));
-                //txtFieldR2.setText(Integer.toString(address));
-                break;
-            case 3:
-                cu.setR3Value(Integer.valueOf(inputValue));
-                userInterface.updateLogText("\n R3 : ",inputValue);
-                userInterface.setR3Text(Integer.valueOf(inputValue));
-                //txtFieldR3.setText(Integer.toString(address));
-                break;
-//            default:
-//                break;
+        if (buffer != null && buffer.length() > 0) {
+            int val = (int)buffer.charAt(0);
+            switch (R) {
+                case 0:
+                    cu.setR0Value(val);
+                    cu.setKeyboardBuffer(buffer.substring(1, buffer.length()));
+                    break;
+                case 1:
+                    cu.setR1Value(val);
+                    cu.setKeyboardBuffer(buffer.substring(1, buffer.length()));
+                    break;
+                case 2:
+                    cu.setR2Value(val);
+                    cu.setKeyboardBuffer(buffer.substring(1, buffer.length()));
+                    break;
+                case 3:
+                    cu.setR3Value(val);
+                    cu.setKeyboardBuffer(buffer.substring(1, buffer.length()));
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            cu.setRnByNum(R, 0);
         }
-    }
+
+    } else if (devId==2) {
+		String buffer = cu.getCardBuffer();
+		//System.out.println(buffer);
+		if (buffer != null && buffer.length() > 0) {
+
+			int val = (int)buffer.charAt(0);
+
+			switch (R) {
+				case 0:
+					cu.setR0Value(val);
+					cu.setCardBuffer(buffer.substring(1, buffer.length()));
+					break;
+				case 1:
+					cu.setR1Value(val);
+					cu.setCardBuffer(buffer.substring(1, buffer.length()));
+					break;
+				case 2:
+					cu.setR2Value(val);
+					cu.setCardBuffer(buffer.substring(1, buffer.length()));
+					break;
+				case 3:
+					cu.setR3Value(val);
+					cu.setCardBuffer(buffer.substring(1, buffer.length()));
+					break;
+            	default:
+                	break;
+			}
+		} else {
+		    cu.setRnByNum(R, 0);
+        }
+	}
 
 }
 
 public void OUT(int R, int devId) {
-    //This function is for IN instruction workflow
-    int outputValue;
 
-    if (devId == 00001){
-        switch(R){ //Console Printer output
-            case 0:
-                outputValue = cu.getR0Value();
-                userInterface.updateLogText("\n R0 : "+outputValue);
-                break;
-            case 1:
-                outputValue = cu.getR1Value();
-                userInterface.updateLogText("\n R1 : ",outputValue);
-                break;
-            case 2:
-                outputValue = cu.getR2Value();
-                userInterface.updateLogText("\n R2 : ",outputValue);
-            case 3:
-                outputValue = cu.getR3Value();
-                userInterface.updateLogText("\n R3 : ",outputValue);
-                break;
+// --------------------------------------------------
+// 62:OUT -> Output Character to Device from Register
+// --------------------------------------------------
 
-        }
-
+    if (devId == 1){
+        int outputValue = cu.getRnByNum(R);
+        char c = (char) outputValue;
+        cu.setPrinterBuffer(String.valueOf(c));
+        userInterface.updateLogText("", outputValue);
+        userInterface.updateLogText(String.valueOf(c));
+        //cu.increasePCByOne();
     }
 }
+
 /* Shift and rotate instruction
  * The shift instruction include logic shift and arithmetic shift.
  * The rotate instruction is the logic instruction.
  */
 public void SRC(int AL, int LR, int Count, int R) {
+
+// ---------------------------------
+// 31:SRC -> Shift Register by Count
+// ---------------------------------
+
 	int datum = userInterface.getRnByNum(R);
 	switch (AL){
 		case 0:
@@ -1655,13 +2013,18 @@ public void SRC(int AL, int LR, int Count, int R) {
                 datum = datum << Count;
             }
 	}
-	userInterface.setRnByNum(R, datum);
-	userInterface.updateLogText("output", datum);
-	System.out.println(datum);
+	//userInterface.setRnByNum(R, datum);
+	cu.setRnByNum(R, datum);
+	//userInterface.updateLogText("", datum);
     //cu.increasePCByOne();
 }
 
 public void RRC(int AL, int LR, int Count, int R) {
+
+// ----------------------------------
+// 32:RRC -> Rotate Register by Count
+// ----------------------------------
+
     String x = null; // first part of the content
     String y = null; // second part of the content
     String z = null; // string form of content of the register
