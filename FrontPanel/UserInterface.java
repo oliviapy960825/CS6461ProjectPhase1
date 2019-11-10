@@ -228,7 +228,7 @@ public class UserInterface extends JFrame {
 				//SwingUtilities.invokeLater();
 				txtFieldR0.setText(String.valueOf(cu.getR0Value()));
 				contentPane.revalidate();
-				contentPane.repaint();
+				validate();
 			}
 			
 		});

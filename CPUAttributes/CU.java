@@ -485,8 +485,13 @@ public class CU {
 		case 25:
 			RX = instructionDec[1];
 			alu.NOT(RX);
-			break;	
 		default:
+			
+			System.out.println(IllegalOperationCode.getMessage());
+			setMFRValue(Integer.parseInt(IllegalOperationCode.getMFR(),2));
+			storeIntoMemory(4,Integer.parseInt(IllegalOperationCode.getMFR(),2));
+			fetchFromMemory(1);
+			status = false;
 			break;
 		}
 		return status;

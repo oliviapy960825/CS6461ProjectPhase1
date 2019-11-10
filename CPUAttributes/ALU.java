@@ -11,6 +11,10 @@ public class ALU {
 	private CU cu;
 	private Cache cache;
 	private UserInterface userInterface;
+	private MachineFaultException IllegalMemoryToReservedLocation=MachineFaultException.IllegalMemoryToReservedLocation;
+	private MachineFaultException IllegalOperationCode=MachineFaultException.IllegalOperationCode;
+	private MachineFaultException IllegalTrapCode=MachineFaultException.IllegalTrapCode;
+	private MachineFaultException IllegalMemoryAddressBeyondMemorySize=MachineFaultException.IllegalMemoryAddressBeyondMemorySize;
 	public void setCU(CU cu){
 		this.cu=cu;
 		}
@@ -109,7 +113,6 @@ public class ALU {
 			//txtFieldMAR.setText(Integer.toString(address));
 			cu.setMARValue(EA);
 			userInterface.updateLogText("\n MAR : ",EA);
-
 			int data = cu.memory.fetchFromMemory(EA);
 
 			userInterface.setMBRText(data);
@@ -212,6 +215,7 @@ public class ALU {
 				break;
 			}
 
+
 		}*/
 		int EA=calculateEA(X,I,address);
 		userInterface.updateLogText("m(20)", cu.fetchFromMemory(20));
@@ -256,6 +260,7 @@ public class ALU {
 				break;
 			default:
 				break;
+
 
 		}
 
@@ -318,6 +323,7 @@ public class ALU {
 		cu.setMARValue(EA);
 		int Reg=0;
 		switch (R) {
+
 			case 0:
 				Reg = cu.getR0Value();
 				userInterface.setMBRText(Reg);
@@ -357,6 +363,7 @@ public class ALU {
 
 			default:
 				break;
+
 		}
 		cu.memory.storeIntoMemory(EA, Reg);
 		//Memory[address] = Reg;
@@ -367,6 +374,7 @@ public class ALU {
 		userInterface.setMBRText(address);
 		//txtFieldMBR.setText(Integer.toString(address));
 		cu.setMBRValue(address);
+
 
 		int EA=calculateEA(X,I,address);
 		switch (R) {
@@ -397,6 +405,7 @@ public class ALU {
 
 			default:
 				break;
+
 		}
 	}
 
@@ -477,6 +486,7 @@ public class ALU {
 				break;
 			default:
 				break;
+
 		}
 	}
 	
@@ -489,10 +499,13 @@ public class ALU {
 		userInterface.setMARText(EA);
 		//txtFieldMAR.setText(Integer.toString(address));
 
+
 		cu.setMARValue(EA);
 
 		//userInterface.updateLogText("\nMAR: ",EA);
 		//logTextArea.append("\nMAR:"+ address);
+
+
 		int DataIX = 0;
 		switch (X) {
 			case 1:
@@ -688,55 +701,58 @@ public class ALU {
 //            cu.increasePCByOne();
 //        }
 
+	
 		int EA=calculateEA(X,I,address);
 		switch (R) {
-			case 0:
-				if(cu.getR0Value()==0) {
-					userInterface.setPCText(EA);
-					cu.setPCValue(EA);
-				}
-				else {
-					userInterface.setPCText(cu.getPCValue()+1);
-					cu.setPCValue(cu.getPCValue()+1);
-				}
-				break;
-			case 1:
-				if(cu.getR1Value()==0) {
-					userInterface.setPCText(EA);
-					cu.setPCValue(EA);
-				}
-				else {
-					userInterface.setPCText(cu.getPCValue()+1);
-					cu.setPCValue(cu.getPCValue()+1);
-				}
-				break;
-			case 2:
-				if(cu.getR2Value()==0) {
-					userInterface.setPCText(EA);
-					cu.setPCValue(EA);
-				}
-				else {
-					userInterface.setPCText(cu.getPCValue()+1);
-					cu.setPCValue(cu.getPCValue()+1);
-				}
-				break;
-			case 3:
-				if(cu.getR3Value()==0) {
-					userInterface.setPCText(EA);
-					cu.setPCValue(EA);
-				}
-				else {
-					userInterface.setPCText(cu.getPCValue()+1);
-					cu.setPCValue(cu.getPCValue()+1);
-				}
-				break;
-			default:
-				break;
+		case 0:
+			if(cu.getR0Value()==0) {
+				userInterface.setPCText(EA);
+				cu.setPCValue(EA);
+			}
+			else {
+				userInterface.setPCText(cu.getPCValue()+1);
+				cu.setPCValue(cu.getPCValue()+1);
+			}
+			break;
+		case 1:
+			if(cu.getR1Value()==0) {
+				userInterface.setPCText(EA);
+				cu.setPCValue(EA);
+			}
+			else {
+				userInterface.setPCText(cu.getPCValue()+1);
+				cu.setPCValue(cu.getPCValue()+1);
+			}
+			break;
+		case 2:
+			if(cu.getR2Value()==0) {
+				userInterface.setPCText(EA);
+				cu.setPCValue(EA);
+			}
+			else {
+				userInterface.setPCText(cu.getPCValue()+1);
+				cu.setPCValue(cu.getPCValue()+1);
+			}
+			break;
+		case 3:
+			if(cu.getR3Value()==0) {
+				userInterface.setPCText(EA);
+				cu.setPCValue(EA);
+			}
+			else {
+				userInterface.setPCText(cu.getPCValue()+1);
+				cu.setPCValue(cu.getPCValue()+1);
+			}
+			break;
+		default:
+			break;
+
 		}
 		
 	}
 	
 	public void JNE(int R,int X,int I,int address) {
+
 	// ----------------------------
     // 11: JNE -> Jump If Not Equal
     // ----------------------------
@@ -845,8 +861,67 @@ public class ALU {
 //
 //		}
 //
-		int EA=calculateEA(X,I,address);
-		switch (R) {
+	
+		/*if(I==0) {
+			switch (R) {
+			case 0:
+				if(cu.getR0Value()!=0) {
+					userInterface.setPCText(address);
+					cu.setPCValue(address);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			case 1:
+				if(cu.getR1Value()!=0) {
+					userInterface.setPCText(address);
+					cu.setPCValue(address);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			case 2:
+				if(cu.getR2Value()!=0) {
+					userInterface.setPCText(address);
+					cu.setPCValue(address);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			case 3:
+				if(cu.getR3Value()!=0) {
+					userInterface.setPCText(address);
+					cu.setPCValue(address);
+				}
+				else {
+					userInterface.setPCText(cu.getPCValue()+1);
+					cu.setPCValue(cu.getPCValue()+1);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		else {
+			int IX=0;
+			if(X==1) {
+				IX = cu.getX1Value();
+			}
+			else if(X==2) {
+				IX = cu.getX2Value();
+			}
+			else {
+				IX = cu.getX3Value();
+			}
+			int ADD = IX + address;
+			switch (R) {
+
 			case 0:
 				if(cu.getR0Value()!=0) {
 					userInterface.setPCText(EA);
@@ -889,10 +964,59 @@ public class ALU {
 				break;
 			default:
 				break;
+
+			}
+			
+		}*/
+		int EA=calculateEA(X,I,address);
+		switch (R) {
+		case 0:
+			if(cu.getR0Value()!=0) {
+				userInterface.setPCText(EA);
+				cu.setPCValue(EA);
+			}
+			else {
+				userInterface.setPCText(cu.getPCValue()+1);
+				cu.setPCValue(cu.getPCValue()+1);
+			}
+			break;
+		case 1:
+			if(cu.getR1Value()!=0) {
+				userInterface.setPCText(EA);
+				cu.setPCValue(EA);
+			}
+			else {
+				userInterface.setPCText(cu.getPCValue()+1);
+				cu.setPCValue(cu.getPCValue()+1);
+			}
+			break;
+		case 2:
+			if(cu.getR2Value()!=0) {
+				userInterface.setPCText(EA);
+				cu.setPCValue(EA);
+			}
+			else {
+				userInterface.setPCText(cu.getPCValue()+1);
+				cu.setPCValue(cu.getPCValue()+1);
+			}
+			break;
+		case 3:
+			if(cu.getR3Value()!=0) {
+				userInterface.setPCText(EA);
+				cu.setPCValue(EA);
+			}
+			else {
+				userInterface.setPCText(cu.getPCValue()+1);
+				cu.setPCValue(cu.getPCValue()+1);
+			}
+			break;
+		default:
+			break;
 		}
 	}
 	
 	public void JMA(int X,int I,int address) {
+
 	// ----------------------------------------
     // 13:JMA -> Unconditional Jump To Address
     // ----------------------------------------
@@ -954,13 +1078,34 @@ public class ALU {
 		userInterface.setPCText(EA);
 		cu.setPCValue(EA);
 
+		/*if(I==0) {
+			userInterface.setPCText(address);
+			cu.setPCValue(address);
+		}
+		else {
+			int IX=0;
+			if(X==1) {
+				IX = cu.getX1Value();
+			}
+			else if(X==2) {
+				IX = cu.getX2Value();
+			}
+			else {
+				IX = cu.getX3Value();
+			}
+			int ADD = IX + address;
+			userInterface.setPCText(ADD);
+			cu.setPCValue(ADD);	
+		}	*/
 	}
+	
 	public void JCC(int CC,int X,int I,int address) {
 	// ---------------------------------
     // 12:JCC -> Jump If Condition Code
     // ---------------------------------
 		int ccBit = 0;
 		//int ADD = address;
+
 		int EA = calculateEA(X,I,address);
 		if(CC == 0) {
 			ccBit = cu.getCCValue()/1000;
@@ -982,6 +1127,34 @@ public class ALU {
 			userInterface.setPCText(cu.getPCValue());
 			cu.setPCValue(cu.getPCValue()+1);
 		}
+		/*switch (I) {
+		case 0:
+			break;
+		case 1:
+			switch (X) {
+			case 1:
+				ADD += cu.getX1Value();
+				break;
+			case 2:
+				ADD += cu.getX2Value();
+				break;
+			case 3:
+				ADD += cu.getX3Value();
+				break;
+			default:
+				break;
+			}
+			break;
+
+		default:
+			break;
+
+		}
+		else{
+			userInterface.setPCText(cu.getPCValue());
+			cu.setPCValue(cu.getPCValue()+1);
+		}
+
 //		switch (I) {
 //		case 0:
 //			break;
@@ -1015,6 +1188,10 @@ public class ALU {
 //		default:
 //			break;
 //		}
+
+		*/
+		
+
 	}
 
 	public void SMR(int R, int X, int I, int address) {
@@ -1872,4 +2049,61 @@ public void RRC(int AL, int LR, int Count, int R) {
     userInterface.setRnByNum(R, datum);
     //cu.increasePCByOne();
 }
+
+public void TRAP(int code) throws Exception {
+
+	  // System.out.println("This is a TRAP instruction!");
+	if (code <= 15 && code >= 0){
+	  // store pc+1 into memory 2
+	  cu.setMARValue(2);
+	  cu.storeIntoMemory(2, cu.getPCValue() + 1);
+	  cu.setMBRValue(cu.getPCValue() + 1);
+	  // goes to the routine whose address is in memory location 0
+	  cu.setMARValue(0);
+	  cu.setPCValue(0);
+	  //int tableAddress = cu.getMBRValue();
+	  int tableAddress = cu.fetchFromMemory(0);
+	  cu.setMBRValue(tableAddress);
+	  //cu.setMARValue(tableAddress);
+	  //cu.setMBRValue(cu.memory.fetchFromMemory(cu.getMARValue()));
+
+	  //int routine = cu.getMBRValue();
+	  cu.setPCValue(tableAddress);
+	  //we are not really defining how subroutines here so I am just going to ignore the executing
+	  //subroutine part
+	  
+	 //I seriously do not understand what you are trying to achieve here.
+	    
+	  
+	  /*  do {
+	          cu.setMARValue(cu.getPCValue());
+	          cu.setMBRValue(cu.getMARValue());
+	          cu.setIRValue(cu.getMBRValue());
+	          String ins = Integer.toBinaryString(cu.getIRValue());
+	          String opCode = ins.substring(0, 6);
+	          cu.iExec(routine);
+	      } while (cu.getIRValue() != 0);
+	 
+      //Implement the subroutine later
+	 
+	  // return to the instruction
+	  cu.setMARValue(2);
+	  cu.setMBRValue(cu.getMARValue());
+	  cu.setPCValue(cu.getMBRValue());*/
+	  
+	  cu.setMARValue(2);
+	  cu.setMBRValue(cu.fetchFromMemory(2));
+	  cu.setPCValue(cu.fetchFromMemory(2));
+	}
+	else{
+		//add machine fault here
+		System.out.println(IllegalTrapCode.getMessage());
+		System.out.println(Integer.parseInt(IllegalTrapCode.getMFR(),2));
+		System.out.println();
+		cu.setMFRValue(Integer.parseInt(IllegalTrapCode.getMFR(),2));
+		cu.storeIntoMemory(4, Integer.parseInt(IllegalTrapCode.getMFR(),2));
+		cu.fetchFromMemory(1);
+	}
+
+	}
 }
