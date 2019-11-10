@@ -561,7 +561,7 @@ public class UserInterface extends JFrame {
 
 					cu.loadProgram(Const.PRE_PROG2);
 					cu.loadProgram(Const.PROG2_0);
-					cu.setPCValue(1600);
+					cu.setPCValue(Const.PG2_0_BASE);
 
 					do {
 						//cu.setMARValue(cu.getPCValue());
@@ -575,9 +575,9 @@ public class UserInterface extends JFrame {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						System.out.println(cu.getPCValue());
+						//System.out.println(cu.getPCValue());
 						//runInstruction(registers.getBinaryStringIr(), registers, mcu);
-					} while (cu.getPCValue() <= 1624 && cu.getPCValue() >= 1600);
+					} while (cu.getPCValue() <= Const.PG2_0_END && cu.getPCValue() >= Const.PG2_0_BASE);
 
 					updateLogText("\nPlease enter a word in the console keyboard and press the find word button.");
 					refreshRegistersPanel();

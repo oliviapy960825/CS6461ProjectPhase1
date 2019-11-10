@@ -517,7 +517,7 @@ public class CU {
 			for (Map.Entry<String, Integer> entry : program.entrySet()) {
 				int address = Integer.parseInt(entry.getKey());
 				int value = entry.getValue();
-				storeIntoCache(address, value);
+				memory.storeIntoMemory(address, value);
 			}
 		}
 	}

@@ -11,6 +11,8 @@ public class Const {
     public static final Integer PG2_2_END = 989;
     public static final Integer PG_P1_BASE = 1000;
     public static final Integer PG_P1_END = 1062;
+    public static final Integer PG2_0_BASE = 1600;
+    public static final Integer PG2_0_END = 1624;
     public static final Integer PG_P2_BASE = 1100;
     public static final Integer PG_P2_END = 1162;
     public static final Integer PG_20_BASE = 300;
