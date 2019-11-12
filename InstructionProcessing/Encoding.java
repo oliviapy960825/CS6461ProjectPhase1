@@ -14,10 +14,11 @@ public class Encoding {
 	String addressString = new String();
 	public int insToDec(String instruction) {
         String ins;
+        int whiteSpaceIndex=instruction.indexOf(' ');
         int decimalInstruction = 0;
         if (instruction.length() > 4) {
-            ins = instruction.substring(0, 2);
-            switch (ins) {
+           if(whiteSpaceIndex==2){
+            switch (instruction.substring(0, 2)) {
                 case "IN":
                     insFunction = "111101";
                     switch (instruction.substring(3, 4)) {
@@ -52,8 +53,64 @@ public class Encoding {
                             break;
                     }
                     break;
+                    
+                case "JZ ": //JZ 0,1,0,10
+                    insFunction = "001010";
+                    switch (instruction.substring(3, 4)) {
+                        case "0":
+                            insFunction += "00";
+                            break;
+                        case "1":
+                            insFunction += "01";
+                            break;
+                        case "2":
+                            insFunction += "10";
+                            break;
+                        case "3":
+                            insFunction += "11";
+                            break;
+                        default:
+                            break;
+                    }
+                    switch (instruction.substring(5, 6)) {
+                        case "0":
+                            insFunction += "00";
+                            break;
+                        case "1":
+                            insFunction += "01";
+                            break;
+                        case "2":
+                            insFunction += "10";
+                            break;
+                        case "3":
+                            insFunction += "11";
+                            break;
+                        default:
+                            break;
+                    }
+
+                    switch (instruction.substring(7, 8)) {
+                        case "0":
+                            insFunction += "0";
+                            break;
+                        case "1":
+                            insFunction += "1";
+                            break;
+                        default:
+                            break;
+                    }
+
+                    addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(9)));
+                    while (addressString.length() < 5) {
+                        addressString = "0" + addressString;
+                    }
+                    insFunction += addressString;
+                    break;
 
             }
+           }
+           
+            if(whiteSpaceIndex==3){
             switch (instruction.substring(0, 3)) {
                 case "LDR":
                     insFunction = "000001";
@@ -270,58 +327,7 @@ public class Encoding {
                     }
                     insFunction += addressString;
                     break;
-                case "JZ ": //JZ 0,1,0,10
-                    insFunction = "001010";
-                    switch (instruction.substring(3, 4)) {
-                        case "0":
-                            insFunction += "00";
-                            break;
-                        case "1":
-                            insFunction += "01";
-                            break;
-                        case "2":
-                            insFunction += "10";
-                            break;
-                        case "3":
-                            insFunction += "11";
-                            break;
-                        default:
-                            break;
-                    }
-                    switch (instruction.substring(5, 6)) {
-                        case "0":
-                            insFunction += "00";
-                            break;
-                        case "1":
-                            insFunction += "01";
-                            break;
-                        case "2":
-                            insFunction += "10";
-                            break;
-                        case "3":
-                            insFunction += "11";
-                            break;
-                        default:
-                            break;
-                    }
-
-                    switch (instruction.substring(7, 8)) {
-                        case "0":
-                            insFunction += "0";
-                            break;
-                        case "1":
-                            insFunction += "1";
-                            break;
-                        default:
-                            break;
-                    }
-
-                    addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(9)));
-                    while (addressString.length() < 5) {
-                        addressString = "0" + addressString;
-                    }
-                    insFunction += addressString;
-                    break;
+               
                 case "JNE"://JNE 0,1,0,10
                     insFunction = "001011";
                     switch (instruction.substring(4, 5)) {
@@ -1191,34 +1197,40 @@ public class Encoding {
                     break;
                 default:
                     break;
-            }
-            decimalInstruction = Integer.parseInt(insFunction, 2);
+            
+            //decimalInstruction = Integer.parseInt(insFunction, 2);
             //return decimalInstruction;
-        }
-
-    case "TRAP":
-    	 insFunction = "100100";
+            }
+            }
+            if(whiteSpaceIndex==4){
+            switch (instruction.substring(0,4)) {
+            		case "TRAP":
+            			insFunction = "100100";
     	 
     	 
     	 //String string=Integer.toBinaryString(instruction.substring(5));
-    	 int trapCode=Integer.parseInt(instruction.substring(5));
-    	 String binaryTrapCode=Integer.toBinaryString(trapCode);
-    	 while(binaryTrapCode.length()<4){
-    		 binaryTrapCode="0"+binaryTrapCode;
-    	 }
-    	 insFunction+=binaryTrapCode;
+            			int trapCode=Integer.parseInt(instruction.substring(5));
+            			String binaryTrapCode=Integer.toBinaryString(trapCode);
+            			while(binaryTrapCode.length()<4){
+            				binaryTrapCode="0"+binaryTrapCode;
+            			}
+            			insFunction+=binaryTrapCode;
     	 
-    	 while(insFunction.length()<16){
-    		 insFunction+="0";
-    	 }
+            			while(insFunction.length()<16){
+            				insFunction+="0";
+            			}
+            			break;
+            
     	 //insFunction+=instruction.substring(6);//length=4
-	default:
-		break;
-	}
+            		default:
+            			break;
+            		
+            					}
+            		}
 	
-	int decimalInstruction = Integer.parseInt(insFunction, 2);
-	return decimalInstruction;
-	
-}
+        }
+        decimalInstruction = Integer.parseInt(insFunction, 2);
+		return decimalInstruction;
 
+	}
 }

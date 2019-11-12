@@ -571,7 +571,7 @@ public class UserInterface extends JFrame {
 						try {
 							cu.iExec(iAdd);
 							//System.out.println(cu.getR1Value());
-						} catch (MachineFaultException e1) {
+						} catch (Exception e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
@@ -613,7 +613,7 @@ public class UserInterface extends JFrame {
                             try {
                                 cu.iExec(iAdd);
                                 //System.out.println(cu.getR1Value());
-                            } catch (MachineFaultException e1) {
+                            } catch (Exception e1) {
                                 // TODO Auto-generated catch block
                                 e1.printStackTrace();
                             }
@@ -633,7 +633,7 @@ public class UserInterface extends JFrame {
                             try {
                                 cu.iExec(iAdd);
                                 //System.out.println(cu.getR1Value());
-                            } catch (MachineFaultException e1) {
+                            } catch (Exception e1) {
                                 // TODO Auto-generated catch block
                                 e1.printStackTrace();
                             }
@@ -652,7 +652,7 @@ public class UserInterface extends JFrame {
                             try {
                                 cu.iExec(iAdd);
                                 //System.out.println(cu.getR1Value());
-                            } catch (MachineFaultException e1) {
+                            } catch (Exception e1) {
                                 // TODO Auto-generated catch block
                                 e1.printStackTrace();
                             }
@@ -671,7 +671,7 @@ public class UserInterface extends JFrame {
                             try {
                                 cu.iExec(iAdd);
                                 //System.out.println(cu.getR1Value());
-                            } catch (MachineFaultException e1) {
+                            } catch (Exception e1) {
                                 // TODO Auto-generated catch block
                                 e1.printStackTrace();
                             }
@@ -687,7 +687,12 @@ public class UserInterface extends JFrame {
         JLabel lblProgram1 = new JLabel("Program1");
         lblProgram1.setBounds(692, 450, 100,21);
         contentPane.add(lblProgram1);
-
+        
+        JButton btnProgram1 = new JButton("Program1");
+        btnProgram1.setBackground(Color.LIGHT_GRAY);
+        btnProgram1.setBounds(15, 650, 123, 29);
+        contentPane.add(btnProgram1);
+        
         JButton btnReadNumbers = new JButton("Read 20 Numbers");
         btnReadNumbers.setBackground(Color.LIGHT_GRAY);
         btnReadNumbers.setBounds(665, 480,123, 29);
@@ -720,7 +725,7 @@ public class UserInterface extends JFrame {
                             try {
                                 cu.iExec(iAdd);
                                 //System.out.println(cu.getR1Value());
-                            } catch (MachineFaultException e1) {
+                            } catch (Exception e1) {
                                 // TODO Auto-generated catch block
                                 e1.printStackTrace();
                             }
@@ -815,12 +820,12 @@ public class UserInterface extends JFrame {
 			}
 		});*/
 		
-//		btnProgram1.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				updateLogText("Please enter 20 numbers and 1 search key in Input panel.(Use comma to separate them)");
-//			}
-//		});
+		btnProgram1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				updateLogText("Please enter 20 numbers and 1 search key in Input panel.(Use comma to separate them)");
+			}
+		});
 //
 //
 //		/*btnInput.addActionListener(new ActionListener() {
@@ -875,6 +880,69 @@ public class UserInterface extends JFrame {
 //            }
 //        });
 
+		btnProgram1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	String input = instructionsTextArea.getText();
+
+                String[] inputNumbers = input.split(",");
+
+                List<String> list = new ArrayList<String>(Arrays.asList(inputNumbers));
+
+                List inputA = list.subList(0, list.size()-1);
+
+                updateLogText("The 20 numbers entered are:" + "\n");
+
+                updateLogText(inputA+"\n");
+
+                int len = inputNumbers.length;
+
+                updateLogText("The search key entered is:" + "\n");
+
+                String number1 = inputNumbers[len-1];
+
+                updateLogText(number1+"\n");
+
+                int nearestNumber = Integer.parseInt(inputNumbers[0]);
+
+                int[] numbersInput = new int[20];
+
+                int temp1=Integer.parseInt(number1),temp2=0;
+
+                for(int i=0;i<=inputA.size()-1;i++) {
+
+                	temp2 = Integer.parseInt(inputNumbers[i]);
+
+                	numbersInput[i] = Math.abs(temp1-temp2);
+
+                	System.out.println(numbersInput[i]);
+
+                }
+
+                temp1=numbersInput[0];
+
+                for(int j=1;j<numbersInput.length;j++) {
+
+                	if(temp1 > numbersInput[j]) {
+
+                		nearestNumber = numbersInput[j];
+
+                		temp1 = nearestNumber;
+
+                	}
+
+                	System.out.println(nearestNumber);
+
+                }
+
+                int finalNum = Integer.parseInt(number1) + nearestNumber;
+
+                //1,2,3,4,7,8,9,10,15,17,20,25,29,32,40,49,55,60,67,80,32
+
+                updateLogText("The nearest number to the key is: \n"+String.valueOf(finalNum));
+
+            }
+        });
 
 		btnInputFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1070,7 +1138,7 @@ public class UserInterface extends JFrame {
 				//int iAdd=encoding.insToDec(insAddress);
 				try {
 					cu.iExec(iAdd);
-				} catch (MachineFaultException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -1123,7 +1191,7 @@ public class UserInterface extends JFrame {
 		    	while (status) {
 					try {
 						status = cu.iExec(iAddress);
-					} catch (MachineFaultException e1) {
+					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}

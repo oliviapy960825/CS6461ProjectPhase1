@@ -1363,7 +1363,7 @@ public class ALU {
 			}
 		}
 	}
-	public void MLT(int RX, int RY) throws MachineFaultException{
+	public void MLT(int RX, int RY) throws Exception{
 
 	// ---------------------------------------
     // 20:MLT -> Multiply Register by Register
@@ -1390,7 +1390,7 @@ public class ALU {
 				//Integer.toBinaryString(decInstruction)
 				if(temp.length()>32){
 					overflow=true;
-					throw new MachineFaultException("Overflow!");
+					throw new Exception("Overflow!");
 				}
 				else{
 
@@ -1414,7 +1414,7 @@ public class ALU {
 				temp=Integer.toBinaryString(RXValue*RYValue);
 				if(temp.length()>32){
 					overflow=true;
-					throw new MachineFaultException("Overflow!");
+					throw new Exception("Overflow!");
 				}
 				else{
 
@@ -1447,7 +1447,7 @@ public class ALU {
 				if(temp.length()>32){
 
 					overflow=true;
-					throw new MachineFaultException("Overflow!");
+					throw new Exception("Overflow!");
 				}
 				else{
 
@@ -1471,7 +1471,7 @@ public class ALU {
 				if(temp.length()>32){
 
 					overflow=true;
-					throw new MachineFaultException("Overflow!");
+					throw new Exception("Overflow!");
 				}
 				else{
 

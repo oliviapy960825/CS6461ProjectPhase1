@@ -7,7 +7,7 @@ import CPUAttributes.ALU;
 import CPUAttributes.ProgramCounter;
 import CPUAttributes.ConditionCodeRegister;
 import CPUAttributes.CU;
-import CPUAttributes.Cache;
+import CPUAttributes.Cache1;
 import CPUAttributes.GeneralPurposeRegister;
 import CPUAttributes.IndexRegister;
 import CPUAttributes.InstructionRegister;
@@ -38,7 +38,7 @@ public class Main {
 							memory=new Memory();
 							cache =new Cache();*/
 							ALU alu=new ALU();
-							Cache cache=new Cache();
+							Cache1 cache=new Cache1();
 							Memory memory=new Memory();
 							memory.storeIntoMemory(1, 6);//The memory address 1contains the address of a routine to handle machine faults. 
 							memory.storeIntoMemory(6, 0);//HALT
@@ -58,7 +58,7 @@ public class Main {
 							ConditionCodeRegister CC=new ConditionCodeRegister();
 							Encoding encode=new Encoding();
 							Decoding decode=new Decoding();
-							CU cu=new CU(alu,cache,memory,PC,MAR,MBR,MFR,IR,X1,X2,X3,R0,R1,R2,R3,CC, encode,decode);
+							CU cu=new CU(alu,cache,memory,PC,MAR,MBR,MFR,IR,X1,X2,X3,R0,R1,R2,R3,CC,encode,decode);
 							UserInterface userInterface=new UserInterface(cu,alu);
 							
 							userInterface.setVisible(true);

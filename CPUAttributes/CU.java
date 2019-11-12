@@ -23,6 +23,7 @@ public class CU {
 	private  ProgramCounter PC;
 	private  MemoryAccessRegister MAR;
 	private  MemoryBufferRegister MBR ;
+	private  MachineFaultRegister MFR;
 	private InstructionRegister IR;
 	private IndexRegister X1;
 	private  IndexRegister X2;
@@ -35,15 +36,20 @@ public class CU {
 	String cardBuffer;
     String printerBuffer;
     String keyboardBuffer;
+    private MachineFaultException IllegalMemoryToReservedLocation=MachineFaultException.IllegalMemoryToReservedLocation;
+	private MachineFaultException IllegalOperationCode=MachineFaultException.IllegalOperationCode;
+	private MachineFaultException IllegalTrapCode=MachineFaultException.IllegalTrapCode;
+	private MachineFaultException IllegalMemoryAddressBeyondMemorySize=MachineFaultException.IllegalMemoryAddressBeyondMemorySize;
 	
-	public CU(ALU alu, Cache1 cache1, Memory memory, ProgramCounter PC, MemoryAccessRegister MAR, MemoryBufferRegister MBR,InstructionRegister IR,IndexRegister X1, IndexRegister X2, IndexRegister X3,  GeneralPurposeRegister R0,  GeneralPurposeRegister R1,  GeneralPurposeRegister R2,  GeneralPurposeRegister R3, ConditionCodeRegister CC, Encoding encode, Decoding decode){
+	public CU(ALU alu, Cache1 cache2, Memory memory, ProgramCounter PC, MemoryAccessRegister MAR, MemoryBufferRegister MBR,MachineFaultRegister MFR, InstructionRegister IR,IndexRegister X1, IndexRegister X2, IndexRegister X3,  GeneralPurposeRegister R0,  GeneralPurposeRegister R1,  GeneralPurposeRegister R2,  GeneralPurposeRegister R3, ConditionCodeRegister CC, Encoding encode, Decoding decode){
 		this.alu=alu;
 		this.cache=cache;
-		this.cache1=cache1;
+		this.cache1=cache2;
 		this.memory=memory;
 		this.PC=PC;
 		this.MAR=MAR;
 		this.MBR=MBR;
+		this.MFR=MFR;
 		this.IR=IR;
 		this.R0=R0;
 		this.R1=R1;
@@ -227,6 +233,13 @@ public class CU {
 	public int getMBRValue(){
 		return MBR.getValue();
 	}
+	public int getMFRValue(){
+		return MFR.getValue();
+	}
+	public void setMFRValue(int value){
+		MFR.setValue(value);
+	}
+	
 	public void setR0Value(int address){
 		R0.setValue(address);
 		userInterface.setR0Text(address);
@@ -299,7 +312,7 @@ public class CU {
 	public int getCCValue(){
 		return CC.getccValue();
 	}
-	public Boolean iExec(int Address) throws MachineFaultException {
+	public Boolean iExec(int Address) throws Exception {
 		//This function is for executing the instructions of user input
 		//System.out.print(Address);
 		Boolean status = true;
