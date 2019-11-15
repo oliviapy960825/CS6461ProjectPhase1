@@ -8,3 +8,7 @@
 /MemoryBufferRegister.class
 /ProgramCounter.class
 /Register.class
+/Cache.class
+/Cache1$CacheLine.class
+/Cache1.class
+/MachineFaultRegister.class

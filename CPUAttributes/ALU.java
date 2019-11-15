@@ -583,7 +583,11 @@ public class ALU {
 			break;
 		}
 	}
-
+	public void RFS (int address) {
+		cu.setR0Value(address);
+		cu.setPCValue(cu.getR3Value());
+		
+	}
 	public void JZ (int R, int X, int I, int address){
 	// ----------------------
     // 10: JZ -> Jump If Zero

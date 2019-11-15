@@ -59,6 +59,9 @@ public class UserInterface extends JFrame {
 	private static JTextField txtFieldMemoryValue;
 	private static JTextArea instructionsTextArea;
 	private static JTextArea logTextArea;
+	String[] inputNumbers=null;
+	List inputA;
+	String number1=null;
 	private CU cu;
 	//private Const con;
 	private int prog2Step;
@@ -489,19 +492,19 @@ public class UserInterface extends JFrame {
 			
 		});
 		
-		JLabel lblInput = new JLabel("Input File");
-		lblInput.setBounds(449, 394, 70, 21);
-		contentPane.add(lblInput);
-		
-		/*JButton btnInput = new JButton("Input");
-		btnInput.setBackground(Color.LIGHT_GRAY);
-		btnInput.setBounds(521, 390, 77, 29);
-		contentPane.add(btnInput);*/
-		
-		JButton btnInputFile = new JButton("Browse");
-		btnInputFile.setBackground(Color.LIGHT_GRAY);
-		btnInputFile.setBounds(521, 390, 77, 29);
-		contentPane.add(btnInputFile);
+//		JLabel lblInput = new JLabel("Input File");
+//		lblInput.setBounds(449, 394, 70, 21);
+//		contentPane.add(lblInput);
+//		
+//		/*JButton btnInput = new JButton("Input");
+//		btnInput.setBackground(Color.LIGHT_GRAY);
+//		btnInput.setBounds(521, 390, 77, 29);
+//		contentPane.add(btnInput);*/
+//		
+//		JButton btnInputFile = new JButton("Browse");
+//		btnInputFile.setBackground(Color.LIGHT_GRAY);
+//		btnInputFile.setBounds(521, 390, 77, 29);
+//		contentPane.add(btnInputFile);
 		
 		JButton btnIpl = new JButton("IPL");
 		btnIpl.setBackground(Color.LIGHT_GRAY);
@@ -688,58 +691,82 @@ public class UserInterface extends JFrame {
         lblProgram1.setBounds(692, 450, 100,21);
         contentPane.add(lblProgram1);
         
-        JButton btnProgram1 = new JButton("Program1");
-        btnProgram1.setBackground(Color.LIGHT_GRAY);
-        btnProgram1.setBounds(15, 650, 123, 29);
-        contentPane.add(btnProgram1);
+//        JButton btnProgram1 = new JButton("Program1");
+//        btnProgram1.setBackground(Color.LIGHT_GRAY);
+//        btnProgram1.setBounds(15, 650, 123, 29);
+//        contentPane.add(btnProgram1);
         
-        JButton btnReadNumbers = new JButton("Read 20 Numbers");
+        JButton btnReadNumbers = new JButton("Read 21 Numbers");
         btnReadNumbers.setBackground(Color.LIGHT_GRAY);
         btnReadNumbers.setBounds(665, 480,123, 29);
         contentPane.add(btnReadNumbers);
+        
+        
+        
         btnReadNumbers.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (prog1Step == 0) {
-                    // read 20 numbers from the console keyboard
-                    System.out.println("start reading numbers");
-                    if (instructionsTextArea.getText() == null || instructionsTextArea.getText().length() == 0) {
-                        JOptionPane.showMessageDialog(null, "type 20 numbers in the console keyboard");
+//                if (prog1Step == 0) {
+//                    // read 20 numbers from the console keyboard
+//                    System.out.println("start reading numbers");
+//                    if (instructionsTextArea.getText() == null || instructionsTextArea.getText().length() == 0) {
+//                        JOptionPane.showMessageDialog(null, "type 20 numbers in the console keyboard");
+//
+//                    } else {
+//                        updateLogText("\nBelow are the 20 numbers: ");
+//                        cu.loadProgram(Const.Pre);
+//                        cu.loadProgram(Const.PG1_20);
+//                        cu.setPCValue(Const.PG_20_BASE);
+//
+//                        // refreshRegistersPanel();
+//                        do {
+//                            // refreshRegistersPanel();
+////                            registers.setMAR(registers.getPC());
+////                            registers.setMBR(mcu.fetchFromCache(registers.getMAR()));
+////                            registers.setIR(registers.getMBR());
+////                            runInstruction(registers.getBinaryStringIr(), registers, mcu);
+//                            // refreshRegistersPanel();
+//                            // pushConsoleBuffer();
+//                            int iAdd=cu.getPCValue();
+//                            try {
+//                                cu.iExec(iAdd);
+//                                //System.out.println(cu.getR1Value());
+//                            } catch (Exception e1) {
+//                                // TODO Auto-generated catch block
+//                                e1.printStackTrace();
+//                            }
+//                            System.out.println(cu.getPCValue());
+//                        } while (cu.getPCValue() <= Const.PG_20_END && cu.getPCValue() >= Const.PG_20_BASE);
+//                        refreshRegistersPanel();
+//                        prog1Step = 1;
+//                        updateLogText("\nPlease enter 1 number (end with ',') and press the compare button. ");
+//                    }
+//                }
+            	logTextArea.setText("");
+            	String input = instructionsTextArea.getText();
 
-                    } else {
-                        updateLogText("\nBelow are the 20 numbers: ");
-                        cu.loadProgram(Const.Pre);
-                        cu.loadProgram(Const.PG1_20);
-                        cu.setPCValue(Const.PG_20_BASE);
+                inputNumbers = input.split(",");
 
-                        // refreshRegistersPanel();
-                        do {
-                            // refreshRegistersPanel();
-//                            registers.setMAR(registers.getPC());
-//                            registers.setMBR(mcu.fetchFromCache(registers.getMAR()));
-//                            registers.setIR(registers.getMBR());
-//                            runInstruction(registers.getBinaryStringIr(), registers, mcu);
-                            // refreshRegistersPanel();
-                            // pushConsoleBuffer();
-                            int iAdd=cu.getPCValue();
-                            try {
-                                cu.iExec(iAdd);
-                                //System.out.println(cu.getR1Value());
-                            } catch (Exception e1) {
-                                // TODO Auto-generated catch block
-                                e1.printStackTrace();
-                            }
-                            System.out.println(cu.getPCValue());
-                        } while (cu.getPCValue() <= Const.PG_20_END && cu.getPCValue() >= Const.PG_20_BASE);
-                        refreshRegistersPanel();
-                        prog1Step = 1;
-                        updateLogText("\nPlease enter 1 number (end with ',') and press the compare button. ");
-                    }
-                }
+                List<String> list = new ArrayList<String>(Arrays.asList(inputNumbers));
+
+                inputA = list.subList(0, list.size()-1);
+
+                updateLogText("The 20 numbers entered are:" + "\n");
+
+                updateLogText(inputA+"\n");
+
+                int len = inputNumbers.length;
+
+                updateLogText("The search key entered is:" + "\n");
+
+                number1 = inputNumbers[len-1];
+
+                updateLogText(number1+"\n");
+
             }
         });
 
-        JButton btnCompare = new JButton("Compare words");
+        JButton btnCompare = new JButton("Search Nearest Number to Key");
         btnCompare.setBackground(Color.LIGHT_GRAY);
         btnCompare.setBounds(665, 510,123, 29);
         contentPane.add(btnCompare);
@@ -820,12 +847,12 @@ public class UserInterface extends JFrame {
 			}
 		});*/
 		
-		btnProgram1.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				updateLogText("Please enter 20 numbers and 1 search key in Input panel.(Use comma to separate them)");
-			}
-		});
+//		btnProgram1.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				updateLogText("Please enter 20 numbers and 1 search key in Input panel.(Use comma to separate them)");
+//			}
+//		});
 //
 //
 //		/*btnInput.addActionListener(new ActionListener() {
@@ -835,73 +862,29 @@ public class UserInterface extends JFrame {
 //				txtKeyboard.setText(input);
 //			}
 //		});*/
-//
-//		btnProgram1.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                cu.setPCValue(0);
-//                txtFieldPC.setText(String.valueOf(cu.getPCValue()));
-//                String input = instructionsTextArea.getText();
-//                String[] inputNumbers = input.split(",");
-//                List<String> list = new ArrayList<String>(Arrays.asList(inputNumbers));
-//                List inputA = list.subList(0, list.size()-1);
-//                updateLogText("The 20 numbers entered are:" + "\n");
-//                updateLogText(inputA+"\n");
-//                //updateLogText(inputA);
-//                int len = inputNumbers.length;
-//                updateLogText("The search key entered is:" + "\n");
-//                String number1 = inputNumbers[len-1];
-//                updateLogText(number1+"\n");
-//                int nearestNumber = Integer.parseInt(inputNumbers[0]);
-//                int[] numbersInput = new int[20];
-//                int temp1=Integer.parseInt(number1),temp2=0;
-//                for(int i=0;i<=inputA.size()-1;i++) {
-//                	temp2 = Integer.parseInt(inputNumbers[i]);
-//                	numbersInput[i] = temp1-temp2;
-//                	System.out.println(numbersInput[i]);
-//                }
-//                temp1=numbersInput[0];
-//                for(int j=0;j<inputA.size()-1;j++) {
-//
-//                	if(temp1 > numbersInput[j]) {
-//                		nearestNumber = numbersInput[j];
-//                		temp1 = nearestNumber;
-//                	}
-//                	System.out.println(nearestNumber);
-//                }
-//                int finalNum = Integer.parseInt(number1) - nearestNumber;
-//                updateLogText(String.valueOf(finalNum));
-////                int len = inputNumbers.length;
-////                String lens = String.valueOf(len);
-////                updateLogText(lens);
-//                //int number = Integer.parseInt(number1);
-//                //cu.strInsToMemory(input);//instructions stored into memory
-//
-//            }
-//        });
-
-		btnProgram1.addActionListener(new ActionListener() {
+		btnCompare.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	String input = instructionsTextArea.getText();
-
-                String[] inputNumbers = input.split(",");
-
-                List<String> list = new ArrayList<String>(Arrays.asList(inputNumbers));
-
-                List inputA = list.subList(0, list.size()-1);
-
-                updateLogText("The 20 numbers entered are:" + "\n");
-
-                updateLogText(inputA+"\n");
-
-                int len = inputNumbers.length;
-
-                updateLogText("The search key entered is:" + "\n");
-
-                String number1 = inputNumbers[len-1];
-
-                updateLogText(number1+"\n");
+//            	logTextArea.setText("");
+//            	String input = instructionsTextArea.getText();
+//
+//                String[] inputNumbers = input.split(",");
+//
+//                List<String> list = new ArrayList<String>(Arrays.asList(inputNumbers));
+//
+//                List inputA = list.subList(0, list.size()-1);
+//
+//                updateLogText("The 20 numbers entered are:" + "\n");
+//
+//                updateLogText(inputA+"\n");
+//
+//                int len = inputNumbers.length;
+//
+//                updateLogText("The search key entered is:" + "\n");
+//
+//                String number1 = inputNumbers[len-1];
+//
+//                updateLogText(number1+"\n");
 
                 int nearestNumber = Integer.parseInt(inputNumbers[0]);
 
@@ -913,7 +896,7 @@ public class UserInterface extends JFrame {
 
                 	temp2 = Integer.parseInt(inputNumbers[i]);
 
-                	numbersInput[i] = Math.abs(temp1-temp2);
+                	numbersInput[i] = (temp1-temp2);
 
                 	System.out.println(numbersInput[i]);
 
@@ -923,19 +906,26 @@ public class UserInterface extends JFrame {
 
                 for(int j=1;j<numbersInput.length;j++) {
 
-                	if(temp1 > numbersInput[j]) {
+                	if(Math.abs(temp1) > Math.abs(numbersInput[j])) {
 
                 		nearestNumber = numbersInput[j];
 
                 		temp1 = nearestNumber;
 
                 	}
-
                 	System.out.println(nearestNumber);
 
                 }
-
-                int finalNum = Integer.parseInt(number1) + nearestNumber;
+                int finalNum = 0;
+                if(nearestNumber == Integer.parseInt(inputNumbers[0])) {
+                	finalNum = Integer.parseInt(number1) + Math.abs(nearestNumber);
+                }
+                else if(nearestNumber < 0) {
+                	finalNum = Integer.parseInt(number1) + Math.abs(nearestNumber);
+                }
+                else {
+                	finalNum = Integer.parseInt(number1) - nearestNumber;
+                }
 
                 //1,2,3,4,7,8,9,10,15,17,20,25,29,32,40,49,55,60,67,80,32
 
@@ -944,27 +934,27 @@ public class UserInterface extends JFrame {
             }
         });
 
-		btnInputFile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//按钮点击事件
-
-
-				JFileChooser chooser = new JFileChooser();             //设置选择器
-				chooser.setMultiSelectionEnabled(true);             //设为多选
-				int returnVal = chooser.showOpenDialog(btnInputFile);        //是否打开文件选择框
-				System.out.println("returnVal="+returnVal);
-
-				if (returnVal == JFileChooser.APPROVE_OPTION) {          //如果符合文件类型
-
-					String filepath = chooser.getSelectedFile().getAbsolutePath();      //获取绝对路径
-					System.out.println(filepath);
-
-
-					System.out.println("You chose to open this file: "+ chooser.getSelectedFile().getName());  //输出相对路径
-
-				}
-			}
-		});
+//		btnInputFile.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				//按钮点击事件
+//
+//
+//				JFileChooser chooser = new JFileChooser();             //设置选择器
+//				chooser.setMultiSelectionEnabled(true);             //设为多选
+//				int returnVal = chooser.showOpenDialog(btnInputFile);        //是否打开文件选择框
+//				System.out.println("returnVal="+returnVal);
+//
+//				if (returnVal == JFileChooser.APPROVE_OPTION) {          //如果符合文件类型
+//
+//					String filepath = chooser.getSelectedFile().getAbsolutePath();      //获取绝对路径
+//					System.out.println(filepath);
+//
+//
+//					System.out.println("You chose to open this file: "+ chooser.getSelectedFile().getName());  //输出相对路径
+//
+//				}
+//			}
+//		});
 
 		btnStoreR0.addActionListener(new ActionListener() {
 			
