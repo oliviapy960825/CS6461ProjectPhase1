@@ -504,6 +504,13 @@ public class Encoding {
                     break;
                 case "RFS":
                     insFunction = "001111";
+                    addressString=Integer.toBinaryString(Integer.parseInt(instruction.substring(4)));
+                    while(addressString.length()<10){
+                    	addressString="0"+addressString;
+                    }
+                    insFunction+=addressString;
+                   
+                    
                     break;
 
                 case "AMR": //AMR R,X,I,ADDRESS

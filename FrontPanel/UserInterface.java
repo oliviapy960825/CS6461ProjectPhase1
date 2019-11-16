@@ -1132,7 +1132,7 @@ public class UserInterface extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				contentPane.revalidate();
+				//contentPane.revalidate();
 				validate();
 			}
 		});
@@ -1149,7 +1149,7 @@ public class UserInterface extends JFrame {
 					cu.memory.storeIntoMemory(add, value);
 					//Memory[add] = value;
 				}
-				contentPane.revalidate();
+				//contentPane.revalidate();
 				validate();
 			}
 		});
@@ -1176,7 +1176,7 @@ public class UserInterface extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) { 
 		    	String insAddress = txtFieldPC.getText();
-		    	int iAddress = Integer.parseInt(insAddress,2);
+		    	int iAddress = Integer.parseInt(insAddress);
 		    	Boolean status = true;
 		    	while (status) {
 					try {
@@ -1187,7 +1187,7 @@ public class UserInterface extends JFrame {
 					}
 					iAddress++;
 				}
-		    	contentPane.revalidate();
+		    	//contentPane.revalidate();
 		    	validate();
 			}
 			
