@@ -4,28 +4,19 @@ package FrontPanel;
  * @author Dishit, Peiyu, Zhaoning, Charitha
  *
  */
-import java.awt.Color;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.AbstractButton;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import CPUAttributes.ALU;
@@ -38,6 +29,7 @@ import CPUAttributes.InstructionRegister;
 import CPUAttributes.MemoryAccessRegister;
 import CPUAttributes.MemoryBufferRegister;
 import CPUAttributes.ProgramCounter;
+import InstructionProcessing.Const;
 import InstructionProcessing.Decoding;
 import InstructionProcessing.Encoding;
 import InstructionProcessing.MachineFaultException;
@@ -48,10 +40,7 @@ public class UserInterface extends JFrame {
 	//This class is for the User Interface designs and interactions
 	//It has one contentPanel and many fields and buttons for each user input area and button
 	//It also has text areas for user input and also the log/console for displaying what's happening behind
-	private MachineFaultException IllegalMemoryToReservedLocation=MachineFaultException.IllegalMemoryToReservedLocation;
-	private MachineFaultException IllegalOperationCode=MachineFaultException.IllegalOperationCode;
-	private MachineFaultException IllegalTrapCode=MachineFaultException.IllegalTrapCode;
-	private MachineFaultException IllegalMemoryAddressBeyondMemorySize=MachineFaultException.IllegalMemoryAddressBeyondMemorySize;
+	
 	protected static JPanel contentPane;
 	private static JTextField txtFieldR0;
 	private static JTextField txtFieldR1;
@@ -70,7 +59,13 @@ public class UserInterface extends JFrame {
 	private static JTextField txtFieldMemoryValue;
 	private static JTextArea instructionsTextArea;
 	private static JTextArea logTextArea;
+	String[] inputNumbers=null;
+	List inputA;
+	String number1=null;
 	private CU cu;
+	//private Const con;
+	private int prog2Step;
+    private int prog1Step;
 	public UserInterface(CU cu, ALU alu) {
 		/*alu=new ALU();
 		cache=new Cache();
@@ -149,7 +144,7 @@ public class UserInterface extends JFrame {
 		txtFieldPC.setText(Integer.toString(address));
 	}
 	public String getInput() {
-		return txtKeyboard.getText();
+		return instructionsTextArea.getText();
 	}
 	public void updateLogText(String string, int address){
 		logTextArea.append(string+" "+address);
@@ -180,15 +175,32 @@ public class UserInterface extends JFrame {
 		if (num == 3)
 			txtFieldR3.setText(Integer.toString(value));
 	}
+
 	public int getRnByNum(int num) {
 		if (num == 0)
-			return Integer.parseInt(txtFieldR0.getText());
+		    try {
+                return Integer.parseInt(txtFieldR0.getText());
+            } catch (NumberFormatException e) {
+		        return 0;
+            }
 		if (num == 1)
-			return Integer.parseInt(txtFieldR1.getText());
+            try {
+                return Integer.parseInt(txtFieldR1.getText());
+            } catch (NumberFormatException e) {
+                return 0;
+            }
 		if (num == 2)
-			return Integer.parseInt(txtFieldR2.getText());
+            try {
+                return Integer.parseInt(txtFieldR2.getText());
+            } catch (NumberFormatException e) {
+                return 0;
+            }
 		if (num == 3)
-			return Integer.parseInt(txtFieldR3.getText());
+            try {
+                return Integer.parseInt(txtFieldR3.getText());
+            } catch (NumberFormatException e) {
+                return 0;
+            }
 		return 0;
 	}
 	public void intialize() {
@@ -217,7 +229,6 @@ public class UserInterface extends JFrame {
 				// TODO Auto-generated method stub
 				//System.out.print(cu.getR0Value());
 				//SwingUtilities.invokeLater();
-				
 				txtFieldR0.setText(String.valueOf(cu.getR0Value()));
 				contentPane.revalidate();
 				validate();
@@ -481,19 +492,19 @@ public class UserInterface extends JFrame {
 			
 		});
 		
-		JLabel lblInput = new JLabel("Input File");
-		lblInput.setBounds(449, 394, 70, 21);
-		contentPane.add(lblInput);
-		
-		/*JButton btnInput = new JButton("Input");
-		btnInput.setBackground(Color.LIGHT_GRAY);
-		btnInput.setBounds(521, 390, 77, 29);
-		contentPane.add(btnInput);*/
-		
-		JButton btnInputFile = new JButton("Browse");
-		btnInputFile.setBackground(Color.LIGHT_GRAY);
-		btnInputFile.setBounds(521, 390, 77, 29);
-		contentPane.add(btnInputFile);
+//		JLabel lblInput = new JLabel("Input File");
+//		lblInput.setBounds(449, 394, 70, 21);
+//		contentPane.add(lblInput);
+//		
+//		/*JButton btnInput = new JButton("Input");
+//		btnInput.setBackground(Color.LIGHT_GRAY);
+//		btnInput.setBounds(521, 390, 77, 29);
+//		contentPane.add(btnInput);*/
+//		
+//		JButton btnInputFile = new JButton("Browse");
+//		btnInputFile.setBackground(Color.LIGHT_GRAY);
+//		btnInputFile.setBounds(521, 390, 77, 29);
+//		contentPane.add(btnInputFile);
 		
 		JButton btnIpl = new JButton("IPL");
 		btnIpl.setBackground(Color.LIGHT_GRAY);
@@ -510,19 +521,256 @@ public class UserInterface extends JFrame {
 		btnRun.setBounds(15, 604, 123, 29);
 		contentPane.add(btnRun);
 		
-		JButton btnProgram1 = new JButton("Program1");
-        btnProgram1.setBackground(Color.LIGHT_GRAY);
-        btnProgram1.setBounds(15, 604, 123, 29);
-        contentPane.add(btnProgram1);
-		
+
+//		JButton btnProgram1 = new JButton("Program1");
+//        btnProgram1.setBackground(Color.LIGHT_GRAY);
+//        btnProgram1.setBounds(15, 650, 123, 29);
+//        contentPane.add(btnProgram1);
+//
+
+
 		JLabel lblNewLabel = new JLabel("INSTRUCTION INPUT");
 		lblNewLabel.setBounds(201, 449, 153, 21);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblLogconsole = new JLabel("LOG/CONSOLE");
-		lblLogconsole.setBounds(497, 449, 110, 21);
+		Font x = new Font("Serif",0,12);
+		lblLogconsole.setFont(x);
+		lblLogconsole.setBounds(497, 449, 200, 21);
 		contentPane.add(lblLogconsole);
-		
+
+		JLabel lblProgram2 = new JLabel("Program2");
+		lblProgram2.setBounds(692, 549, 100,21);
+		contentPane.add(lblProgram2);
+
+		JButton btnLoadSentences = new JButton("Load sentences");
+		btnLoadSentences.setBackground(Color.LIGHT_GRAY);
+		btnLoadSentences.setBounds(665, 575,123, 29);
+		contentPane.add(btnLoadSentences);
+		btnLoadSentences.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (prog2Step == 0) {
+					String sentences = "Python is an easy to learn, powerful programming language. "
+							+ "It has efficient high-level data structures and a simple but effective approach to object-oriented programming. "
+							+ "Python’s elegant syntax and dynamic typing, together with its interpreted nature, make it an ideal language for scripting and rapid application development in many areas on most platforms. "
+							+ "Next, install the Python interpreter on your computer. "
+							+ "When you are ready to write your first program, you will need a text editor. "
+							+ "Or, if you prefer to learn Python through listening to a lecture, you can attend a training course or even hire a trainer to come to your company. ";
+					cu.setCardBuffer(sentences);
+					//System.out.println((int)sentences.charAt(0));
+					//System.out.println(cu.getCardBuffer());
+					System.out.println("start to read sentences");
+
+					cu.loadProgram(Const.PRE_PROG2);
+					cu.loadProgram(Const.PROG2_0);
+					cu.setPCValue(Const.PG2_0_BASE);
+
+					do {
+						//cu.setMARValue(cu.getPCValue());
+						//cu.setMBRValue(cu.fetchFromMemory(cu.getMARValue()));
+						//cu.setIRValue(cu.getMBRValue());
+						int iAdd=cu.getPCValue();
+						try {
+							cu.iExec(iAdd);
+							//System.out.println(cu.getR1Value());
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						//System.out.println(cu.getPCValue());
+						//runInstruction(registers.getBinaryStringIr(), registers, mcu);
+					} while (cu.getPCValue() <= Const.PG2_0_END && cu.getPCValue() >= Const.PG2_0_BASE);
+
+					updateLogText("\nPlease enter a word in the console keyboard and press the find word button.");
+					refreshRegistersPanel();
+					prog2Step = 1;
+				}
+			}
+		});
+
+
+		JButton btnFindWord = new JButton("Find Word");
+		btnFindWord.setBackground(Color.LIGHT_GRAY);
+		btnFindWord.setBounds(665, 605,123, 29);
+		contentPane.add(btnFindWord);
+		btnFindWord.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (prog2Step == 1) {
+                    System.out.println("\nstart to read the word");
+                    if (instructionsTextArea.getText() == null || instructionsTextArea.getText().length() == 0) {
+                        JOptionPane.showMessageDialog(null, "type a word in the console keyboard");
+
+                    } else {
+                        // read the word
+                        updateLogText("\nsearch result: the word is");
+                        cu.loadProgram(Const.PROG2_1);
+                        cu.setPCValue(Const.PG2_1_BASE);
+                        do {
+//                            registers.setMAR(registers.getPC());
+//                            registers.setMBR(mcu.fetchFromCache(registers.getMAR()));
+//                            registers.setIR(registers.getMBR());
+//                            runInstruction(registers.getBinaryStringIr(), registers, mcu);
+                            int iAdd=cu.getPCValue();
+                            try {
+                                cu.iExec(iAdd);
+                                //System.out.println(cu.getR1Value());
+                            } catch (Exception e1) {
+                                // TODO Auto-generated catch block
+                                e1.printStackTrace();
+                            }
+                            System.out.println(cu.getPCValue());
+                        } while (cu.getPCValue() <= Const.PG2_1_END && cu.getPCValue() >= Const.PG2_1_BASE);
+                        // find the word
+                        updateLogText("\nthe word number is");
+                        System.out.println("prog2_2");
+                        cu.loadProgram(Const.PROG2_2);
+                        cu.setPCValue(Const.PG2_2_BASE);
+                        do {
+//                            cu.setMARValue(cu.getPCValue());
+//                            cu.setMBRValue(cu.fetchFromMemory(cu.getMARValue()));
+//                            cu.setIRValue(cu.getMBRValue());
+//                            runInstruction(registers.getBinaryStringIr(), registers, mcu);
+                            int iAdd=cu.getPCValue();
+                            try {
+                                cu.iExec(iAdd);
+                                //System.out.println(cu.getR1Value());
+                            } catch (Exception e1) {
+                                // TODO Auto-generated catch block
+                                e1.printStackTrace();
+                            }
+                            System.out.println(cu.getPCValue());
+                        } while (cu.getPCValue() <= Const.PG2_2_END && cu.getPCValue() >= Const.PG2_2_BASE);
+                        System.out.println("\nprint the result in m(28)");
+
+                        cu.loadProgram(Const.PG_P1);
+                        cu.setPCValue(Const.PG_P1_BASE);
+                        do {
+//                            registers.setMAR(registers.getPC());
+//                            registers.setMBR(mcu.fetchFromCache(registers.getMAR()));
+//                            registers.setIR(registers.getMBR());
+//                            runInstruction(registers.getBinaryStringIr(), registers, mcu);
+                            int iAdd=cu.getPCValue();
+                            try {
+                                cu.iExec(iAdd);
+                                //System.out.println(cu.getR1Value());
+                            } catch (Exception e1) {
+                                // TODO Auto-generated catch block
+                                e1.printStackTrace();
+                            }
+                            System.out.println(cu.getPCValue());
+                        } while (cu.getPCValue() <= Const.PG_P1_END && cu.getPCValue() >= Const.PG_P1_BASE);
+                        System.out.println("\nprint the result in m(29)");
+                        updateLogText("\nthe sentence number is");
+                        cu.loadProgram(Const.PG_P2);
+                        cu.setPCValue(Const.PG_P2_BASE);
+                        do {
+//                            registers.setMAR(registers.getPC());
+//                            registers.setMBR(mcu.fetchFromCache(registers.getMAR()));
+//                            registers.setIR(registers.getMBR());
+//                            runInstruction(registers.getBinaryStringIr(), registers, mcu);
+                            int iAdd=cu.getPCValue();
+                            try {
+                                cu.iExec(iAdd);
+                                //System.out.println(cu.getR1Value());
+                            } catch (Exception e1) {
+                                // TODO Auto-generated catch block
+                                e1.printStackTrace();
+                            }
+                            System.out.println(cu.getPCValue());
+                        } while (cu.getPCValue() <= Const.PG_P2_END && cu.getPCValue() >= Const.PG_P2_BASE);
+                        refreshRegistersPanel();
+                        prog2Step = 0;
+                    }
+                }
+            }
+        });
+
+        JLabel lblProgram1 = new JLabel("Program1");
+        lblProgram1.setBounds(692, 450, 100,21);
+        contentPane.add(lblProgram1);
+        
+//        JButton btnProgram1 = new JButton("Program1");
+//        btnProgram1.setBackground(Color.LIGHT_GRAY);
+//        btnProgram1.setBounds(15, 650, 123, 29);
+//        contentPane.add(btnProgram1);
+        
+        JButton btnReadNumbers = new JButton("Read 21 Numbers");
+        btnReadNumbers.setBackground(Color.LIGHT_GRAY);
+        btnReadNumbers.setBounds(665, 480,123, 29);
+        contentPane.add(btnReadNumbers);
+        
+        
+        
+        btnReadNumbers.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                if (prog1Step == 0) {
+//                    // read 20 numbers from the console keyboard
+//                    System.out.println("start reading numbers");
+//                    if (instructionsTextArea.getText() == null || instructionsTextArea.getText().length() == 0) {
+//                        JOptionPane.showMessageDialog(null, "type 20 numbers in the console keyboard");
+//
+//                    } else {
+//                        updateLogText("\nBelow are the 20 numbers: ");
+//                        cu.loadProgram(Const.Pre);
+//                        cu.loadProgram(Const.PG1_20);
+//                        cu.setPCValue(Const.PG_20_BASE);
+//
+//                        // refreshRegistersPanel();
+//                        do {
+//                            // refreshRegistersPanel();
+////                            registers.setMAR(registers.getPC());
+////                            registers.setMBR(mcu.fetchFromCache(registers.getMAR()));
+////                            registers.setIR(registers.getMBR());
+////                            runInstruction(registers.getBinaryStringIr(), registers, mcu);
+//                            // refreshRegistersPanel();
+//                            // pushConsoleBuffer();
+//                            int iAdd=cu.getPCValue();
+//                            try {
+//                                cu.iExec(iAdd);
+//                                //System.out.println(cu.getR1Value());
+//                            } catch (Exception e1) {
+//                                // TODO Auto-generated catch block
+//                                e1.printStackTrace();
+//                            }
+//                            System.out.println(cu.getPCValue());
+//                        } while (cu.getPCValue() <= Const.PG_20_END && cu.getPCValue() >= Const.PG_20_BASE);
+//                        refreshRegistersPanel();
+//                        prog1Step = 1;
+//                        updateLogText("\nPlease enter 1 number (end with ',') and press the compare button. ");
+//                    }
+//                }
+            	logTextArea.setText("");
+            	String input = instructionsTextArea.getText();
+
+                inputNumbers = input.split(",");
+
+                List<String> list = new ArrayList<String>(Arrays.asList(inputNumbers));
+
+                inputA = list.subList(0, list.size()-1);
+
+                updateLogText("The 20 numbers entered are:" + "\n");
+
+                updateLogText(inputA+"\n");
+
+                int len = inputNumbers.length;
+
+                updateLogText("The search key entered is:" + "\n");
+
+                number1 = inputNumbers[len-1];
+
+                updateLogText(number1+"\n");
+
+            }
+        });
+
+        JButton btnCompare = new JButton("Search Nearest Number to Key");
+        btnCompare.setBackground(Color.LIGHT_GRAY);
+        btnCompare.setBounds(665, 510,123, 29);
+        contentPane.add(btnCompare);
+
 		JLabel lblMemory = new JLabel("MEMORY");
 		lblMemory.setBounds(177, 710, 54, 21);
 		contentPane.add(lblMemory);
@@ -564,6 +812,13 @@ public class UserInterface extends JFrame {
 		instructionsTextArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		instructionsTextArea.setBounds(176, 485, 208, 147);
 		contentPane.add(instructionsTextArea);
+
+		instructionsTextArea.addKeyListener(new KeyAdapter() { // TODO
+            public void keyReleased(KeyEvent e) {
+                cu.setKeyboardBuffer(instructionsTextArea.getText());
+            }
+        });
+
 		JScrollPane instructionPanel = new JScrollPane(instructionsTextArea);
 		instructionPanel.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		instructionPanel.setBounds(176, 485, 208, 147);
@@ -574,7 +829,7 @@ public class UserInterface extends JFrame {
 		
 		logTextArea = new JTextArea();
 		logTextArea.setEditable(false);
-		logTextArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		logTextArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
 		logTextArea.setBounds(449, 486, 208, 147);
 		contentPane.add(logTextArea);
 		
@@ -592,51 +847,115 @@ public class UserInterface extends JFrame {
 			}
 		});*/
 		
-		btnProgram1.addActionListener(new ActionListener() {
+//		btnProgram1.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				updateLogText("Please enter 20 numbers and 1 search key in Input panel.(Use comma to separate them)");
+//			}
+//		});
+//
+//
+//		/*btnInput.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				String input = txtKeyboard.getText();
+//				txtKeyboard.setText(input);
+//			}
+//		});*/
+		btnCompare.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cu.setPCValue(0);
-                txtFieldPC.setText(String.valueOf(cu.getPCValue()));
-                String input = instructionsTextArea.getText();
-                String[] inputNumbers = input.split(",");
-                List<String> list = new ArrayList<String>(Arrays.asList(inputNumbers));
-                List inputA = list.subList(0, list.size()-1);
-                updateLogText("The program 1:" + "\n");
-                updateLogText(inputNumbers);
-                //updateLogText(inputA);
-                int len = inputNumbers.length;
-                String number1 = inputNumbers[len-1];
-                updateLogText(number1);
+//            	logTextArea.setText("");
+//            	String input = instructionsTextArea.getText();
+//
+//                String[] inputNumbers = input.split(",");
+//
+//                List<String> list = new ArrayList<String>(Arrays.asList(inputNumbers));
+//
+//                List inputA = list.subList(0, list.size()-1);
+//
+//                updateLogText("The 20 numbers entered are:" + "\n");
+//
+//                updateLogText(inputA+"\n");
+//
 //                int len = inputNumbers.length;
-//                String lens = String.valueOf(len);
-//                updateLogText(lens);
-                //int number = Integer.parseInt(number1);
-                //cu.strInsToMemory(input);//instructions stored into memory
+//
+//                updateLogText("The search key entered is:" + "\n");
+//
+//                String number1 = inputNumbers[len-1];
+//
+//                updateLogText(number1+"\n");
+
+                int nearestNumber = Integer.parseInt(inputNumbers[0]);
+
+                int[] numbersInput = new int[20];
+
+                int temp1=Integer.parseInt(number1),temp2=0;
+
+                for(int i=0;i<=inputA.size()-1;i++) {
+
+                	temp2 = Integer.parseInt(inputNumbers[i]);
+
+                	numbersInput[i] = (temp1-temp2);
+
+                	System.out.println(numbersInput[i]);
+
+                }
+
+                temp1=numbersInput[0];
+
+                for(int j=1;j<numbersInput.length;j++) {
+
+                	if(Math.abs(temp1) > Math.abs(numbersInput[j])) {
+
+                		nearestNumber = numbersInput[j];
+
+                		temp1 = nearestNumber;
+
+                	}
+                	System.out.println(nearestNumber);
+
+                }
+                int finalNum = 0;
+                if(nearestNumber == Integer.parseInt(inputNumbers[0])) {
+                	finalNum = Integer.parseInt(number1) + Math.abs(nearestNumber);
+                }
+                else if(nearestNumber < 0) {
+                	finalNum = Integer.parseInt(number1) + Math.abs(nearestNumber);
+                }
+                else {
+                	finalNum = Integer.parseInt(number1) - nearestNumber;
+                }
+
+                //1,2,3,4,7,8,9,10,15,17,20,25,29,32,40,49,55,60,67,80,32
+
+                updateLogText("The nearest number to the key is: \n"+String.valueOf(finalNum));
 
             }
         });
 
-		btnInputFile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//按钮点击事件
+//		btnInputFile.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				//按钮点击事件
+//
+//
+//				JFileChooser chooser = new JFileChooser();             //设置选择器
+//				chooser.setMultiSelectionEnabled(true);             //设为多选
+//				int returnVal = chooser.showOpenDialog(btnInputFile);        //是否打开文件选择框
+//				System.out.println("returnVal="+returnVal);
+//
+//				if (returnVal == JFileChooser.APPROVE_OPTION) {          //如果符合文件类型
+//
+//					String filepath = chooser.getSelectedFile().getAbsolutePath();      //获取绝对路径
+//					System.out.println(filepath);
+//
+//
+//					System.out.println("You chose to open this file: "+ chooser.getSelectedFile().getName());  //输出相对路径
+//
+//				}
+//			}
+//		});
 
-
-				JFileChooser chooser = new JFileChooser();             //设置选择器
-				chooser.setMultiSelectionEnabled(true);             //设为多选
-				int returnVal = chooser.showOpenDialog(btnInputFile);        //是否打开文件选择框
-				System.out.println("returnVal="+returnVal);
-
-				if (returnVal == JFileChooser.APPROVE_OPTION) {          //如果符合文件类型
-
-					String filepath = chooser.getSelectedFile().getAbsolutePath();      //获取绝对路径
-					System.out.println(filepath);
-
-
-					System.out.println("You chose to open this file: "+ chooser.getSelectedFile().getName());  //输出相对路径
-
-				}
-			}
-		});
 		btnStoreR0.addActionListener(new ActionListener() {
 			
 			@Override
@@ -768,12 +1087,30 @@ public class UserInterface extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				cu.setPCValue(0);
+			    prog1Step = 0;
+				prog2Step = 0;
+				//cu.loadProgram(Const.TB);
+				cu.setPCValue(8);
+				int register = 0;
+				setR0Text(0);
+				setR1Text(0);
+				setR2Text(0);
+				setR3Text(0);
+				setX1Text(0);
+				setX2Text(0);
+				setX3Text(0);
+				while (register<4){
+				    cu.setRnByNum(register, 0);
+				    register++;
+                }
+                cu.setX1Value(0);
+				cu.setX2Value(0);
+				cu.setX3Value(0);
 				txtFieldPC.setText(String.valueOf(cu.getPCValue()));
 		    	String instructions = instructionsTextArea.getText();
 		    	//System.out.print(instructions);
 		    	cu.strInsToMemory(instructions);//instructions stored into memory
-		    	logTextArea.setText("IPL Complete");
+		    	logTextArea.setText("IPL Complete\n");
 		    	contentPane.revalidate();
 		    	validate();
 			}
@@ -789,18 +1126,18 @@ public class UserInterface extends JFrame {
 				//System.out.println(insAddress);
 				//int iAdd = Integer.parseInt(insAddress,2);
 				//int iAdd=encoding.insToDec(insAddress);
-					try {
-						cu.iExec(iAdd);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				contentPane.revalidate();
+				try {
+					cu.iExec(iAdd);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				//contentPane.revalidate();
 				validate();
 			}
 		});
 		
-		btnStore.addActionListener(new ActionListener() {//store into memory
+		btnStore.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -809,18 +1146,10 @@ public class UserInterface extends JFrame {
 				if(addr != null && dataValue != null) {
 					int add = Integer.parseInt(addr);
 					int value = Integer.parseInt(dataValue);
-					if(add !=0 && add!=1 && add!=2 && add!= 3 && add!=4 && add!=5 && add!=6){
 					cu.memory.storeIntoMemory(add, value);
-					}
-					else{
-						System.out.println(IllegalMemoryToReservedLocation.getMessage());
-						cu.setMFRValue(Integer.parseInt(IllegalMemoryToReservedLocation.getMFR(),2));
-						cu.storeIntoMemory(4,Integer.parseInt(IllegalMemoryToReservedLocation.getMFR(),2));
-						cu.fetchFromMemory(1);
-					}
 					//Memory[add] = value;
 				}
-				contentPane.revalidate();
+				//contentPane.revalidate();
 				validate();
 			}
 		});
@@ -847,22 +1176,56 @@ public class UserInterface extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) { 
 		    	String insAddress = txtFieldPC.getText();
-		    	int iAddress = Integer.parseInt(insAddress,2);
+		    	int iAddress = Integer.parseInt(insAddress);
 		    	Boolean status = true;
 		    	while (status) {
-					
-						try {
-							status = cu.iExec(iAddress);
-						} catch (Exception e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						iAddress++;
+					try {
+						status = cu.iExec(iAddress);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					iAddress++;
 				}
-		    	contentPane.revalidate();
+		    	//contentPane.revalidate();
 		    	validate();
 			}
 			
 		});
 	}
+
+    private void pushConsoleBuffer() {
+        if (cu.getPrinterBuffer() != null) {
+            logTextArea.append(cu.getPrinterBuffer());
+            cu.setPrinterBuffer("");
+        }
+        if (cu.getKeyboardBuffer() != null) {
+            logTextArea.setText(cu.getKeyboardBuffer());
+        }
+    }
+
+    private void refreshRegistersPanel() {
+        for (Component com : contentPane.getComponents()) {
+            if (com instanceof JPanel) {
+                JPanel pnl = (JPanel) com;
+                int regVal = 0;
+                //int bitLong = 0;
+                //String bitString = "";
+                int i = 0;
+                for (Component comm : pnl.getComponents()) {
+//                    if (comm instanceof JLabel) {
+//                        JLabel lbl = (JLabel) comm;
+//                        regVal = registers.getRegistersByName(lbl.getText());
+//                        bitLong = registers.getBitLongByName(lbl.getText());
+//                        //bitString = StringUtil.decimalToBinary(regVal, bitLong);
+//                        //i = bitLong;
+//                    }
+                    if (comm instanceof JTextField) {
+                        JTextField txt = (JTextField) comm;
+                        txt.setText(String.valueOf(regVal));
+                    }
+                }
+            }
+        }
+    }
 }
