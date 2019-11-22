@@ -61,7 +61,9 @@ public class Main {
 							ConditionCodeRegister CC=new ConditionCodeRegister();
 							Encoding encode=new Encoding();
 							Decoding decode=new Decoding();
+
 							CU cu=new CU(alu,cache,memory,PC,MAR,MBR,MFR,IR,X1,X2,X3,R0,R1,R2,R3,FR0,FR1,CC,encode,decode);
+
 							UserInterface userInterface=new UserInterface(cu,alu);
 							
 							userInterface.setVisible(true);

@@ -26,6 +26,7 @@ public class Encoding {
                 case "IN":
                     insFunction = "111101";
                     switch (instruction.substring(3, 4)) {
+
                         case "0":
                             insFunction += "00";
                             break;
@@ -38,8 +39,7 @@ public class Encoding {
                         case "3":
                             insFunction += "11";
                             break;
-                        default:
-                            break;
+                        
                     }
                     insFunction += "000";
 
@@ -108,9 +108,6 @@ public class Encoding {
                     }
                     insFunction += addressString;
                     break;
-                    /*default:
-                    	
-                    	break;*/
 
             }
            }
@@ -1218,7 +1215,7 @@ public class Encoding {
             switch (instruction.substring(0,4)) {
             		case "TRAP":
             			insFunction = "011110";
-    	 
+
     	 
     	 //String string=Integer.toBinaryString(instruction.substring(5));
             			int trapCode=Integer.parseInt(instruction.substring(5));
@@ -1232,6 +1229,7 @@ public class Encoding {
             				insFunction+="0";
             			}
             			break;
+
             		case "FADD"://format as FADD(6 bits) fr(2 bits),X(2 bit),I (1 bit), address (5 bits)
             			insFunction="100001";//decimal as 33
             			
@@ -1408,10 +1406,12 @@ public class Encoding {
             			break;
     	 //insFunction+=instruction.substring(6);//length=4
             		default://have to think about how to incorporate illegal instruction/operation code machine fault here
+
             			break;
             		
             					}
             		}
+
             if(whiteSpaceIndex==5){
             	switch (instruction.substring(0,5)) {
             	case "CNVRT"://format as CNVRT r,X,I,address
@@ -1445,6 +1445,7 @@ public class Encoding {
             		break;
             	}
             }
+
 	
         }
         decimalInstruction = Integer.parseInt(insFunction, 2);

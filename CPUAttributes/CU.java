@@ -43,9 +43,10 @@ public class CU {
 	private MachineFaultException IllegalTrapCode=MachineFaultException.IllegalTrapCode;
 	private MachineFaultException IllegalMemoryAddressBeyondMemorySize=MachineFaultException.IllegalMemoryAddressBeyondMemorySize;
 	
+
 	public CU(ALU alu, Cache1 cache2, Memory memory, ProgramCounter PC, MemoryAccessRegister MAR, MemoryBufferRegister MBR,MachineFaultRegister MFR, InstructionRegister IR,IndexRegister X1, IndexRegister X2, IndexRegister X3,  GeneralPurposeRegister R0,  GeneralPurposeRegister R1,  GeneralPurposeRegister R2,  GeneralPurposeRegister R3, FloatingPointRegister FR0, FloatingPointRegister FR1, ConditionCodeRegister CC, Encoding encode, Decoding decode){
 		this.alu=alu;
-		//this.cache=cache;
+		this.cache=cache;
 		this.cache1=cache2;
 		this.memory=memory;
 		this.PC=PC;
@@ -63,6 +64,7 @@ public class CU {
 		this.FR0=FR0;
 		this.FR1=FR1;
 		this.CC=CC;
+
 		this.encode=encode;
 		this.decode=decode;
 		alu.setCU(this);
@@ -352,6 +354,7 @@ public class CU {
 		setPCValue(getPCValue()+1);
 		//userInterface.updateLogText("\n PC incremented by 1");
 		int R,X,I,address,RX,RY,immed,devID,AL,LR,Count,FR;
+
 		switch (instructionDec[0]) {
 		case 1:
 			R = instructionDec[1];
@@ -513,6 +516,7 @@ public class CU {
 		case 25:
 			RX = instructionDec[1];
 			alu.NOT(RX);
+
 		case 33:
 			FR=instructionDec[1];
 			X=instructionDec[2];
@@ -555,6 +559,7 @@ public class CU {
 			I=instructionDec[3];
 			address=instructionDec[4];
 			alu.STFR(FR,X,I,address);
+
 		default:
 			
 			System.out.println(IllegalOperationCode.getMessage());
