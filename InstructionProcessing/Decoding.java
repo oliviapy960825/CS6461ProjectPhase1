@@ -196,10 +196,52 @@ public class Decoding {
 				instruction[1] = Integer.parseInt(binaryInstruction.substring(6,8), 2);
 				instruction[2] = Integer.parseInt(binaryInstruction.substring(11), 2);
 				break;
-			case "100100":  //TRAP instruction
-				instruction[0] = 36;
+			case "011110":  //TRAP instruction
+				instruction[0] = 30;
 				instruction[1] = Integer.parseInt(binaryInstruction.substring(6,10), 2);//location 6-9 in the instructionStruction now stores the trap code
 				break;
+			case "100001"://FADD instruction
+				instruction[0]=33;
+				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+				instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
+				instruction[3]=Integer.parseInt((binaryInstruction.substring(10,11)), 2);
+				instruction[4]=Integer.parseInt((binaryInstruction.substring(11)),2);
+			case "100010"://FSUB instruction
+				instruction[0]=34;
+				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+				instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
+				instruction[3]=Integer.parseInt((binaryInstruction.substring(10,11)), 2);
+				instruction[4]=Integer.parseInt((binaryInstruction.substring(11)),2);
+			case "100011"://VADD instruction
+				instruction[0]=35;
+				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+				instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
+				instruction[3]=Integer.parseInt((binaryInstruction.substring(10,11)), 2);
+				instruction[4]=Integer.parseInt((binaryInstruction.substring(11)),2);
+			case "100100"://VSUB instruction
+				instruction[0]=36;
+				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+				instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
+				instruction[3]=Integer.parseInt((binaryInstruction.substring(10,11)), 2);
+				instruction[4]=Integer.parseInt((binaryInstruction.substring(11)),2);
+			case "100101"://CNVRT instruction
+				instruction[0]=37;
+				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+				instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
+				instruction[3]=Integer.parseInt((binaryInstruction.substring(10,11)), 2);
+				instruction[4]=Integer.parseInt((binaryInstruction.substring(11)),2);
+			case "110010"://LDFR instruction
+				instruction[0]=50;
+				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+				instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
+				instruction[3]=Integer.parseInt((binaryInstruction.substring(10,11)), 2);
+				instruction[4]=Integer.parseInt((binaryInstruction.substring(11)),2);
+			case "110011"://STFR instruction
+				instruction[0]=51;
+				instruction[1]=Integer.parseInt((binaryInstruction.substring(6,8)), 2);
+				instruction[2]=Integer.parseInt((binaryInstruction.substring(8,10)), 2);
+				instruction[3]=Integer.parseInt((binaryInstruction.substring(10,11)), 2);
+				instruction[4]=Integer.parseInt((binaryInstruction.substring(11)),2);
 			default:
 				break;
 			}

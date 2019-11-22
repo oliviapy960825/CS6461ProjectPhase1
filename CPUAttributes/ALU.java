@@ -2110,4 +2110,364 @@ public void TRAP(int code) throws Exception {
 	}
 
 	}
+public void FADD(int FR, int X, int I, int address){
+	//should I check if the first/sign digit/bit of the newFR0String to see
+			//if it matches that of the currentFR0String to determine if there's overflow--
+			//if(currentFR0String.substring(0,1)!=newFR0String.substring(0,1))
+			//or should I check the length of the newFR0String to see if it's greater than 16?
+	int EA=calculateEA(X,I,address);
+	switch(FR){
+	case 0:
+		int currentFR0Value=cu.getFR0Value();
+		//String currentFR0String=Integer.toBinaryString(currentFR0Value);
+		int newFR0Value=currentFR0Value+cu.fetchFromMemory(EA);
+		
+		//The java.lang.Integer.toBinaryString() method returns a string representation of the integer argument as an unsigned integer in base 2.
+		cu.setFR0Value(newFR0Value);
+		String newFR0String="";//Integer.toBinaryString(newFR0Value);
+		if(newFR0Value>=0){
+			newFR0String=Integer.toBinaryString(newFR0Value);
+			if(newFR0String.length()>16){
+				try {
+					throw new Exception("Overflow");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		else{
+			String intermediateString=Integer.toBinaryString(-newFR0Value);
+			boolean carryIn=false;
+			for(int i=0;i<intermediateString.length()-1;i++){
+				if(intermediateString.charAt(i)=='0'){
+					newFR0String+="1";
+				}
+				else{
+					newFR0String+="0";
+				}
+			}
+			String signedFR0String="";
+			if(newFR0String.charAt(newFR0String.length()-1)=='1'){
+				carryIn=true;
+			}
+			for(int i=newFR0String.length()-2;i>=0;i--){
+				if(newFR0String.charAt(i)=='0'){
+					if(carryIn){//the binary bit is 0 but got a carryIn
+						signedFR0String="1"+signedFR0String;
+						carryIn=false;
+					}
+					else{//the binary bit is 0 and got no carryIn
+						signedFR0String="0"+signedFR0String;
+						carryIn=false;
+					}
+				}
+				else{//the binary bit is 1
+					if(carryIn){//the binary bit is 1 and got a carryIn
+						signedFR0String="0"+signedFR0String;
+						carryIn=true;
+					}
+					else{//the binary bit is 1 but got no carryIn
+						signedFR0String="1"+signedFR0String;
+						carryIn=false;
+					}
+				}
+			}
+			if(carryIn){
+				try {
+					throw new Exception("Overflow");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		break;
+	case 1:
+		int currentFR1Value=cu.getFR1Value();
+		//String currentFR1String=Integer.toBinaryString(currentFR1Value);
+		int newFR1Value=currentFR1Value+cu.fetchFromMemory(EA);
+		
+		String newFR1String="";//Integer.toBinaryString(newFR0Value);
+		if(newFR1Value>=0){
+			newFR1String=Integer.toBinaryString(newFR1Value);
+			if(newFR1String.length()>16){
+				try {
+					throw new Exception("Overflow");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		else{
+			String intermediateString=Integer.toBinaryString(-newFR1Value);
+			boolean carryIn=false;
+			for(int i=0;i<intermediateString.length()-1;i++){
+				if(intermediateString.charAt(i)=='0'){
+					newFR1String+="1";
+				}
+				else{
+					newFR1String+="0";
+				}
+			}
+			String signedFR1String="";
+			if(newFR1String.charAt(newFR1String.length()-1)=='1'){
+				carryIn=true;
+			}
+			for(int i=newFR1String.length()-2;i>=0;i--){
+				if(newFR1String.charAt(i)=='0'){
+					if(carryIn){//the binary bit is 0 but got a carryIn
+						signedFR1String="1"+signedFR1String;
+						carryIn=false;
+					}
+					else{//the binary bit is 0 and got no carryIn
+						signedFR1String="0"+signedFR1String;
+						carryIn=false;
+					}
+				}
+				else{//the binary bit is 1
+					if(carryIn){//the binary bit is 1 and got a carryIn
+						signedFR1String="0"+signedFR1String;
+						carryIn=true;
+					}
+					else{//the binary bit is 1 but got no carryIn
+						signedFR1String="1"+signedFR1String;
+						carryIn=false;
+					}
+				}
+			}
+			if(carryIn){
+				try {
+					throw new Exception("Overflow");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		break;
+	}
+	//think about how to check if it overflows
+	
+}
+public void FSUB(int FR, int X, int I, int address){
+	int EA=calculateEA(X,I,address);
+	switch(FR){
+	case 0:
+		int currentFR0Value=cu.getFR0Value();
+		//String currentFR0String=Integer.toBinaryString(currentFR0Value);
+		int newFR0Value=currentFR0Value-cu.fetchFromMemory(EA);
+		
+		//The java.lang.Integer.toBinaryString() method returns a string representation of the integer argument as an unsigned integer in base 2.
+		cu.setFR0Value(newFR0Value);
+		String newFR0String="";//Integer.toBinaryString(newFR0Value);
+		if(newFR0Value>=0){
+			newFR0String=Integer.toBinaryString(newFR0Value);
+			if(newFR0String.length()>16){
+				try {
+					throw new Exception("Overflow");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		else{
+			String intermediateString=Integer.toBinaryString(-newFR0Value);
+			boolean carryIn=false;
+			for(int i=0;i<intermediateString.length()-1;i++){
+				if(intermediateString.charAt(i)=='0'){
+					newFR0String+="1";
+				}
+				else{
+					newFR0String+="0";
+				}
+			}
+			String signedFR0String="";
+			if(newFR0String.charAt(newFR0String.length()-1)=='1'){
+				carryIn=true;
+			}
+			for(int i=newFR0String.length()-2;i>=0;i--){
+				if(newFR0String.charAt(i)=='0'){
+					if(carryIn){//the binary bit is 0 but got a carryIn
+						signedFR0String="1"+signedFR0String;
+						carryIn=false;
+					}
+					else{//the binary bit is 0 and got no carryIn
+						signedFR0String="0"+signedFR0String;
+						carryIn=false;
+					}
+				}
+				else{//the binary bit is 1
+					if(carryIn){//the binary bit is 1 and got a carryIn
+						signedFR0String="0"+signedFR0String;
+						carryIn=true;
+					}
+					else{//the binary bit is 1 but got no carryIn
+						signedFR0String="1"+signedFR0String;
+						carryIn=false;
+					}
+				}
+			}
+			if(carryIn){
+				try {
+					throw new Exception("Overflow");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		break;
+	case 1:
+		int currentFR1Value=cu.getFR1Value();
+		//String currentFR1String=Integer.toBinaryString(currentFR1Value);
+		int newFR1Value=currentFR1Value-cu.fetchFromMemory(EA);
+		
+		String newFR1String="";//Integer.toBinaryString(newFR0Value);
+		if(newFR1Value>=0){
+			newFR1String=Integer.toBinaryString(newFR1Value);
+			if(newFR1String.length()>16){
+				try {
+					throw new Exception("Overflow");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		else{
+			String intermediateString=Integer.toBinaryString(-newFR1Value);
+			boolean carryIn=false;
+			for(int i=0;i<intermediateString.length()-1;i++){
+				if(intermediateString.charAt(i)=='0'){
+					newFR1String+="1";
+				}
+				else{
+					newFR1String+="0";
+				}
+			}
+			String signedFR1String="";
+			if(newFR1String.charAt(newFR1String.length()-1)=='1'){
+				carryIn=true;
+			}
+			for(int i=newFR1String.length()-2;i>=0;i--){
+				if(newFR1String.charAt(i)=='0'){
+					if(carryIn){//the binary bit is 0 but got a carryIn
+						signedFR1String="1"+signedFR1String;
+						carryIn=false;
+					}
+					else{//the binary bit is 0 and got no carryIn
+						signedFR1String="0"+signedFR1String;
+						carryIn=false;
+					}
+				}
+				else{//the binary bit is 1
+					if(carryIn){//the binary bit is 1 and got a carryIn
+						signedFR1String="0"+signedFR1String;
+						carryIn=true;
+					}
+					else{//the binary bit is 1 but got no carryIn
+						signedFR1String="1"+signedFR1String;
+						carryIn=false;
+					}
+				}
+			}
+			if(carryIn){
+				try {
+					throw new Exception("Overflow");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		break;
+	}
+}
+public void VADD(int FR, int X, int I, int address){
+	//fr contains the length of the vectors
+	int vectorLength=0;
+	switch(FR){
+	case 0:
+		vectorLength=cu.getFR0Value();
+		break;
+	case 1:
+		vectorLength=cu.getFR1Value();
+		break;
+	}
+	int EA=calculateEA(X,I,address);
+	int vector1Address=cu.fetchFromMemory(EA);
+	int vector2Address=cu.fetchFromMemory(EA+1);
+	for(int i=0;i<vectorLength;i++){
+		int vector1Value=cu.fetchFromMemory(vector1Address+i);
+		int vector2Value=cu.fetchFromMemory(vector2Address+i);
+		int newVector1Value=vector1Value+vector2Value;
+		cu.storeIntoMemory(vector1Address+i, newVector1Value);
+	}
+}
+public void VSUB(int FR, int X, int I, int address){
+	int vectorLength=0;
+	switch(FR){
+	case 0:
+		vectorLength=cu.getFR0Value();
+		break;
+	case 1:
+		vectorLength=cu.getFR1Value();
+		break;
+	}
+	int EA=calculateEA(X,I,address);
+	int vector1Address=cu.fetchFromMemory(EA);
+	int vector2Address=cu.fetchFromMemory(EA+1);
+	for(int i=0;i<vectorLength;i++){
+		int vector1Value=cu.fetchFromMemory(vector1Address+i);
+		int vector2Value=cu.fetchFromMemory(vector2Address+i);
+		int newVector1Value=vector1Value-vector2Value;
+		cu.storeIntoMemory(vector1Address+i, newVector1Value);
+	}
+}
+public void CNVRT(int R, int X, int I, int address){
+	int FValue=0;
+	int EA=calculateEA(X,I,address);
+	int EAValue=cu.fetchFromMemory(EA);
+	switch(R){//is the r register the same as general purpose register?
+	case 0:
+		FValue=cu.getR0Value();
+		break;
+	case 1:
+		FValue=cu.getR1Value();
+		break;
+	case 2:
+		FValue=cu.getR2Value();
+		break;
+	case 3:
+		FValue=cu.getR3Value();
+	}
+	if(FValue==0){
+		
+		//WTF is fixed point number?
+	}
+	if(FValue==1){
+		
+	}
+}
+public void LDFR(int FR, int X, int I, int address){
+	int EA=calculateEA(X,I,address);
+	int FR0Value=cu.fetchFromMemory(EA);
+	int FR1Value=cu.fetchFromMemory(EA+1);
+	cu.setFR0Value(FR0Value);
+	cu.setFR1Value(FR1Value);
+}
+public void STFR(int FR, int X, int I, int address){
+	int EA=calculateEA(X,I,address);
+	int FR0Value=cu.getFR0Value();
+	int FR1Value=cu.getFR1Value();
+	cu.storeIntoMemory(EA, FR0Value);
+	cu.storeIntoMemory(EA+1,FR1Value);
+}
 }

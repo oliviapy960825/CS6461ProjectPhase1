@@ -31,7 +31,9 @@ public class CU {
 	private  GeneralPurposeRegister R0;
 	private  GeneralPurposeRegister R1;
 	private  GeneralPurposeRegister R2;
-	private  GeneralPurposeRegister R3  ;
+	private  GeneralPurposeRegister R3;
+	private FloatingPointRegister FR0;
+	private FloatingPointRegister FR1;
 	private  ConditionCodeRegister CC;
 	String cardBuffer;
     String printerBuffer;
@@ -41,7 +43,8 @@ public class CU {
 	private MachineFaultException IllegalTrapCode=MachineFaultException.IllegalTrapCode;
 	private MachineFaultException IllegalMemoryAddressBeyondMemorySize=MachineFaultException.IllegalMemoryAddressBeyondMemorySize;
 	
-	public CU(ALU alu, Cache1 cache2, Memory memory, ProgramCounter PC, MemoryAccessRegister MAR, MemoryBufferRegister MBR,MachineFaultRegister MFR, InstructionRegister IR,IndexRegister X1, IndexRegister X2, IndexRegister X3,  GeneralPurposeRegister R0,  GeneralPurposeRegister R1,  GeneralPurposeRegister R2,  GeneralPurposeRegister R3, ConditionCodeRegister CC, Encoding encode, Decoding decode){
+
+	public CU(ALU alu, Cache1 cache2, Memory memory, ProgramCounter PC, MemoryAccessRegister MAR, MemoryBufferRegister MBR,MachineFaultRegister MFR, InstructionRegister IR,IndexRegister X1, IndexRegister X2, IndexRegister X3,  GeneralPurposeRegister R0,  GeneralPurposeRegister R1,  GeneralPurposeRegister R2,  GeneralPurposeRegister R3, FloatingPointRegister FR0, FloatingPointRegister FR1, ConditionCodeRegister CC, Encoding encode, Decoding decode){
 		this.alu=alu;
 		this.cache=cache;
 		this.cache1=cache2;
@@ -58,6 +61,8 @@ public class CU {
 		this.X1=X1;
 		this.X2=X2;
 		this.X3=X3;
+		this.FR0=FR0;
+		this.FR1=FR1;
 		this.CC=CC;
 
 		this.encode=encode;
@@ -290,6 +295,18 @@ public class CU {
 	public int getX3Value(){
 		return X3.getValue();
 	}
+	public int getFR0Value(){
+		return FR0.getValue();
+	}
+	public void setFR0Value(int value){
+		FR0.setValue(value);
+	}
+	public int getFR1Value(){
+		return FR1.getValue();
+	}
+	public void setFR1Value(int value){
+		FR1.setValue(value);
+	}
 	public void setIRValue(int address){
 		IR.setValue(address);
 		userInterface.setIRText(address);
@@ -336,7 +353,8 @@ public class CU {
 		//txtFieldPC.setText(String.valueOf(PC.getValue()));
 		setPCValue(getPCValue()+1);
 		//userInterface.updateLogText("\n PC incremented by 1");
-		int R,X,I,address,RX,RY,immed,devID,AL,LR,Count;
+		int R,X,I,address,RX,RY,immed,devID,AL,LR,Count,FR;
+
 		switch (instructionDec[0]) {
 		case 1:
 			R = instructionDec[1];
@@ -498,6 +516,50 @@ public class CU {
 		case 25:
 			RX = instructionDec[1];
 			alu.NOT(RX);
+
+		case 33:
+			FR=instructionDec[1];
+			X=instructionDec[2];
+			I=instructionDec[3];
+			address=instructionDec[4];
+			alu.FADD(FR,X,I,address);
+		case 34:
+			FR=instructionDec[1];
+			X=instructionDec[2];
+			I=instructionDec[3];
+			address=instructionDec[4];
+			alu.FSUB(FR,X,I,address);
+		case 35:
+			FR=instructionDec[1];
+			X=instructionDec[2];
+			I=instructionDec[3];
+			address=instructionDec[4];
+			alu.VADD(FR,X,I,address);
+		case 36:
+			FR=instructionDec[1];
+			X=instructionDec[2];
+			I=instructionDec[3];
+			address=instructionDec[4];
+			alu.VSUB(FR,X,I,address);
+		case 37:
+			R=instructionDec[1];
+			X=instructionDec[2];
+			I=instructionDec[3];
+			address=instructionDec[4];
+			alu.CNVRT(R,X,I,address);
+		case 50:
+			FR=instructionDec[1];
+			X=instructionDec[2];
+			I=instructionDec[3];
+			address=instructionDec[4];
+			alu.LDFR(FR,X,I,address);
+		case 51:
+			FR=instructionDec[1];
+			X=instructionDec[2];
+			I=instructionDec[3];
+			address=instructionDec[4];
+			alu.STFR(FR,X,I,address);
+
 		default:
 			
 			System.out.println(IllegalOperationCode.getMessage());

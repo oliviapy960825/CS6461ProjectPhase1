@@ -12,6 +12,10 @@ public class Encoding {
 	//convert it into decimal format for later use and access
 	String insFunction = new String();
 	String addressString = new String();
+	private MachineFaultException IllegalMemoryToReservedLocation=MachineFaultException.IllegalMemoryToReservedLocation;
+	private MachineFaultException IllegalOperationCode=MachineFaultException.IllegalOperationCode;
+	private MachineFaultException IllegalTrapCode=MachineFaultException.IllegalTrapCode;
+	private MachineFaultException IllegalMemoryAddressBeyondMemorySize=MachineFaultException.IllegalMemoryAddressBeyondMemorySize;
 	public int insToDec(String instruction) {
         String ins;
         int whiteSpaceIndex=instruction.indexOf(' ');
@@ -22,7 +26,6 @@ public class Encoding {
                 case "IN":
                     insFunction = "111101";
                     switch (instruction.substring(3, 4)) {
-
 
                         case "0":
                             insFunction += "00";
@@ -36,8 +39,7 @@ public class Encoding {
                         case "3":
                             insFunction += "11";
                             break;
-                        default:
-                            break;
+                        
                     }
                     insFunction += "000";
 
@@ -1212,8 +1214,8 @@ public class Encoding {
             if(whiteSpaceIndex==4){
             switch (instruction.substring(0,4)) {
             		case "TRAP":
-            			insFunction = "100100";
-    	 
+            			insFunction = "011110";
+
     	 
     	 //String string=Integer.toBinaryString(instruction.substring(5));
             			int trapCode=Integer.parseInt(instruction.substring(5));
@@ -1227,13 +1229,223 @@ public class Encoding {
             				insFunction+="0";
             			}
             			break;
-            
+
+            		case "FADD"://format as FADD(6 bits) fr(2 bits),X(2 bit),I (1 bit), address (5 bits)
+            			insFunction="100001";//decimal as 33
+            			
+            			switch(instruction.substring(5,6)){
+            			case "0":
+            				insFunction+="00";
+            			case "1":
+            				insFunction+="01";
+            			}
+            			switch(instruction.substring(7,8)){
+            			case "1":
+            				insFunction+="01";
+            			case "2":
+            				insFunction+="10";
+            			case "3":
+            				insFunction+="11";
+            			}
+            			switch(instruction.substring(9,10)){
+            			case "0":
+            				insFunction+="0";
+            			case "1":
+            				insFunction+="1";
+            			}
+            			addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(11)));
+                        while (addressString.length() < 5) {
+                            addressString = "0" + addressString;
+                        }
+                        insFunction+=addressString;
+            			break;
+            		case "FSUB"://format as FSUB fr,X,I,address
+            			insFunction="100010";//decimal as 34
+            			
+            			switch(instruction.substring(5,6)){
+            			case "0":
+            				insFunction+="00";
+            			case "1":
+            				insFunction+="01";
+            			}
+            			switch(instruction.substring(7,8)){
+            			case "1":
+            				insFunction+="01";
+            			case "2":
+            				insFunction+="10";
+            			case "3":
+            				insFunction+="11";
+            			}
+            			switch(instruction.substring(9,10)){
+            			case "0":
+            				insFunction+="0";
+            			case "1":
+            				insFunction+="1";
+            			}
+            			addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(11)));
+                        while (addressString.length() < 5) {
+                            addressString = "0" + addressString;
+                        }
+                        insFunction+=addressString;
+            			break;
+            		case "VADD"://format as VADD fr,X,I,address
+            			insFunction="100011";//decimal as 35
+            			
+            			switch(instruction.substring(5,6)){
+            			case "0":
+            				insFunction+="00";
+            			case "1":
+            				insFunction+="01";
+            			}
+            			switch(instruction.substring(7,8)){
+            			case "1":
+            				insFunction+="01";
+            			case "2":
+            				insFunction+="10";
+            			case "3":
+            				insFunction+="11";
+            			}
+            			switch(instruction.substring(9,10)){
+            			case "0":
+            				insFunction+="0";
+            			case "1":
+            				insFunction+="1";
+            			}
+            			addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(11)));
+                        while (addressString.length() < 5) {
+                            addressString = "0" + addressString;
+                        }
+                        insFunction+=addressString;
+            			break;
+            		case "VSUB"://format as VSUB fr,X,I,address
+            			insFunction="100100";//decimal as 36
+            			
+            			switch(instruction.substring(5,6)){
+            			case "0":
+            				insFunction+="00";
+            			case "1":
+            				insFunction+="01";
+            			}
+            			switch(instruction.substring(7,8)){
+            			case "1":
+            				insFunction+="01";
+            			case "2":
+            				insFunction+="10";
+            			case "3":
+            				insFunction+="11";
+            			}
+            			switch(instruction.substring(9,10)){
+            			case "0":
+            				insFunction+="0";
+            			case "1":
+            				insFunction+="1";
+            			}
+            			addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(11)));
+                        while (addressString.length() < 5) {
+                            addressString = "0" + addressString;
+                        }
+                        insFunction+=addressString;
+            			break;
+            		case "LDFR"://format as LDFR fr,X,I,address
+            			insFunction="110010";//decimal as 50
+            			
+            			switch(instruction.substring(5,6)){
+            			case "0":
+            				insFunction+="00";
+            			case "1":
+            				insFunction+="01";
+            			}
+            			switch(instruction.substring(7,8)){
+            			case "1":
+            				insFunction+="01";
+            			case "2":
+            				insFunction+="10";
+            			case "3":
+            				insFunction+="11";
+            			}
+            			switch(instruction.substring(9,10)){
+            			case "0":
+            				insFunction+="0";
+            			case "1":
+            				insFunction+="1";
+            			}
+            			addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(11)));
+                        while (addressString.length() < 5) {
+                            addressString = "0" + addressString;
+                        }
+                        insFunction+=addressString;
+            			break;
+            		case "STFR"://format as STFR fr,X,I,address
+            			insFunction="110011";//decimal as 51
+            			
+            			switch(instruction.substring(5,6)){
+            			case "0":
+            				insFunction+="00";
+            			case "1":
+            				insFunction+="01";
+            			}
+            			switch(instruction.substring(7,8)){
+            			case "1":
+            				insFunction+="01";
+            			case "2":
+            				insFunction+="10";
+            			case "3":
+            				insFunction+="11";
+            			}
+            			switch(instruction.substring(9,10)){
+            			case "0":
+            				insFunction+="0";
+            			case "1":
+            				insFunction+="1";
+            			}
+            			addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(11)));
+                        while (addressString.length() < 5) {
+                            addressString = "0" + addressString;
+                        }
+                        insFunction+=addressString;
+            			break;
     	 //insFunction+=instruction.substring(6);//length=4
-            		default:
+            		default://have to think about how to incorporate illegal instruction/operation code machine fault here
+
             			break;
             		
             					}
             		}
+
+            if(whiteSpaceIndex==5){
+            	switch (instruction.substring(0,5)) {
+            	case "CNVRT"://format as CNVRT r,X,I,address
+            		insFunction="100101";//decimal as 51
+        			
+        			switch(instruction.substring(6,7)){
+        			case "0":
+        				insFunction+="00";
+        			case "1":
+        				insFunction+="01";
+        			}
+        			switch(instruction.substring(8,9)){
+        			case "1":
+        				insFunction+="01";
+        			case "2":
+        				insFunction+="10";
+        			case "3":
+        				insFunction+="11";
+        			}
+        			switch(instruction.substring(10,11)){
+        			case "0":
+        				insFunction+="0";
+        			case "1":
+        				insFunction+="1";
+        			}
+        			addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(12)));
+                    while (addressString.length() < 5) {
+                        addressString = "0" + addressString;
+                    }
+                    insFunction+=addressString;
+            		break;
+            	}
+            }
+
 	
         }
         decimalInstruction = Integer.parseInt(insFunction, 2);
