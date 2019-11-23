@@ -2,7 +2,7 @@ package CPUAttributes;
 
 public class Register {
 	private int size = 16;
-	private int value;
+	private float value;
 	private static CU cu;
 	public Register() {
 		//constructor for GeneralPurposeRegister class
@@ -18,12 +18,12 @@ public class Register {
 		//get the size of the general purpose register
 		return size;
 	}
-	public int getValue() {
+	public float getValue() {
 		//get the value of the general purpose register
 		return value;
 	}
 
-	public void setValue(int value) {
+	public void setValue(float value) {
 		//set the value of the general purpose register
 		this.value = value;
 	}

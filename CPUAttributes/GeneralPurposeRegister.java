@@ -22,9 +22,9 @@ public class GeneralPurposeRegister extends Register {
 			//get the size of the general purpose register
 			return size;
 		}
-		public int getValue() {
+		public float getValue() {
 			//get the value of the general purpose register
-			return value;
+			return (int)(value);
 		}
 	
 		public void setValue(int value) {

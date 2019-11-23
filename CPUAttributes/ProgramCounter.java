@@ -21,7 +21,7 @@ public class ProgramCounter extends Register{
 		//set the size of PC
 		this.pcSize = size;
 	}
-	public int getValue() {
+	public float getValue() {
 		//get the value of PC
 		return pcValue;
 	}

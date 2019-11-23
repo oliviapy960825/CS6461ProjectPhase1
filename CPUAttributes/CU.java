@@ -168,13 +168,13 @@ public class CU {
      */
     public int getRnByNum(int num) {
         if (num == 0)
-            return R0.getValue();
+            return (int) R0.getValue();
         if (num == 1)
-            return R1.getValue();
+            return (int) R1.getValue();
         if (num == 2)
-            return R2.getValue();
+            return (int) R2.getValue();
         if (num == 3)
-            return R3.getValue();
+            return (int) R3.getValue();
         return -1;
     }
 
@@ -213,7 +213,7 @@ public class CU {
 		return memory.getCurrentMemorySize();
 	}
 	public int fetchFromMemory(int address) {
-		return memory.fetchFromMemory(address);
+		return (int) memory.fetchFromMemory(address);
 	}
 	public void storeIntoMemory(int address, int value) {
 		memory.storeIntoMemory(address, value);
@@ -229,17 +229,17 @@ public class CU {
 		userInterface.setMARText(address);
 	}
 	public int getMARValue(){
-		return MAR.getValue();
+		return (int) MAR.getValue();
 	}
 	public void setMBRValue(int address){
 		MBR.setValue(address);
 		userInterface.setMBRText(address);
 	}
 	public int getMBRValue(){
-		return MBR.getValue();
+		return (int) MBR.getValue();
 	}
 	public int getMFRValue(){
-		return MFR.getValue();
+		return (int) MFR.getValue();
 	}
 	public void setMFRValue(int value){
 		MFR.setValue(value);
@@ -251,60 +251,60 @@ public class CU {
 		//userInterface.getR0Text();
 	}
 	public int getR0Value(){
-		return R0.getValue();
+		return (int) R0.getValue();
 	}
 	public void setR1Value(int address){
 		R1.setValue(address);
 		userInterface.setR1Text(address);
 	}
 	public int getR1Value(){
-		return R1.getValue();
+		return (int) R1.getValue();
 	}
 	public void setR2Value(int address){
 		R2.setValue(address);
 		userInterface.setR2Text(address);
 	}
 	public int getR2Value(){
-		return R2.getValue();
+		return (int) R2.getValue();
 	}
 	public void setR3Value(int address){
 		R3.setValue(address);
 		userInterface.setR3Text(address);
 	}
 	public int getR3Value(){
-		return R3.getValue();
+		return (int) R3.getValue();
 	}
 	public void setX1Value(int address){
 		X1.setValue(address);
 		userInterface.setX1Text(address);
 	}
 	public int getX1Value(){
-		return X1.getValue();
+		return (int) X1.getValue();
 	}
 	public void setX2Value(int address){
 		X2.setValue(address);
 		userInterface.setX2Text(address);
 	}
 	public int getX2Value(){
-		return X2.getValue();
+		return (int) X2.getValue();
 	}
 	public void setX3Value(int address){
 		X3.setValue(address);
 		userInterface.setX3Text(address);
 	}
 	public int getX3Value(){
-		return X3.getValue();
+		return (int) X3.getValue();
 	}
-	public int getFR0Value(){
+	public float getFR0Value(){
 		return FR0.getValue();
 	}
-	public void setFR0Value(int value){
-		FR0.setValue(value);
+	public void setFR0Value(float f){
+		FR0.setValue(f);
 	}
-	public int getFR1Value(){
+	public float getFR1Value(){
 		return FR1.getValue();
 	}
-	public void setFR1Value(int value){
+	public void setFR1Value(float value){
 		FR1.setValue(value);
 	}
 	public void setIRValue(int address){
@@ -312,14 +312,14 @@ public class CU {
 		userInterface.setIRText(address);
 	}
 	public int getIRValue(){
-		return IR.getValue();
+		return (int) IR.getValue();
 	}
 	public void setPCValue(int address){
 		PC.setValue(address);
 		userInterface.setPCText(address);
 	}
 	public int getPCValue(){
-		return PC.getValue();
+		return (int) PC.getValue();
 	}
 
 	public void setCCValue(int address) {

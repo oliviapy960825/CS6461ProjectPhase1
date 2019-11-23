@@ -2118,15 +2118,22 @@ public void FADD(int FR, int X, int I, int address){
 	int EA=calculateEA(X,I,address);
 	switch(FR){
 	case 0:
-		int currentFR0Value=cu.getFR0Value();
+		float currentFR0Value=cu.getFR0Value();
 		//String currentFR0String=Integer.toBinaryString(currentFR0Value);
-		int newFR0Value=currentFR0Value+cu.fetchFromMemory(EA);
+		float newFR0Value=currentFR0Value+cu.fetchFromMemory(EA);
 		
 		//The java.lang.Integer.toBinaryString() method returns a string representation of the integer argument as an unsigned integer in base 2.
 		cu.setFR0Value(newFR0Value);
 		String newFR0String="";//Integer.toBinaryString(newFR0Value);
 		if(newFR0Value>=0){
-			newFR0String=Integer.toBinaryString(newFR0Value);
+			int FR0Integer=(int)newFR0Value;
+			float FR0Float=newFR0Value-FR0Integer;
+			String FR0IntegerString=Integer.toBinaryString(FR0Integer);
+			newFR0String+=FR0IntegerString;
+			int multiplier=Float.toString(FR0Float).length()-Float.toString(FR0Float).indexOf('.')-1;//figure out how many 10s do we have to multiply to the mantissa part to make it an integer
+			int FR0FloatInteger=(int) (FR0Float*Math.pow(10, multiplier));//Float.toString(FR0Float);
+			String FR0FloatString=Integer.toBinaryString(FR0FloatInteger);
+			newFR0String+=FR0FloatString;
 			if(newFR0String.length()>16){
 				try {
 					throw new Exception("Overflow");
@@ -2137,7 +2144,16 @@ public void FADD(int FR, int X, int I, int address){
 			}
 		}
 		else{
-			String intermediateString=Integer.toBinaryString(-newFR0Value);
+			
+			newFR0Value=-newFR0Value;//now newFR0Value is its negation
+			int FR0Integer=(int)newFR0Value;
+			float FR0Float=newFR0Value-FR0Integer;
+			String intermediateString=Integer.toBinaryString(FR0Integer);
+			//newFR0String+=FR0IntegerString;
+			int multiplier=Float.toString(FR0Float).length()-Float.toString(FR0Float).indexOf('.')-1;//figure out how many 10s do we have to multiply to the mantissa part to make it an integer
+			int FR0FloatInteger=(int) (FR0Float*Math.pow(10, multiplier));//Float.toString(FR0Float);
+			String FR0FloatString=Integer.toBinaryString(FR0FloatInteger);
+			intermediateString+=FR0FloatString;
 			boolean carryIn=false;
 			for(int i=0;i<intermediateString.length()-1;i++){
 				if(intermediateString.charAt(i)=='0'){
@@ -2185,13 +2201,22 @@ public void FADD(int FR, int X, int I, int address){
 		
 		break;
 	case 1:
-		int currentFR1Value=cu.getFR1Value();
+		float currentFR1Value=cu.getFR1Value();
 		//String currentFR1String=Integer.toBinaryString(currentFR1Value);
-		int newFR1Value=currentFR1Value+cu.fetchFromMemory(EA);
+		float newFR1Value=currentFR1Value+cu.fetchFromMemory(EA);
 		
 		String newFR1String="";//Integer.toBinaryString(newFR0Value);
+		
 		if(newFR1Value>=0){
-			newFR1String=Integer.toBinaryString(newFR1Value);
+			//newFR1String=Integer.toBinaryString(newFR1Value);
+			int FR1Integer=(int)newFR1Value;
+			float FR1Float=newFR1Value-FR1Integer;
+			String FR1IntegerString=Integer.toBinaryString(FR1Integer);
+			newFR1String+=FR1IntegerString;
+			int multiplier=Float.toString(FR1Float).length()-Float.toString(FR1Float).indexOf('.')-1;//figure out how many 10s do we have to multiply to the mantissa part to make it an integer
+			int FR1FloatInteger=(int) (FR1Float*Math.pow(10, multiplier));//Float.toString(FR0Float);
+			String FR1FloatString=Integer.toBinaryString(FR1FloatInteger);
+			newFR1String+=FR1FloatString;
 			if(newFR1String.length()>16){
 				try {
 					throw new Exception("Overflow");
@@ -2202,7 +2227,15 @@ public void FADD(int FR, int X, int I, int address){
 			}
 		}
 		else{
-			String intermediateString=Integer.toBinaryString(-newFR1Value);
+			newFR1Value=-newFR1Value;//now newFR0Value is its negation
+			int FR1Integer=(int)newFR1Value;
+			float FR1Float=newFR1Value-FR1Integer;
+			String intermediateString=Integer.toBinaryString(FR1Integer);
+			//newFR0String+=FR0IntegerString;
+			int multiplier=Float.toString(FR1Float).length()-Float.toString(FR1Float).indexOf('.')-1;//figure out how many 10s do we have to multiply to the mantissa part to make it an integer
+			int FR1FloatInteger=(int) (FR1Float*Math.pow(10, multiplier));//Float.toString(FR0Float);
+			String FR1FloatString=Integer.toBinaryString(FR1FloatInteger);
+			intermediateString+=FR1FloatString;
 			boolean carryIn=false;
 			for(int i=0;i<intermediateString.length()-1;i++){
 				if(intermediateString.charAt(i)=='0'){
@@ -2247,7 +2280,6 @@ public void FADD(int FR, int X, int I, int address){
 				}
 			}
 		}
-		
 		break;
 	}
 	//think about how to check if it overflows
@@ -2257,15 +2289,23 @@ public void FSUB(int FR, int X, int I, int address){
 	int EA=calculateEA(X,I,address);
 	switch(FR){
 	case 0:
-		int currentFR0Value=cu.getFR0Value();
+		float currentFR0Value=cu.getFR0Value();
 		//String currentFR0String=Integer.toBinaryString(currentFR0Value);
-		int newFR0Value=currentFR0Value-cu.fetchFromMemory(EA);
+		float newFR0Value=currentFR0Value-cu.fetchFromMemory(EA);
 		
 		//The java.lang.Integer.toBinaryString() method returns a string representation of the integer argument as an unsigned integer in base 2.
 		cu.setFR0Value(newFR0Value);
 		String newFR0String="";//Integer.toBinaryString(newFR0Value);
 		if(newFR0Value>=0){
-			newFR0String=Integer.toBinaryString(newFR0Value);
+			//newFR0String=Integer.toBinaryString(newFR0Value);
+			int FR0Integer=(int)newFR0Value;
+			float FR0Float=newFR0Value-FR0Integer;
+			String FR0IntegerString=Integer.toBinaryString(FR0Integer);
+			newFR0String+=FR0IntegerString;
+			int multiplier=Float.toString(FR0Float).length()-Float.toString(FR0Float).indexOf('.')-1;//figure out how many 10s do we have to multiply to the mantissa part to make it an integer
+			int FR0FloatInteger=(int) (FR0Float*Math.pow(10, multiplier));//Float.toString(FR0Float);
+			String FR0FloatString=Integer.toBinaryString(FR0FloatInteger);
+			newFR0String+=FR0FloatString;
 			if(newFR0String.length()>16){
 				try {
 					throw new Exception("Overflow");
@@ -2276,7 +2316,15 @@ public void FSUB(int FR, int X, int I, int address){
 			}
 		}
 		else{
-			String intermediateString=Integer.toBinaryString(-newFR0Value);
+			newFR0Value=-newFR0Value;//now newFR0Value is its negation
+			int FR0Integer=(int)newFR0Value;
+			float FR0Float=newFR0Value-FR0Integer;
+			String intermediateString=Integer.toBinaryString(FR0Integer);
+			//newFR0String+=FR0IntegerString;
+			int multiplier=Float.toString(FR0Float).length()-Float.toString(FR0Float).indexOf('.')-1;//figure out how many 10s do we have to multiply to the mantissa part to make it an integer
+			int FR0FloatInteger=(int) (FR0Float*Math.pow(10, multiplier));//Float.toString(FR0Float);
+			String FR0FloatString=Integer.toBinaryString(FR0FloatInteger);
+			intermediateString+=FR0FloatString;
 			boolean carryIn=false;
 			for(int i=0;i<intermediateString.length()-1;i++){
 				if(intermediateString.charAt(i)=='0'){
@@ -2321,16 +2369,23 @@ public void FSUB(int FR, int X, int I, int address){
 				}
 			}
 		}
-		
 		break;
 	case 1:
-		int currentFR1Value=cu.getFR1Value();
+		float currentFR1Value=cu.getFR1Value();
 		//String currentFR1String=Integer.toBinaryString(currentFR1Value);
-		int newFR1Value=currentFR1Value-cu.fetchFromMemory(EA);
+		float newFR1Value=currentFR1Value-cu.fetchFromMemory(EA);
 		
 		String newFR1String="";//Integer.toBinaryString(newFR0Value);
 		if(newFR1Value>=0){
-			newFR1String=Integer.toBinaryString(newFR1Value);
+			//newFR1String=Integer.toBinaryString(newFR1Value);
+			int FR1Integer=(int)newFR1Value;
+			float FR1Float=newFR1Value-FR1Integer;
+			String FR1IntegerString=Integer.toBinaryString(FR1Integer);
+			newFR1String+=FR1IntegerString;
+			int multiplier=Float.toString(FR1Float).length()-Float.toString(FR1Float).indexOf('.')-1;//figure out how many 10s do we have to multiply to the mantissa part to make it an integer
+			int FR1FloatInteger=(int) (FR1Float*Math.pow(10, multiplier));//Float.toString(FR0Float);
+			String FR1FloatString=Integer.toBinaryString(FR1FloatInteger);
+			newFR1String+=FR1FloatString;
 			if(newFR1String.length()>16){
 				try {
 					throw new Exception("Overflow");
@@ -2341,7 +2396,15 @@ public void FSUB(int FR, int X, int I, int address){
 			}
 		}
 		else{
-			String intermediateString=Integer.toBinaryString(-newFR1Value);
+			newFR1Value=-newFR1Value;//now newFR0Value is its negation
+			int FR1Integer=(int)newFR1Value;
+			float FR1Float=newFR1Value-FR1Integer;
+			String intermediateString=Integer.toBinaryString(FR1Integer);
+			//newFR0String+=FR0IntegerString;
+			int multiplier=Float.toString(FR1Float).length()-Float.toString(FR1Float).indexOf('.')-1;//figure out how many 10s do we have to multiply to the mantissa part to make it an integer
+			int FR1FloatInteger=(int) (FR1Float*Math.pow(10, multiplier));//Float.toString(FR0Float);
+			String FR1FloatString=Integer.toBinaryString(FR1FloatInteger);
+			intermediateString+=FR1FloatString;
 			boolean carryIn=false;
 			for(int i=0;i<intermediateString.length()-1;i++){
 				if(intermediateString.charAt(i)=='0'){
@@ -2386,13 +2449,12 @@ public void FSUB(int FR, int X, int I, int address){
 				}
 			}
 		}
-		
 		break;
 	}
 }
 public void VADD(int FR, int X, int I, int address){
 	//fr contains the length of the vectors
-	int vectorLength=0;
+	float vectorLength=0;
 	switch(FR){
 	case 0:
 		vectorLength=cu.getFR0Value();
@@ -2412,7 +2474,7 @@ public void VADD(int FR, int X, int I, int address){
 	}
 }
 public void VSUB(int FR, int X, int I, int address){
-	int vectorLength=0;
+	float vectorLength=0;
 	switch(FR){
 	case 0:
 		vectorLength=cu.getFR0Value();
@@ -2457,17 +2519,69 @@ public void CNVRT(int R, int X, int I, int address){
 	}
 }
 public void LDFR(int FR, int X, int I, int address){
+	//because our memory stores integers, so for floating numbers, we will have
+		//to get the integer part of the floating numbers and the float/decimal part
+		//and store them differently--for the integer part we can store it directly into
+		//memory location EA, for the decimal part we will have to multiply it to the 10 to
+		//the power of its number of digits to make it integer (and when we use it we will have to
+		//remember that it's not an integer but a decimal that's exaggerated by 10 to the power of
+		//its number of digits times
 	int EA=calculateEA(X,I,address);
-	int FR0Value=cu.fetchFromMemory(EA);
-	int FR1Value=cu.fetchFromMemory(EA+1);
-	cu.setFR0Value(FR0Value);
-	cu.setFR1Value(FR1Value);
+	int exponentValue=0;
+	int mantissaValue=0;
+	float newMantissaValue=0;
+	switch(FR){
+	case 0:
+		
+		exponentValue=cu.fetchFromMemory(EA);
+		mantissaValue=cu.fetchFromMemory(EA+1);//I assume that I'll need to shift decimal point here by the number of digits before adding
+		newMantissaValue=(float) (mantissaValue/Math.pow(10,Integer.toString(mantissaValue).length()));
+		
+	cu.setFR0Value(exponentValue+newMantissaValue);
+	break;
+	case 1:
+		exponentValue=cu.fetchFromMemory(EA);
+		mantissaValue=cu.fetchFromMemory(EA+1);//I assume that I'll need to shift decimal point here by the number of digits before adding
+		newMantissaValue=(float) (mantissaValue/Math.pow(10,Integer.toString(mantissaValue).length()));
+		
+	cu.setFR1Value(exponentValue+newMantissaValue);
+	}
+	//cu.setFR1Value(FR1Value);
 }
 public void STFR(int FR, int X, int I, int address){
+	//because our memory stores integers, so for floating numbers, we will have
+	//to get the integer part of the floating numbers and the float/decimal part
+	//and store them differently--for the integer part we can store it directly into
+	//memory location EA, for the decimal part we will have to multiply it to the 10 to
+	//the power of its number of digits to make it integer (and when we use it we will have to
+	//remember that it's not an integer but a decimal that's exaggerated by 10 to the power of
+	//its number of digits times
 	int EA=calculateEA(X,I,address);
-	int FR0Value=cu.getFR0Value();
-	int FR1Value=cu.getFR1Value();
-	cu.storeIntoMemory(EA, FR0Value);
-	cu.storeIntoMemory(EA+1,FR1Value);
+	int exponentValue=0;
+	float mantissaValue=0;
+	float newMantissaValue=0;
+	int multiplier=0;
+	int mantissaValueInteger=0;
+	switch(FR){
+	case 0:
+		newMantissaValue=cu.getFR0Value();
+		exponentValue=(int)newMantissaValue;
+		cu.storeIntoMemory(EA, exponentValue);
+		mantissaValue=newMantissaValue-exponentValue;
+		multiplier=Float.toString(mantissaValue).length()-Float.toString(mantissaValue).indexOf('.')-1;
+		mantissaValueInteger=(int) (mantissaValue*Math.pow(10,multiplier));//now mantissaValue is the integer value that is the mantissa value of the floating number FR0 exaggerated by 10 to the power of its number of digits
+		cu.storeIntoMemory(EA+1, mantissaValueInteger);
+		break;
+	case 1:
+		newMantissaValue=cu.getFR1Value();
+		//newMantissaValue=cu.getFR0Value();
+		exponentValue=(int)newMantissaValue;
+		cu.storeIntoMemory(EA, exponentValue);
+		mantissaValue=newMantissaValue-exponentValue;
+		multiplier=Float.toString(mantissaValue).length()-Float.toString(mantissaValue).indexOf('.')-1;
+		mantissaValueInteger=(int) (mantissaValue*Math.pow(10,multiplier));//now mantissaValue is the integer value that is the mantissa value of the floating number FR0 exaggerated by 10 to the power of its number of digits
+		cu.storeIntoMemory(EA+1, mantissaValueInteger);
+		break;
+	}
 }
 }
