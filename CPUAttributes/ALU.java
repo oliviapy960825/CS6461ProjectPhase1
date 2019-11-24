@@ -2500,22 +2500,47 @@ public void CNVRT(int R, int X, int I, int address){
 	switch(R){//is the r register the same as general purpose register?
 	case 0:
 		FValue=cu.getR0Value();
+		if(FValue==0){
+			cu.setR0Value(EAValue);
+		}
+		else if(FValue==1){
+			//convert the EA Value to floating point number and store in FR0.
+			//actually does not matter since our Floating point register ALWAYS stores a floating number
+			cu.setFR0Value(EAValue);
+		}
 		break;
 	case 1:
 		FValue=cu.getR1Value();
+		if(FValue==0){
+			cu.setR1Value(EAValue);
+		}
+		else if(FValue==1){
+			//convert the EA Value to floating point number and store in FR0.
+			//actually does not matter since our Floating point register ALWAYS stores a floating number
+			cu.setFR0Value(EAValue);
+		}
 		break;
 	case 2:
 		FValue=cu.getR2Value();
+		if(FValue==0){
+			cu.setR2Value(EAValue);
+		}
+		else if(FValue==1){
+			//convert the EA Value to floating point number and store in FR0.
+			//actually does not matter since our Floating point register ALWAYS stores a floating number
+			cu.setFR0Value(EAValue);
+		}
 		break;
 	case 3:
 		FValue=cu.getR3Value();
-	}
-	if(FValue==0){
-		
-		//WTF is fixed point number?
-	}
-	if(FValue==1){
-		
+		if(FValue==0){
+			cu.setR3Value(EAValue);
+		}
+		else if(FValue==1){
+			//convert the EA Value to floating point number and store in FR0.
+			//actually does not matter since our Floating point register ALWAYS stores a floating number
+			cu.setFR0Value(EAValue);
+		}
 	}
 }
 public void LDFR(int FR, int X, int I, int address){
@@ -2535,15 +2560,25 @@ public void LDFR(int FR, int X, int I, int address){
 		
 		exponentValue=cu.fetchFromMemory(EA);
 		mantissaValue=cu.fetchFromMemory(EA+1);//I assume that I'll need to shift decimal point here by the number of digits before adding
+		if(mantissaValue>0){
 		newMantissaValue=(float) (mantissaValue/Math.pow(10,Integer.toString(mantissaValue).length()));
-		
+		}
+		else{
+			mantissaValue=-mantissaValue;
+			newMantissaValue=-(float) (mantissaValue/Math.pow(10,Integer.toString(mantissaValue).length()));
+		}
 	cu.setFR0Value(exponentValue+newMantissaValue);
 	break;
 	case 1:
 		exponentValue=cu.fetchFromMemory(EA);
 		mantissaValue=cu.fetchFromMemory(EA+1);//I assume that I'll need to shift decimal point here by the number of digits before adding
+		if(mantissaValue>0){
 		newMantissaValue=(float) (mantissaValue/Math.pow(10,Integer.toString(mantissaValue).length()));
-		
+		}
+		else{
+			mantissaValue=-mantissaValue;
+			newMantissaValue=-(float) (mantissaValue/Math.pow(10,Integer.toString(mantissaValue).length()));
+		}
 	cu.setFR1Value(exponentValue+newMantissaValue);
 	}
 	//cu.setFR1Value(FR1Value);
@@ -2571,6 +2606,7 @@ public void STFR(int FR, int X, int I, int address){
 		multiplier=Float.toString(mantissaValue).length()-Float.toString(mantissaValue).indexOf('.')-1;
 		mantissaValueInteger=(int) (mantissaValue*Math.pow(10,multiplier));//now mantissaValue is the integer value that is the mantissa value of the floating number FR0 exaggerated by 10 to the power of its number of digits
 		cu.storeIntoMemory(EA+1, mantissaValueInteger);
+		
 		break;
 	case 1:
 		newMantissaValue=cu.getFR1Value();
