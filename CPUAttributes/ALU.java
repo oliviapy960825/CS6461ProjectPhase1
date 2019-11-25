@@ -2542,6 +2542,7 @@ public void CNVRT(int R, int X, int I, int address){
 			//actually does not matter since our Floating point register ALWAYS stores a floating number
 			cu.setFR0Value(EAValue);
 		}
+		break;
 	}
 }
 public void LDFR(int FR, int X, int I, int address){
@@ -2581,6 +2582,7 @@ public void LDFR(int FR, int X, int I, int address){
 			newMantissaValue=-(float) (mantissaValue/Math.pow(10,Integer.toString(mantissaValue).length()));
 		}
 	cu.setFR1Value(exponentValue+newMantissaValue);
+	break;
 	}
 	//cu.setFR1Value(FR1Value);
 }
