@@ -2110,6 +2110,7 @@ public void TRAP(int code) throws Exception {
 	}
 
 	}
+
 public void FADD(int FR, int X, int I, int address){
 	//should I check if the first/sign digit/bit of the newFR0String to see
 			//if it matches that of the currentFR0String to determine if there's overflow--
@@ -2204,7 +2205,7 @@ public void FADD(int FR, int X, int I, int address){
 		float currentFR1Value=cu.getFR1Value();
 		//String currentFR1String=Integer.toBinaryString(currentFR1Value);
 		float newFR1Value=currentFR1Value+cu.fetchFromMemory(EA);
-		
+		cu.setFR1Value(newFR1Value);
 		String newFR1String="";//Integer.toBinaryString(newFR0Value);
 		
 		if(newFR1Value>=0){
@@ -2374,7 +2375,7 @@ public void FSUB(int FR, int X, int I, int address){
 		float currentFR1Value=cu.getFR1Value();
 		//String currentFR1String=Integer.toBinaryString(currentFR1Value);
 		float newFR1Value=currentFR1Value-cu.fetchFromMemory(EA);
-		
+		cu.setFR1Value(newFR1Value);
 		String newFR1String="";//Integer.toBinaryString(newFR0Value);
 		if(newFR1Value>=0){
 			//newFR1String=Integer.toBinaryString(newFR1Value);
