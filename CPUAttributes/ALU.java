@@ -218,8 +218,8 @@ public class ALU {
 
 		}*/
 		int EA=calculateEA(X,I,address);
-		userInterface.updateLogText("m(20)", cu.fetchFromMemory(20));
-		userInterface.updateLogText("EA:", EA);
+		//userInterface.updateLogText("m(20)", cu.fetchFromMemory(20));
+		//userInterface.updateLogText("EA:", EA);
 		userInterface.setMARText(EA);
 		cu.setMARValue(EA);
 		int data=cu.fetchFromMemory(EA);
@@ -1978,8 +1978,8 @@ public void OUT(int R, int devId) {
         int outputValue = cu.getRnByNum(R);
         char c = (char) outputValue;
         cu.setPrinterBuffer(String.valueOf(c));
-        userInterface.updateLogText("", outputValue);
-        userInterface.updateLogText(String.valueOf(c));
+        //userInterface.updateLogText("", outputValue);
+        //userInterface.updateLogText(String.valueOf(c));
         //cu.increasePCByOne();
     }
 }
