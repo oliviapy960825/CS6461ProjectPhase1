@@ -551,6 +551,7 @@ public class UserInterface extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (prog2Step == 0) {
+					/*
 					String sentences = "Python is an easy to learn, powerful programming language. "
 							+ "It has efficient high-level data structures and a simple but effective approach to object-oriented programming. "
 							+ "Python’s elegant syntax and dynamic typing, together with its interpreted nature, make it an ideal language for scripting and rapid application development in many areas on most platforms. "
@@ -580,8 +581,8 @@ public class UserInterface extends JFrame {
 						}
 						//System.out.println(cu.getPCValue());
 						//runInstruction(registers.getBinaryStringIr(), registers, mcu);
-					} while (cu.getPCValue() <= Const.PG2_0_END && cu.getPCValue() >= Const.PG2_0_BASE);
-
+					} while (cu.getPCValue() <= Const.PG2_0_END && cu.getPCValue() >= Const.PG2_0_BASE);*/
+					cu.LoadSentences();
 					updateLogText("\nPlease enter a word in the console keyboard and press the find word button.");
 					refreshRegistersPanel();
 					prog2Step = 1;
@@ -604,7 +605,7 @@ public class UserInterface extends JFrame {
 
                     } else {
                         // read the word
-                        updateLogText("\nsearch result: the word is");
+                       /* updateLogText("\nsearch result: the word is");
                         cu.loadProgram(Const.PROG2_1);
                         cu.setPCValue(Const.PG2_1_BASE);
                         do {
@@ -623,7 +624,7 @@ public class UserInterface extends JFrame {
                             System.out.println(cu.getPCValue());
                         } while (cu.getPCValue() <= Const.PG2_1_END && cu.getPCValue() >= Const.PG2_1_BASE);
                         // find the word
-                        updateLogText("\nthe word number is");
+                        updateLogText("\nthe word number is");*/
                         System.out.println("prog2_2");
                         cu.loadProgram(Const.PROG2_2);
                         cu.setPCValue(Const.PG2_2_BASE);
@@ -640,9 +641,9 @@ public class UserInterface extends JFrame {
                                 // TODO Auto-generated catch block
                                 e1.printStackTrace();
                             }
-                            System.out.println(cu.getPCValue());
+                            //System.out.println(cu.getPCValue());
                         } while (cu.getPCValue() <= Const.PG2_2_END && cu.getPCValue() >= Const.PG2_2_BASE);
-                        System.out.println("\nprint the result in m(28)");
+                        //System.out.println("\nprint the result in m(28)");
 
                         cu.loadProgram(Const.PG_P1);
                         cu.setPCValue(Const.PG_P1_BASE);
@@ -659,10 +660,10 @@ public class UserInterface extends JFrame {
                                 // TODO Auto-generated catch block
                                 e1.printStackTrace();
                             }
-                            System.out.println(cu.getPCValue());
+                            //System.out.println(cu.getPCValue());
                         } while (cu.getPCValue() <= Const.PG_P1_END && cu.getPCValue() >= Const.PG_P1_BASE);
-                        System.out.println("\nprint the result in m(29)");
-                        updateLogText("\nthe sentence number is");
+                        //System.out.println("\nprint the result in m(29)");
+                        //updateLogText("\nthe sentence number is");
                         cu.loadProgram(Const.PG_P2);
                         cu.setPCValue(Const.PG_P2_BASE);
                         do {
@@ -678,10 +679,11 @@ public class UserInterface extends JFrame {
                                 // TODO Auto-generated catch block
                                 e1.printStackTrace();
                             }
-                            System.out.println(cu.getPCValue());
+                            //System.out.println(cu.getPCValue());
                         } while (cu.getPCValue() <= Const.PG_P2_END && cu.getPCValue() >= Const.PG_P2_BASE);
                         refreshRegistersPanel();
                         prog2Step = 0;
+                        cu.SearchWord(instructionsTextArea.getText());
                     }
                 }
             }
@@ -811,6 +813,7 @@ public class UserInterface extends JFrame {
 		instructionsTextArea = new JTextArea();
 		instructionsTextArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		instructionsTextArea.setBounds(176, 485, 208, 147);
+		instructionsTextArea.setLineWrap(true);
 		contentPane.add(instructionsTextArea);
 
 		instructionsTextArea.addKeyListener(new KeyAdapter() { // TODO
@@ -831,6 +834,7 @@ public class UserInterface extends JFrame {
 		logTextArea.setEditable(false);
 		logTextArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
 		logTextArea.setBounds(449, 486, 208, 147);
+		logTextArea.setLineWrap(true);
 		contentPane.add(logTextArea);
 		
 		JScrollPane logScrollPanel = new JScrollPane(logTextArea);
@@ -1092,20 +1096,20 @@ public class UserInterface extends JFrame {
 				//cu.loadProgram(Const.TB);
 				cu.setPCValue(8);
 				int register = 0;
-				setR0Text(0);
-				setR1Text(0);
-				setR2Text(0);
-				setR3Text(0);
-				setX1Text(0);
-				setX2Text(0);
-				setX3Text(0);
+				//setR0Text(0);
+				//setR1Text(0);
+				//setR2Text(0);
+				//setR3Text(0);
+				//setX1Text(0);
+				//setX2Text(0);
+				//setX3Text(0);
 				while (register<4){
 				    cu.setRnByNum(register, 0);
 				    register++;
                 }
-                cu.setX1Value(0);
-				cu.setX2Value(0);
-				cu.setX3Value(0);
+                //cu.setX1Value(0);
+				//cu.setX2Value(0);
+				//cu.setX3Value(0);
 				txtFieldPC.setText(String.valueOf(cu.getPCValue()));
 		    	String instructions = instructionsTextArea.getText();
 		    	//System.out.print(instructions);

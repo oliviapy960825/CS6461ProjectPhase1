@@ -3,7 +3,9 @@ package CPUAttributes;
 import FrontPanel.UserInterface;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import CPUAttributes.Cache1.CacheLine;
 
@@ -38,6 +40,7 @@ public class CU {
 	String cardBuffer;
     String printerBuffer;
     String keyboardBuffer;
+    List<String> list = new ArrayList<String>();
     private MachineFaultException IllegalMemoryToReservedLocation=MachineFaultException.IllegalMemoryToReservedLocation;
 	private MachineFaultException IllegalOperationCode=MachineFaultException.IllegalOperationCode;
 	private MachineFaultException IllegalTrapCode=MachineFaultException.IllegalTrapCode;
@@ -328,6 +331,39 @@ public class CU {
 	}
 	public int getCCValue(){
 		return CC.getccValue();
+	}
+	public void LoadSentences() {
+
+		String Sentences = "Python is an easy to learn, powerful programming language. "
+				+ "It has efficient high-level data structures and a simple but effective approach to object-oriented programming. "
+				+ "Python’s elegant syntax and dynamic typing, together with its interpreted nature, make it an ideal language for scripting and rapid application development in many areas on most platforms. "
+				+ "Next, install the Python interpreter on your computer. "
+				+ "When you are ready to write your first program, you will need a text editor. "
+				+ "Or, if you prefer to learn Python through listening to a lecture, you can attend a training course or even hire a trainer to come to your company. ";
+		userInterface.updateLogText("The sentences are:\n");
+		userInterface.updateLogText(Sentences);
+	}
+
+	public void SearchWord(String s) {
+		int count = 0;
+		String Sentences = "Python is an easy to learn, powerful programming language. "
+				+ "It has efficient high-level data structures and a simple but effective approach to object-oriented programming. "
+				+ "Python’s elegant syntax and dynamic typing, together with its interpreted nature, make it an ideal language for scripting and rapid application development in many areas on most platforms. "
+				+ "Next, install the Python interpreter on your computer. "
+				+ "When you are ready to write your first program, you will need a text editor. "
+				+ "Or, if you prefer to learn Python through listening to a lecture, you can attend a training course or even hire a trainer to come to your company. ";
+		String[] buff = Sentences.split("\\s+|,|\\.");
+
+		for (String retval: buff) {
+			//list.add(retval);
+			if (retval.equals(s)) {
+				count++;
+			}
+			//System.out.println(retval+count);
+
+		}
+		userInterface.updateLogText("\nThe word is: " + s);
+		userInterface.updateLogText("\nThe number of word is: ", count);
 	}
 	public Boolean iExec(int Address) throws Exception {
 		//This function is for executing the instructions of user input
