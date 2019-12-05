@@ -507,7 +507,7 @@ public class Encoding {
                 case "RFS":
                     insFunction = "001111";
                     addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(4)));
-                    while(addressString.length() < 7){
+                    while(addressString.length() < 10){
                     	addressString = "0" + addressString;
                     }
                     insFunction += addressString;

@@ -90,7 +90,7 @@ public class Decoding {
 				break;
 			case "001111":
 				instruction[0] = 15;
-				instruction[1]=Integer.parseInt(binaryInstruction.substring(11), 2);
+				instruction[1]=Integer.parseInt(binaryInstruction.substring(6), 2);
 				break;
 			case "00":
 				instruction[0]=0;
