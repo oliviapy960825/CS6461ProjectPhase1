@@ -583,7 +583,7 @@ public class ALU {
 			break;
 		}
 	}
-	public void RFS (int address) {
+	public void RFS(int address) {
 		cu.setR0Value(address);
 		cu.setPCValue(cu.getR3Value());
 		
@@ -714,8 +714,8 @@ public class ALU {
 				cu.setPCValue(EA);
 			}
 			else {
-				userInterface.setPCText(cu.getPCValue()+1);
-				cu.setPCValue(cu.getPCValue()+1);
+				userInterface.setPCText(cu.getPCValue());
+				cu.setPCValue(cu.getPCValue());
 			}
 			break;
 		case 1:
@@ -724,8 +724,8 @@ public class ALU {
 				cu.setPCValue(EA);
 			}
 			else {
-				userInterface.setPCText(cu.getPCValue()+1);
-				cu.setPCValue(cu.getPCValue()+1);
+				userInterface.setPCText(cu.getPCValue());
+				cu.setPCValue(cu.getPCValue());
 			}
 			break;
 		case 2:
@@ -734,8 +734,8 @@ public class ALU {
 				cu.setPCValue(EA);
 			}
 			else {
-				userInterface.setPCText(cu.getPCValue()+1);
-				cu.setPCValue(cu.getPCValue()+1);
+				userInterface.setPCText(cu.getPCValue());
+				cu.setPCValue(cu.getPCValue());
 			}
 			break;
 		case 3:
@@ -744,8 +744,8 @@ public class ALU {
 				cu.setPCValue(EA);
 			}
 			else {
-				userInterface.setPCText(cu.getPCValue()+1);
-				cu.setPCValue(cu.getPCValue()+1);
+				userInterface.setPCText(cu.getPCValue());
+				cu.setPCValue(cu.getPCValue());
 			}
 			break;
 		default:
@@ -980,8 +980,8 @@ public class ALU {
 				cu.setPCValue(EA);
 			}
 			else {
-				userInterface.setPCText(cu.getPCValue()+1);
-				cu.setPCValue(cu.getPCValue()+1);
+				userInterface.setPCText(cu.getPCValue());
+				cu.setPCValue(cu.getPCValue());
 			}
 			break;
 		case 1:
@@ -990,8 +990,8 @@ public class ALU {
 				cu.setPCValue(EA);
 			}
 			else {
-				userInterface.setPCText(cu.getPCValue()+1);
-				cu.setPCValue(cu.getPCValue()+1);
+				userInterface.setPCText(cu.getPCValue());
+				cu.setPCValue(cu.getPCValue());
 			}
 			break;
 		case 2:
@@ -1000,8 +1000,8 @@ public class ALU {
 				cu.setPCValue(EA);
 			}
 			else {
-				userInterface.setPCText(cu.getPCValue()+1);
-				cu.setPCValue(cu.getPCValue()+1);
+				userInterface.setPCText(cu.getPCValue());
+				cu.setPCValue(cu.getPCValue());
 			}
 			break;
 		case 3:
@@ -1010,8 +1010,8 @@ public class ALU {
 				cu.setPCValue(EA);
 			}
 			else {
-				userInterface.setPCText(cu.getPCValue()+1);
-				cu.setPCValue(cu.getPCValue()+1);
+				userInterface.setPCText(cu.getPCValue());
+				cu.setPCValue(cu.getPCValue());
 			}
 			break;
 		default:
@@ -1078,7 +1078,7 @@ public class ALU {
 //		}
 		int EA=calculateEA(X,I,address);
 		userInterface.setR3Text(cu.getPCValue());
-		cu.setR3Value(cu.getPCValue()+1);
+		cu.setR3Value(cu.getPCValue());
 		userInterface.setPCText(EA);
 		cu.setPCValue(EA);
 
@@ -1109,19 +1109,20 @@ public class ALU {
     // ---------------------------------
 		int ccBit = 0;
 		//int ADD = address;
-
+		String ccString = Integer.toBinaryString(cu.getCCValue());
+		int ccValue = Integer.parseInt(ccString); 
 		int EA = calculateEA(X,I,address);
 		if(CC == 0) {
-			ccBit = cu.getCCValue()/1000;
+			ccBit = ccValue/1000;
 		}
 		else if(CC == 1) {
-			ccBit = (cu.getCCValue()%1000)/100;
+			ccBit = (ccValue%1000)/100;
 		}
 		else if(CC == 2) {
-			ccBit = ((cu.getCCValue()%1000)%100)/10;
+			ccBit = ((ccValue%1000)%100)/10;
 		}
 		else if(CC == 3) {
-			ccBit = ((cu.getCCValue()%1000)%100)%10;
+			ccBit = ((ccValue%1000)%100)%10;
 		}
 		if(ccBit==1){
 			userInterface.setPCText(EA);
@@ -1129,7 +1130,7 @@ public class ALU {
 		}
 		else{
 			userInterface.setPCText(cu.getPCValue());
-			cu.setPCValue(cu.getPCValue()+1);
+			cu.setPCValue(cu.getPCValue());
 		}
 		/*switch (I) {
 		case 0:

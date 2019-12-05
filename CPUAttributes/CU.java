@@ -498,6 +498,8 @@ public class CU {
 			alu.JSR(X,I,address);
 			break;
 		case 15:
+			immed = instructionDec[1];
+			alu.RFS(immed);
 			break;
 		case 0:
 			status = false;
@@ -554,7 +556,6 @@ public class CU {
 		case 25:
 			RX = instructionDec[1];
 			alu.NOT(RX);
-
 		case 33:
 			FR=instructionDec[1];
 			X=instructionDec[2];

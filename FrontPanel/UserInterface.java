@@ -492,6 +492,11 @@ public class UserInterface extends JFrame {
 			
 		});
 		
+		JButton btnStoreCC = new JButton("Store");
+		btnStoreCC.setBackground(Color.LIGHT_GRAY);
+		btnStoreCC.setBounds(415, 390, 77, 29);
+		contentPane.add(btnStoreCC);
+		
 //		JLabel lblInput = new JLabel("Input File");
 //		lblInput.setBounds(449, 394, 70, 21);
 //		contentPane.add(lblInput);
@@ -1086,6 +1091,26 @@ public class UserInterface extends JFrame {
 				}
 			}
 		});
+		
+		btnStoreCC.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String ccString = txtFieldCC.getText();
+				if(ccString != null) {
+					int value = Integer.parseInt(ccString);
+					System.out.println(value);
+					cu.setCCValue(value);
+					//X3.setValue(value);
+					txtFieldCC.setText(ccString);
+					//here write some code to store the text typed in CC into memory 
+					contentPane.revalidate();
+					validate();
+				}
+			}
+		});
+		
+		
 		
 		btnIpl.addActionListener(new ActionListener() {
 			
