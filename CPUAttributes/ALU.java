@@ -48,17 +48,17 @@ public class ALU {
 		case 1:
 			switch(X){
 			case 0:
-				EA=cu.memory.fetchFromMemory(address);
+				EA=cu.fetchFromMemory(address);
 				//userInterface.updateLogText("x=0", EA);
 				break;
 			case 1:
-				EA=cu.memory.fetchFromMemory(cu.getX1Value()+address);
+				EA=cu.fetchFromMemory(cu.getX1Value()+address);
 				break;
 			case 2:
-				EA=cu.memory.fetchFromMemory(cu.getX2Value()+address);
+				EA=cu.fetchFromMemory(cu.getX2Value()+address);
 				break;
 			case 3:
-				EA=cu.memory.fetchFromMemory(cu.getX3Value()+address);
+				EA=cu.fetchFromMemory(cu.getX3Value()+address);
 				break;
 			default:
 				break;
@@ -114,7 +114,6 @@ public class ALU {
 			cu.setMARValue(EA);
 			userInterface.updateLogText("\n MAR : ",EA);
 			int data = cu.memory.fetchFromMemory(EA);
-
 			userInterface.setMBRText(data);
 			cu.setMBRValue(data);
 			userInterface.updateLogText("\n MBR : ",data);
@@ -167,7 +166,6 @@ public class ALU {
 			userInterface.setMARText(ADD);
 			//txtFieldMAR.setText(Integer.toString(ADD));
 			cu.setMARValue(ADD);
-
 			userInterface.updateLogText("\n MAR : ",ADD);
 			//logTextArea.append("\n MAR : " + ADD);
 			int data=cu.memory.fetchFromMemory(ADD);
@@ -175,7 +173,6 @@ public class ALU {
 			userInterface.setMBRText(data);
 			//txtFieldMBR.setText(Integer.toString(data));
 			cu.setMBRValue(data);
-
 			userInterface.updateLogText("\n MBR : ",data);
 			//logTextArea.append("\n MBR : " +data);
 			switch (R) {
@@ -183,7 +180,6 @@ public class ALU {
 				userInterface.setR0Text(data);
 				//txtFieldR0.setText(Integer.toString(data));
 				cu.setR0Value(data);
-
 				userInterface.updateLogText("\n R0 : ",data);
 				//logTextArea.append("\n R0: "+data);
 				break;
@@ -191,7 +187,6 @@ public class ALU {
 				userInterface.setR1Text(data);
 				//txtFieldR1.setText(Integer.toString(data));
 				cu.setR1Value(data);
-
 				userInterface.updateLogText("\n R1 : ",data);
 				//logTextArea.append("\n R1: "+data);
 				break;
@@ -199,7 +194,6 @@ public class ALU {
 				userInterface.setR2Text(data);
 				//txtFieldR2.setText(Integer.toString(data));
 				cu.setR2Value(data);
-
 				userInterface.updateLogText("\n R2 : ",data);
 				//logTextArea.append("\n R2: "+data);
 				break;
@@ -207,15 +201,12 @@ public class ALU {
 				userInterface.setR3Text(data);
 				//txtFieldR3.setText(Integer.toString(data));
 				cu.setR3Value(data);
-
 				userInterface.updateLogText("\n R3 : ",data);
 				//logTextArea.append("\n R3: "+data);
 				break;
 			default:
 				break;
 			}
-
-
 		}*/
 		int EA=calculateEA(X,I,address);
 		//userInterface.updateLogText("m(20)", cu.fetchFromMemory(20));
@@ -271,7 +262,6 @@ public class ALU {
 		/*userInterface.setMARText(address);
 		//txtFieldMAR.setText(Integer.toString(address));
 		cu.setMARValue(address);
-
 		int Reg = 0;
 		switch (R) {
 		case 0:
@@ -279,7 +269,6 @@ public class ALU {
 			userInterface.setMBRText(Reg);
 			//txtFieldMBR.setText(Integer.toString(Reg));
 			cu.setMBRValue(Reg);
-
 			userInterface.updateLogText("MBR : ",Reg);
 			//logTextArea.append("MBR: "+ Reg);
 			break;
@@ -288,7 +277,6 @@ public class ALU {
 			userInterface.setMBRText(Reg);
 			//txtFieldMBR.setText(Integer.toString(Reg));
 			cu.setMBRValue(Reg);
-
 			userInterface.updateLogText("MBR : ",Reg);
 			//logTextArea.append("MBR: "+ Reg);
 			break;
@@ -297,7 +285,6 @@ public class ALU {
 			userInterface.setMBRText(Reg);
 			//txtFieldMBR.setText(Integer.toString(Reg));
 			cu.setMBRValue(Reg);
-
 			userInterface.updateLogText("MBR : ",Reg);
 			//logTextArea.append("MBR: "+ Reg);
 			break;
@@ -306,17 +293,14 @@ public class ALU {
 			userInterface.setMBRText(Reg);
 			//txtFieldMBR.setText(Integer.toString(Reg));
 			cu.setMBRValue(Reg);
-
 			userInterface.updateLogText("MBR : ",Reg);
 			//logTextArea.append("MBR: "+ Reg);
 			break;
-
 		default:
 			break;
 		}
 		cu.memory.storeIntoMemory(address, Reg);
 		//Memory[address] = Reg;
-
 		 */
 		int EA=calculateEA(X,I,address);
 		userInterface.setMARText(EA);
@@ -365,7 +349,7 @@ public class ALU {
 				break;
 
 		}
-		cu.memory.storeIntoMemory(EA, Reg);
+		cu.storeIntoMemory(EA, Reg);
 		//Memory[address] = Reg;
 	}
 
@@ -415,7 +399,6 @@ public class ALU {
 		userInterface.setMARText(address);
 		//txtFieldMAR.setText(Integer.toString(address));
 		cu.setMARValue(address);
-
 		userInterface.updateLogText("\nMAR: ",address);
 		//logTextArea.append("\nMAR:"+ address);
 		int data=cu.memory.fetchFromMemory(address);
@@ -423,28 +406,21 @@ public class ALU {
 		userInterface.setMBRText(data);
 		//txtFieldMBR.setText(Integer.toString(Data));
 		cu.setMBRValue(data);
-
 		userInterface.updateLogText("\nMBR: ",data);
 		//logTextArea.append("\nMBR:"+ Data);
 		switch (X) {
 		case 1:
 			cu.setX1Value(data);
-
-
 			userInterface.setX1Text(data);
 			//txtFieldX1.setText(Integer.toString(Data));
 			break;
 		case 2:
 			cu.setX2Value(data);
-
-
 			userInterface.setX2Text(data);
 			//txtFieldX2.setText(Integer.toString(Data));
 			break;
 		case 3:
 			cu.setX3Value(data);
-
-
 			userInterface.setX3Text(data);
 			//txtFieldX3.setText(Integer.toString(Data));
 			break;
@@ -456,7 +432,7 @@ public class ALU {
 		userInterface.setMARText(EA);
 		cu.setMARValue(EA);
 		//userInterface.updateLogText("\nMAR: ",EA);
-		int data=cu.memory.fetchFromMemory(EA);
+		int data=cu.fetchFromMemory(EA);
 		userInterface.setMBRText(data);
 		cu.setMBRValue(data);
 
@@ -532,7 +508,7 @@ public class ALU {
 			default:
 				break;
 		}
-		cu.memory.storeIntoMemory(EA, DataIX);
+		cu.storeIntoMemory(EA, DataIX);
 		//cu.memory[address]= DataIX;
 	}
 
@@ -549,7 +525,7 @@ public class ALU {
 			//System.out.println(currentRegisterValue);
 			userInterface.setMARText(calculateEA(X,I,address));
 			
-			EAValue=cu.memory.fetchFromMemory(calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			userInterface.setMBRText(EAValue);
 			cu.setR0Value(currentRegisterValue+EAValue);
 			//System.out.println(currentRegisterValue+EAValue);
@@ -558,7 +534,7 @@ public class ALU {
 		case 1:
 			currentRegisterValue=cu.getR1Value();
 			userInterface.setMARText(calculateEA(X,I,address));
-			EAValue=cu.memory.fetchFromMemory(calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			userInterface.setMBRText(EAValue);
 			cu.setR1Value(currentRegisterValue+EAValue);
 			userInterface.setR1Text(currentRegisterValue+EAValue);
@@ -566,7 +542,7 @@ public class ALU {
 		case 2:
 			currentRegisterValue=cu.getR2Value();
 			userInterface.setMARText(calculateEA(X,I,address));
-			EAValue=cu.memory.fetchFromMemory(calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			userInterface.setMBRText(EAValue);
 			cu.setR2Value(currentRegisterValue+EAValue);
 			userInterface.setR2Text(currentRegisterValue+EAValue);
@@ -574,7 +550,7 @@ public class ALU {
 		case 3:
 			currentRegisterValue=cu.getR3Value();
 			userInterface.setMARText(calculateEA(X,I,address));
-			EAValue=cu.memory.fetchFromMemory(calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			userInterface.setMBRText(EAValue);
 			cu.setR3Value(currentRegisterValue+EAValue);
 			userInterface.setR3Text(currentRegisterValue+EAValue);
@@ -925,7 +901,6 @@ public class ALU {
 			}
 			int ADD = IX + address;
 			switch (R) {
-
 			case 0:
 				if(cu.getR0Value()!=0) {
 					userInterface.setPCText(EA);
@@ -968,7 +943,6 @@ public class ALU {
 				break;
 			default:
 				break;
-
 			}
 			
 		}*/
@@ -1150,16 +1124,13 @@ public class ALU {
 				break;
 			}
 			break;
-
 		default:
 			break;
-
 		}
 		else{
 			userInterface.setPCText(cu.getPCValue());
 			cu.setPCValue(cu.getPCValue()+1);
 		}
-
 //		switch (I) {
 //		case 0:
 //			break;
@@ -1193,7 +1164,6 @@ public class ALU {
 //		default:
 //			break;
 //		}
-
 		*/
 		
 
@@ -1210,7 +1180,7 @@ public class ALU {
 		case 0:
 			currentRegisterValue=cu.getR0Value();
 			userInterface.setMARText(calculateEA(X,I,address));
-			EAValue=cu.memory.fetchFromMemory(calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			userInterface.setMBRText(EAValue);
 			cu.setR0Value(currentRegisterValue-EAValue);
 			userInterface.setR0Text(currentRegisterValue-EAValue);
@@ -1218,7 +1188,7 @@ public class ALU {
 		case 1:
 			currentRegisterValue=cu.getR1Value();
 			userInterface.setMARText(calculateEA(X,I,address));
-			EAValue=cu.memory.fetchFromMemory(calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			userInterface.setMBRText(EAValue);
 			cu.setR1Value(currentRegisterValue-EAValue);
 			userInterface.setR1Text(currentRegisterValue-EAValue);
@@ -1226,7 +1196,7 @@ public class ALU {
 		case 2:
 			currentRegisterValue=cu.getR2Value();
 			userInterface.setMARText(calculateEA(X,I,address));
-			EAValue=cu.memory.fetchFromMemory(calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			userInterface.setMBRText(EAValue);
 			cu.setR2Value(currentRegisterValue-EAValue);
 			userInterface.setR2Text(currentRegisterValue-EAValue);
@@ -1234,7 +1204,7 @@ public class ALU {
 		case 3:
 			currentRegisterValue=cu.getR3Value();
 			userInterface.setMARText(calculateEA(X,I,address));
-			EAValue=cu.memory.fetchFromMemory(calculateEA(X,I,address));
+			EAValue=cu.fetchFromMemory(calculateEA(X,I,address));
 			userInterface.setMBRText(EAValue);
 			cu.setR3Value(currentRegisterValue-EAValue);
 			userInterface.setR3Text(currentRegisterValue-EAValue);

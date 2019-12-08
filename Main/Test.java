@@ -55,7 +55,11 @@ public class Test {
 		alu.FADD(1, 0, 0, 10);
 		//assertEquals((float)21,cu.getFR0Value());
 		//This one is for checking FADD instructions
+		System.out.println("Checking FADD operation");
+		System.out.println("Expected Value:");
+		System.out.println("The value at FR0 is the same as 21? ");
 		System.out.println(Math.abs(21-cu.getFR0Value()) < 0.01);
+		System.out.println("The value at FR1 is the same as -10? ");
 		System.out.println(Math.abs(-10-cu.getFR1Value()) < 0.01);
 		
 		//This part is for checking FSUB instructions
@@ -65,7 +69,11 @@ public class Test {
 		cu.setFR1Value(20);
 		alu.FSUB(0,0,0,11);
 		alu.FSUB(1, 0, 0, 10);
+		System.out.println("Checking FADD operation");
+		System.out.println("Expected Value:");
+		System.out.println("The value at FR0 is the same as -1? ");
 		System.out.println(Math.abs(-1-cu.getFR0Value()) < 0.01);
+		System.out.println("The value at FR1 is the same as 10? ");
 		System.out.println(Math.abs(10-cu.getFR1Value()) < 0.01);
 		
 		//This part is for checking VADD instructions
@@ -82,7 +90,7 @@ public class Test {
 		cu.storeIntoMemory(21, 21);
 		cu.storeIntoMemory(22, 22);
 		cu.storeIntoMemory(23, 23);
-		
+		System.out.println("Checking VADD operation");
 		alu.VADD(0, 0, 0, 8);
 		
 		for(int i=cu.fetchFromMemory(8);i<cu.fetchFromMemory(8)+len;i++){
@@ -96,9 +104,14 @@ public class Test {
 			//assertEquals(Integer.valueOf(cu.fetchFromMemory(10)),Integer.valueOf(30));
 			
 		}
+		System.out.println("Expected Value:");
+		System.out.println("The value at vector address 0 is the same as 30? ");
 		System.out.println(Math.abs(30-cu.fetchFromMemory(10)) < 0.01);
+		System.out.println("The value at vector address 1 is the same as 32? ");
 		System.out.println(Math.abs(32-cu.fetchFromMemory(11)) < 0.01);
+		System.out.println("The value at vector address 2 is the same as 34? ");
 		System.out.println(Math.abs(34-cu.fetchFromMemory(12)) < 0.01);
+		System.out.println("The value at vector address 3 is the same as 36? ");
 		System.out.println(Math.abs(36-cu.fetchFromMemory(13)) < 0.01);
 		
 		cu.setFR0Value(4);
@@ -127,9 +140,13 @@ public class Test {
 			//assertEquals(Integer.valueOf(cu.fetchFromMemory(10)),Integer.valueOf(30));
 			
 		}
+		System.out.println("The value at vector address 0 is the same as -10? ");
 		System.out.println(Math.abs(-10-cu.fetchFromMemory(10)) < 0.01);
+		System.out.println("The value at vector address 1 is the same as -20? ");
 		System.out.println(Math.abs(-20-cu.fetchFromMemory(11)) < 0.01);
+		System.out.println("The value at vector address 2 is the same as -30? ");
 		System.out.println(Math.abs(-30-cu.fetchFromMemory(12)) < 0.01);
+		System.out.println("The value at vector address 3 is the same as -40? ");
 		System.out.println(Math.abs(-40-cu.fetchFromMemory(13)) < 0.01);
 		
 		//This part is for checking VSUB instruction
@@ -146,7 +163,7 @@ public class Test {
 		cu.storeIntoMemory(21, 24);
 		cu.storeIntoMemory(22, 26);
 		cu.storeIntoMemory(23, 28);
-		
+		System.out.println("Checking VSUB operation");
 		alu.VSUB(0, 0, 0, 8);
 		/*Expected output after VSUB:
 		 * -10 at memory location 10
@@ -165,9 +182,13 @@ public class Test {
 			//assertEquals(Integer.valueOf(cu.fetchFromMemory(10)),Integer.valueOf(30));
 			
 		}
+		System.out.println("The value at vector address 0 is the same as -10? ");
 		System.out.println(Math.abs(-10-cu.fetchFromMemory(10)) < 0.01);
+		System.out.println("The value at vector address 1 is the same as -13? ");
 		System.out.println(Math.abs(-13-cu.fetchFromMemory(11)) < 0.01);
+		System.out.println("The value at vector address 2 is the same as -14? ");
 		System.out.println(Math.abs(-14-cu.fetchFromMemory(12)) < 0.01);
+		System.out.println("The value at vector address 3 is the same as -15? ");
 		System.out.println(Math.abs(-15-cu.fetchFromMemory(13)) < 0.01);
 		
 		
@@ -204,23 +225,33 @@ public class Test {
 			//assertEquals(Integer.valueOf(cu.fetchFromMemory(10)),Integer.valueOf(30));
 			
 		}
+		System.out.println("The value at vector address 0 is the same as 10? ");
 		System.out.println(Math.abs(10-cu.fetchFromMemory(10)) < 0.01);
+		System.out.println("The value at vector address 1 is the same as 11? ");
 		System.out.println(Math.abs(13-cu.fetchFromMemory(11)) < 0.01);
+		System.out.println("The value at vector address 2 is the same as 14? ");
 		System.out.println(Math.abs(14-cu.fetchFromMemory(12)) < 0.01);
+		System.out.println("The value at vector address 3 is the same as 15? ");
 		System.out.println(Math.abs(15-cu.fetchFromMemory(13)) < 0.01);
 		
 		
 		//This part is for checking converting
 		
 		//checking fixed point number first
+		System.out.println("Check CNVRT operation");
 		cu.storeIntoMemory(10, 30);
 		cu.setR0Value(0);
 		alu.CNVRT(0,0,0,10);
+		System.out.println("Set F to be 0, is the value at R0 is the same as 30? (the converted number saved in R0?)");
 		System.out.println(Math.abs(30-cu.getR0Value()) < 0.01);
 		cu.setR1Value(1);
 		alu.CNVRT(1, 0, 0, 10);
+		System.out.println("Set F to be 1, is the value at FR0 is the same as 30? (the converted number saved in FR0?)");
 		System.out.println(Math.abs(30f-cu.getFR0Value()) < 0.01);
 		//System.out.println(FR0.getValue() instanceOf float);
+		//String str="FADD 0,0,0,0";
+		//System.out.println("The index of the whitespace is: "+str.indexOf(' '));
+		// int whiteSpaceIndex=instruction.indexOf(' ');
 	}
 
 	

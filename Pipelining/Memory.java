@@ -14,11 +14,11 @@ public class Memory implements Runnable{
     @Override
     public void run() {
         // TODO Auto-generated method stub
-        System.out.println("Thread Id: " + Thread.currentThread().getId() + " - memory start");
+        System.out.println("Thread ID is: " + Thread.currentThread().getId() + " - Stage Memory Starts");
         
         try {
             int data = this.EX_MEM.take();
-            System.out.println("Thread Id: " + Thread.currentThread().getId() + " - get data: " + data);
+            System.out.println("Thread ID is: " + Thread.currentThread().getId() + " - get data: " + data);
             data = data - 2;
             this.MEM_WB.put(data);
             
@@ -27,6 +27,6 @@ public class Memory implements Runnable{
             e.printStackTrace();
         }
         
-        System.out.println("Thread Id: " + Thread.currentThread().getId() + " - memory end");
+        System.out.println("Thread ID is: " + Thread.currentThread().getId() + " - Stage Memory Ends");
     }
 }

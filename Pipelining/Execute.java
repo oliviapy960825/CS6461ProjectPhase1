@@ -15,17 +15,17 @@ public class Execute implements Runnable{
     @Override
     public void run() {
         // TODO Auto-generated method stub
-        System.out.println("Thread Id: " + Thread.currentThread().getId() + " - execute start");
+        System.out.println("Thread ID is: " + Thread.currentThread().getId() + " - Stage Execute Starts");
         try {
             int data = this.ID_EX.take();
-            System.out.println("Thread Id: " + Thread.currentThread().getId() + " - get data: " + data);
+            System.out.println("Thread ID is: " + Thread.currentThread().getId() + " - get data: " + data);
             data = data - 2;
             this.EX_MEM.put(data);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.println("Thread Id: " + Thread.currentThread().getId() + " - execute end");
+        System.out.println("Thread ID is: " + Thread.currentThread().getId() + " - Stage Execute ends");
     }
 
 }

@@ -16,17 +16,17 @@ public class Decode implements Runnable {
     public void run() {
         // TODO Auto-generated method stub
 
-        System.out.println("Thread Id: " + Thread.currentThread().getId() + " - decode start");
+        System.out.println("Thread ID is: " + Thread.currentThread().getId() + " - Stage Decode Starts");
         try {
             int data = this.IF_ID.take();
-            System.out.println("Thread Id: " + Thread.currentThread().getId() + " - get data: " + data);
+            System.out.println("Thread ID is: " + Thread.currentThread().getId() + " - get data: " + data);
             data = data - 2;
             this.ID_EX.put(data - 2);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.println("Thread Id: " + Thread.currentThread().getId() + " - decode end");
+        System.out.println("Thread ID: " + Thread.currentThread().getId() + " - Stage Decode Ends");
 
     }
 

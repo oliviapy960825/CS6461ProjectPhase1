@@ -56,7 +56,7 @@ public class Encoding {
                     }
                     break;
                     
-                case "JZ": //JZ 0,1,0,10
+                case "JZ ": //JZ 0,1,0,10
                     insFunction = "001010";
                     switch (instruction.substring(3, 4)) {
                         case "0":
@@ -464,8 +464,8 @@ public class Encoding {
                         default:
                             break;
                     }
-                    addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(8)));
-                    while (addressString.length() < 7) {
+                    addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(9)));
+                    while (addressString.length() < 8) {
                         addressString = "0" + addressString;
                     }
                     insFunction += addressString;
@@ -498,19 +498,22 @@ public class Encoding {
                         default:
                             break;
                     }
-                    addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(8)));
-                    while (addressString.length() < 7) {
+                    addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(9)));
+                    while (addressString.length() < 5) {
                         addressString = "0" + addressString;
                     }
                     insFunction += addressString;
                     break;
+                    
                 case "RFS":
                     insFunction = "001111";
-                    addressString = Integer.toBinaryString(Integer.parseInt(instruction.substring(4)));
-                    while(addressString.length() < 10){
-                    	addressString = "0" + addressString;
+                    addressString=Integer.toBinaryString(Integer.parseInt(instruction.substring(4)));
+                    while(addressString.length()<10){
+                    	addressString="0"+addressString;
                     }
-                    insFunction += addressString;
+                    insFunction+=addressString;
+                   
+                    
                     break;
 
                 case "AMR": //AMR R,X,I,ADDRESS

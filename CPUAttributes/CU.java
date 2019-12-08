@@ -40,6 +40,7 @@ public class CU {
 	String cardBuffer;
     String printerBuffer;
     String keyboardBuffer;
+    int numberOfCache;
     List<String> list = new ArrayList<String>();
     private MachineFaultException IllegalMemoryToReservedLocation=MachineFaultException.IllegalMemoryToReservedLocation;
 	private MachineFaultException IllegalOperationCode=MachineFaultException.IllegalOperationCode;
@@ -106,6 +107,13 @@ public class CU {
 		this.userInterface=userInterface;
 	}
 
+	public void addNumberOfCache(){
+		numberOfCache++;
+	}
+
+	public int returnNumberOfCache(){
+		return numberOfCache;
+	}
     public void increasePCByOne() {
 	    setPCValue(getPCValue()+1);
     }
@@ -139,8 +147,8 @@ public class CU {
 		for (String line : lines) {
 			int decIns = encode.insToDec(line);
 			//memory[pc]=decIns;
-			memory.storeIntoMemory(pc, decIns);
-			System.out.println("The "+pc+" th instruction in binary form is : "+memory.fetchFromMemory(pc));
+			storeIntoMemory(pc, decIns);
+			System.out.println("The "+pc+" th instruction in binary form is : "+fetchFromMemory(pc));
 			pc= pc+1;
 		}
 
@@ -220,6 +228,8 @@ public class CU {
 	}
 	public void storeIntoMemory(int address, int value) {
 		memory.storeIntoMemory(address, value);
+		addNumberOfCache();
+		userInterface.storeIntoTableCache(Integer.toString(address), Integer.toString(value));
 	}
 	public int[] decToBinary(int decInstruction){
 		return decode.decToBinary(decInstruction);
@@ -556,51 +566,59 @@ public class CU {
 		case 25:
 			RX = instructionDec[1];
 			alu.NOT(RX);
+			break;
 		case 33:
 			FR=instructionDec[1];
 			X=instructionDec[2];
 			I=instructionDec[3];
 			address=instructionDec[4];
 			alu.FADD(FR,X,I,address);
+			break;
 		case 34:
 			FR=instructionDec[1];
 			X=instructionDec[2];
 			I=instructionDec[3];
 			address=instructionDec[4];
 			alu.FSUB(FR,X,I,address);
+			break;
 		case 35:
 			FR=instructionDec[1];
 			X=instructionDec[2];
 			I=instructionDec[3];
 			address=instructionDec[4];
 			alu.VADD(FR,X,I,address);
+			break;
 		case 36:
 			FR=instructionDec[1];
 			X=instructionDec[2];
 			I=instructionDec[3];
 			address=instructionDec[4];
 			alu.VSUB(FR,X,I,address);
+			break;
 		case 37:
 			R=instructionDec[1];
 			X=instructionDec[2];
 			I=instructionDec[3];
 			address=instructionDec[4];
 			alu.CNVRT(R,X,I,address);
+			break;
 		case 50:
 			FR=instructionDec[1];
 			X=instructionDec[2];
 			I=instructionDec[3];
 			address=instructionDec[4];
 			alu.LDFR(FR,X,I,address);
+			break;
 		case 51:
 			FR=instructionDec[1];
 			X=instructionDec[2];
 			I=instructionDec[3];
 			address=instructionDec[4];
 			alu.STFR(FR,X,I,address);
+			break;
 
 		default:
-			
+			System.out.println("Shoot, no operations found");
 			System.out.println(IllegalOperationCode.getMessage());
 			setMFRValue(Integer.parseInt(IllegalOperationCode.getMFR(),2));
 			storeIntoMemory(4,Integer.parseInt(IllegalOperationCode.getMFR(),2));

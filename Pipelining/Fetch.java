@@ -13,14 +13,14 @@ SynchronousQueue<Integer> IF_ID;
     @Override
     public void run() {
         // TODO Auto-generated method stub
-        System.out.println("Thread Id: " + Thread.currentThread().getId() + " - fetch start");
+        System.out.println("Thread ID is: " + Thread.currentThread().getId() + " - Stage Fetch Starts");
         try {
             this.IF_ID.put(99);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.println("Thread Id: " + Thread.currentThread().getId() + " - fetch end");
+        System.out.println("Thread ID is: " + Thread.currentThread().getId() + " - Stage Fetch Ends");
     }
 
 }

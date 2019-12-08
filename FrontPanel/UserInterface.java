@@ -1,4 +1,3 @@
-
 package FrontPanel;
 /**
  * @author Dishit, Peiyu, Zhaoning, Charitha
@@ -9,15 +8,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import CPUAttributes.ALU;
 import CPUAttributes.CU;
@@ -40,8 +38,12 @@ public class UserInterface extends JFrame {
 	//This class is for the User Interface designs and interactions
 	//It has one contentPanel and many fields and buttons for each user input area and button
 	//It also has text areas for user input and also the log/console for displaying what's happening behind
-	
+	protected static JScrollPane panel;
 	protected static JPanel contentPane;
+	private JTable tableCache;
+	private JTextArea pnlCache;
+	private JLabel lblCache;
+	private JScrollPane scrollPane3;
 	private static JTextField txtFieldR0;
 	private static JTextField txtFieldR1;
 	private static JTextField txtFieldR2;
@@ -59,6 +61,7 @@ public class UserInterface extends JFrame {
 	private static JTextField txtFieldMemoryValue;
 	private static JTextArea instructionsTextArea;
 	private static JTextArea logTextArea;
+	private Vector<Vector> v = new Vector<Vector>();
 	String[] inputNumbers=null;
 	List inputA;
 	String number1=null;
@@ -143,6 +146,19 @@ public class UserInterface extends JFrame {
 		
 		txtFieldPC.setText(Integer.toString(address));
 	}
+	public void storeIntoTableCache(String tag, String value){
+		int row = cu.returnNumberOfCache() % 32 - 1;
+		System.out.println(row);
+		this.tableCache.setValueAt(tag, row, 0);
+		this.tableCache.setValueAt(value, row, 1);
+//		DefaultTableModel model = (DefaultTableModel) tableCache.getModel();
+//		model.addRow(new Object[]{tag, value});
+//		Vector newData = new Vector();
+//		newData.add(tag);
+//		newData.add(value);
+//		v.addElement(newData);
+//		tableCache.setModel(cacheTable);
+	}
 	public String getInput() {
 		return instructionsTextArea.getText();
 	}
@@ -206,12 +222,21 @@ public class UserInterface extends JFrame {
 	public void intialize() {
 		// Initialize function is for the user interface design and layout
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 798, 899);
+		setBounds(100, 100, 798, 1099);
+
 		contentPane = new JPanel();
+		panel = new JScrollPane(contentPane);
 		
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+
+//		JScrollPane scrollPane = new JScrollPane(panel);
+//		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+//		scrollPane.setBounds(100, 100, 798, 899);
+
+//		contentPane.add(scrollPane);
 		
 		JLabel lblR = new JLabel("R0");
 		lblR.setBounds(50, 62, 28, 21);
@@ -393,11 +418,11 @@ public class UserInterface extends JFrame {
 		contentPane.add(btnStoreX3);
 		
 		JLabel lblPc = new JLabel("PC");
-		lblPc.setBounds(50, 331, 18, 21);
+		lblPc.setBounds(50, 303, 18, 21);
 		contentPane.add(lblPc);
 		
 		txtFieldPC = new JTextField();
-		txtFieldPC.setBounds(83, 328, 96, 27);
+		txtFieldPC.setBounds(83, 300, 96, 27);
 		contentPane.add(txtFieldPC);
 		txtFieldPC.setColumns(10);
 		txtFieldPC.addActionListener(new ActionListener(){
@@ -413,11 +438,11 @@ public class UserInterface extends JFrame {
 		});
 		
 		JLabel lblMar = new JLabel("MAR");
-		lblMar.setBounds(257, 331, 28, 21);
+		lblMar.setBounds(257, 303, 28, 21);
 		contentPane.add(lblMar);
 		
 		txtFieldMAR = new JTextField();
-		txtFieldMAR.setBounds(300, 328, 96, 27);
+		txtFieldMAR.setBounds(300, 300, 96, 27);
 		contentPane.add(txtFieldMAR);
 		txtFieldMAR.setColumns(10);
 		txtFieldMAR.addActionListener(new ActionListener(){
@@ -433,11 +458,11 @@ public class UserInterface extends JFrame {
 		});
 		
 		JLabel lblMbr = new JLabel("MBR");
-		lblMbr.setBounds(470, 331, 81, 21);
+		lblMbr.setBounds(50, 424, 81, 21);
 		contentPane.add(lblMbr);
 		
 		txtFieldMBR = new JTextField();
-		txtFieldMBR.setBounds(511, 328, 96, 27);
+		txtFieldMBR.setBounds(83, 421, 96, 27);
 		contentPane.add(txtFieldMBR);
 		txtFieldMBR.setColumns(10);
 		txtFieldMBR.addActionListener(new ActionListener(){
@@ -453,11 +478,11 @@ public class UserInterface extends JFrame {
 		});
 		
 		JLabel lblIr = new JLabel("IR");
-		lblIr.setBounds(50, 394, 18, 21);
+		lblIr.setBounds(50, 364, 18, 21);
 		contentPane.add(lblIr);
 		
 		txtFieldIR = new JTextField();
-		txtFieldIR.setBounds(83, 391, 96, 27);
+		txtFieldIR.setBounds(83, 361, 96, 27);
 		contentPane.add(txtFieldIR);
 		txtFieldIR.setColumns(10);
 		txtFieldIR.addActionListener(new ActionListener(){
@@ -473,11 +498,11 @@ public class UserInterface extends JFrame {
 		});
 		
 		JLabel lblCc = new JLabel("CC");
-		lblCc.setBounds(260, 394, 18, 21);
+		lblCc.setBounds(260, 364, 18, 21);
 		contentPane.add(lblCc);
 		
 		txtFieldCC = new JTextField();
-		txtFieldCC.setBounds(300, 391, 96, 27);
+		txtFieldCC.setBounds(300, 361, 96, 27);
 		contentPane.add(txtFieldCC);
 		txtFieldCC.setColumns(10);
 		txtFieldCC.addActionListener(new ActionListener(){
@@ -491,11 +516,59 @@ public class UserInterface extends JFrame {
 			}
 			
 		});
-		
-		JButton btnStoreCC = new JButton("Store");
-		btnStoreCC.setBackground(Color.LIGHT_GRAY);
-		btnStoreCC.setBounds(415, 390, 77, 29);
-		contentPane.add(btnStoreCC);
+
+		//pnlCache = new JPanel();
+		//pnlCache.setBounds(498, 408, 254, 147);
+
+		lblCache = new JLabel("Cache");
+
+
+		scrollPane3 = new JScrollPane();
+
+		pnlCache = new JTextArea();
+		pnlCache.setEditable(false);
+		pnlCache.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		pnlCache.setBounds(449, 236, 208, 177);
+		pnlCache.setLineWrap(true);
+		contentPane.add(pnlCache);
+
+//		JScrollPane cacheScrollPanel = new JScrollPane(logTextArea);
+//		cacheScrollPanel.setFont(new Font("Monospaced", Font.PLAIN, 12));
+//		cacheScrollPanel.setBounds(449, 236, 208, 177);
+		//contentPane.add(cacheScrollPanel);
+
+		tableCache = new JTable(32, 2);
+		tableCache.setEnabled(false);
+		scrollPane3.setViewportView(tableCache);
+//		Vector<Integer> vTag = new Vector<Integer>();
+//		Vector<Integer> vValue = new Vector<Integer>();
+//		Vector vName = new Vector();
+//		vName.add("Tag");
+//		vName.add("Data");
+//		vTag.add(0);
+////		vTag.add(11);
+////		vValue.add(0);
+////		vValue.add(1);
+
+//		v.addElement(vTag);
+//		v.addElement(vValue);
+//		DefaultTableModel cacheTable = new DefaultTableModel(v, vName);
+//		tableCache.setModel(cacheTable);
+		tableCache.setModel(new DefaultTableModel(
+				new Object[][] { { null, null }, { null, null }, { null, null }, { null, null }, { null, null },
+						{ null, null }, { null, null }, { null, null }, { null, null }, { null, null }, { null, null },
+						{ null, null }, { null, null }, { null, null }, { null, null }, { null, null },{ null, null }, { null, null }, { null, null }, { null, null }, { null, null },
+						{ null, null }, { null, null }, { null, null }, { null, null }, { null, null }, { null, null },
+						{ null, null }, { null, null }, { null, null }, { null, null }, { null, null }, },
+				new String[] { "Tag", "Data" }));
+		pnlCache.setLayout(new BoxLayout(pnlCache, BoxLayout.Y_AXIS));
+		pnlCache.add(lblCache);
+		pnlCache.add(scrollPane3);
+
+//		JButton btnStoreCC = new JButton("Store");
+//		btnStoreCC.setBackground(Color.LIGHT_GRAY);
+//		btnStoreCC.setBounds(415, 390, 77, 29);
+//		contentPane.add(btnStoreCC);
 		
 //		JLabel lblInput = new JLabel("Input File");
 //		lblInput.setBounds(449, 394, 70, 21);
@@ -567,11 +640,9 @@ public class UserInterface extends JFrame {
 					//System.out.println((int)sentences.charAt(0));
 					//System.out.println(cu.getCardBuffer());
 					System.out.println("start to read sentences");
-
 					cu.loadProgram(Const.PRE_PROG2);
 					cu.loadProgram(Const.PROG2_0);
 					cu.setPCValue(Const.PG2_0_BASE);
-
 					do {
 						//cu.setMARValue(cu.getPCValue());
 						//cu.setMBRValue(cu.fetchFromMemory(cu.getMARValue()));
@@ -1092,23 +1163,23 @@ public class UserInterface extends JFrame {
 			}
 		});
 		
-		btnStoreCC.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String ccString = txtFieldCC.getText();
-				if(ccString != null) {
-					int value = Integer.parseInt(ccString);
-					System.out.println(value);
-					cu.setCCValue(value);
-					//X3.setValue(value);
-					txtFieldCC.setText(ccString);
-					//here write some code to store the text typed in CC into memory 
-					contentPane.revalidate();
-					validate();
-				}
-			}
-		});
+//		btnStoreCC.addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				String ccString = txtFieldCC.getText();
+//				if(ccString != null) {
+//					int value = Integer.parseInt(ccString);
+//					System.out.println(value);
+//					cu.setCCValue(value);
+//					//X3.setValue(value);
+//					txtFieldCC.setText(ccString);
+//					//here write some code to store the text typed in CC into memory
+//					contentPane.revalidate();
+//					validate();
+//				}
+//			}
+//		});
 		
 		
 		
@@ -1175,7 +1246,7 @@ public class UserInterface extends JFrame {
 				if(addr != null && dataValue != null) {
 					int add = Integer.parseInt(addr);
 					int value = Integer.parseInt(dataValue);
-					cu.memory.storeIntoMemory(add, value);
+					cu.storeIntoMemory(add, value);
 					//Memory[add] = value;
 				}
 				//contentPane.revalidate();
@@ -1190,7 +1261,7 @@ public class UserInterface extends JFrame {
 				String addr = txtFieldMemory.getText();
 				if(addr != null) {
 					int addrInt = Integer.parseInt(addr,2);
-					int fetchedData=cu.memory.fetchFromMemory(addrInt);
+					int fetchedData=cu.fetchFromMemory(addrInt);
 					//int fetchedData = Memory[addrInt];
 					String fetchString = Integer.toString(fetchedData);
 					txtFieldMemoryValue.setText(fetchString);
