@@ -1,4 +1,4 @@
-# CS6461ProjectPhase1
+# CS6461 Virtual Machine Project
 
 ## Here's the division of work for Phase 1
 
